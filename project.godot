@@ -11,5 +11,11 @@ config_version=5
 [application]
 
 config/name="ram"
+run/main_scene="uid://dn0ldn8kemnnw"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
+
+[display]
+
+window/size/viewport_width=2304
+window/size/viewport_height=1296

@@ -1,0 +1,28 @@
+[gd_scene load_steps=2 format=3 uid="uid://babdb2oiywmsl"]
+
+[ext_resource type="Script" uid="uid://d3y42p4rlticl" path="res://script/blockmove.gd" id="1_ufhvh"]
+
+[node name="BlockMove" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 368.0
+offset_bottom = 103.0
+script = ExtResource("1_ufhvh")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 0
+offset_right = 368.0
+offset_bottom = 103.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/HBoxContainer"]
+layout_mode = 2
+text = "Move"
+
+[node name="DistanceField" type="LineEdit" parent="PanelContainer/HBoxContainer"]
+layout_mode = 2
+placeholder_text = "<distance>"
+
+[node name="AutocompleteMenu" type="PopupMenu" parent="."]

@@ -1,0 +1,32 @@
+[gd_scene load_steps=4 format=3 uid="uid://dn0ldn8kemnnw"]
+
+[ext_resource type="Script" uid="uid://bfbx155fa2i08" path="res://script/main.gd" id="1_8gbba"]
+[ext_resource type="PackedScene" uid="uid://babdb2oiywmsl" path="res://scenes/blockmove.tscn" id="2_jjvhh"]
+[ext_resource type="PackedScene" uid="uid://c3vroyc0ggbck" path="res://scenes/robot.tscn" id="3_kry3j"]
+
+[node name="Main" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 2304.0
+offset_bottom = 1289.0
+script = ExtResource("1_8gbba")
+
+[node name="BlockContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 87.0
+offset_top = 47.0
+offset_right = 846.0
+offset_bottom = 1046.0
+
+[node name="BlockMove" parent="BlockContainer" instance=ExtResource("2_jjvhh")]
+layout_mode = 2
+
+[node name="RunButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 241.0
+offset_top = 1143.0
+offset_right = 485.0
+offset_bottom = 1258.0
+text = "run"
+
+[node name="Robot" parent="." instance=ExtResource("3_kry3j")]
