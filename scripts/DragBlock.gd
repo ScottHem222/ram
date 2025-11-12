@@ -1,66 +1,86 @@
 extends Control
 
-@export var boundary_node: Node
-@export var snap_slots: int = 7
+@export var boundary_node: Node    # Assign CodeBox node
+@export var snap_slots := 7
 
-var dragging: bool = false
-var drag_offset: Vector2 = Vector2.ZERO
-var current_slot: int = -1
+var dragging := false
+var drag_offset := Vector2.ZERO
+var current_slot := -1
 
-func _gui_input(event: InputEvent) -> void:
+@onready var delete_button = $DeleteButton
+
+
+func _ready():
+	delete_button.pressed.connect(_on_delete_pressed)
+
+
+func _on_delete_pressed():
+	# Free slot and auto-shuffle others upward
+	if boundary_node and current_slot != -1:
+		boundary_node.clear_slot(self)
+
+	queue_free()
+
+
+func _gui_input(event):
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.pressed:
 			dragging = true
 			drag_offset = event.position
-			if boundary_node:
+
+			# Free our old slot FIRST so drag can reassign
+			if boundary_node and current_slot != -1:
 				boundary_node.clear_slot(self)
 			current_slot = -1
+
 		else:
 			dragging = false
-			_snap_to_nearest_slot()
+			_snap_to_highest_slot()
+
 	elif event is InputEventMouseMotion and dragging and boundary_node:
-		var new_pos: Vector2 = global_position + (event.position - drag_offset)
-		var boundary_rect: Rect2 = Rect2(boundary_node.global_position, boundary_node.size)
-		new_pos.y = clamp(new_pos.y, boundary_rect.position.y, boundary_rect.position.y + boundary_rect.size.y - size.y)
-		new_pos.x = boundary_rect.position.x + (boundary_rect.size.x - size.x) / 2.0
+		var new_pos = global_position + (event.position - drag_offset)
+		var bbox = Rect2(boundary_node.global_position, boundary_node.size)
+
+		# Vertical clamp
+		new_pos.y = clamp(new_pos.y, bbox.position.y, bbox.position.y + bbox.size.y - size.y)
+
+		# Keep horizontally centered always
+		new_pos.x = bbox.position.x + (bbox.size.x - size.x) / 2.0
+
 		global_position = new_pos
 
 
-func _snap_to_nearest_slot() -> void:
+# ---------------------------------------------------------
+# NEW: Always snap to the highest available slot
+# ---------------------------------------------------------
+func _snap_to_highest_slot():
 	if not boundary_node:
 		return
 
-	var nearest: int = boundary_node.find_nearest_slot(global_position.y)
-	var target_slot: int = nearest
+	var slot = boundary_node.get_highest_free_slot()
+	if slot == -1:
+		return  # no free space, do nothing
 
-	# find first available slot if nearest is occupied
-	if not boundary_node.is_slot_free(nearest):
-		var found: bool = false
-		for offset: int in range(1, snap_slots):
-			var up: int = nearest - offset
-			var down: int = nearest + offset
-			if up >= 0 and boundary_node.is_slot_free(up):
-				target_slot = up
-				found = true
-				break
-			elif down < snap_slots and boundary_node.is_slot_free(down):
-				target_slot = down
-				found = true
-				break
-
-		if not found and current_slot != -1:
-			target_slot = current_slot
-
-	# always snap somewhere
-	_occupy_slot(target_slot)
+	snap_to_slot(slot)
+	boundary_node.occupy_slot(slot, self)
+	current_slot = slot
 
 
-func _occupy_slot(idx: int) -> void:
-	var snapped_y: float = boundary_node.slot_positions[idx]
-	var centered_x: float = boundary_node.global_position.x + (boundary_node.size.x - size.x) / 2.0
+# ---------------------------------------------------------
+# Called by BOTH dragging + CodeBox shuffle
+# ---------------------------------------------------------
+func snap_to_slot(idx):
+	var snapped_y = boundary_node.slot_positions[idx]
+	var bbox = boundary_node
 
-	var tween: Tween = get_tree().create_tween()
-	tween.tween_property(self, "global_position", Vector2(centered_x, snapped_y), 0.15).set_ease(Tween.EASE_OUT)
+	var centered_x = bbox.global_position.x + (bbox.size.x - size.x) / 2.0
 
-	boundary_node.occupy_slot(idx, self)
+	var tween = get_tree().create_tween()
+	tween.tween_property(
+		self,
+		"global_position",
+		Vector2(centered_x, snapped_y),
+		0.15
+	).set_ease(Tween.EASE_OUT)
+
 	current_slot = idx

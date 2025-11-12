@@ -15,3 +15,11 @@ offset_right = 947.0
 offset_bottom = 165.0
 mouse_filter = 2
 color = Color(0.27666545, 0.69339615, 0.723513, 1)
+
+[node name="DeleteButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 848.0
+offset_top = 43.0
+offset_right = 926.0
+offset_bottom = 117.0
+text = "DELETE"

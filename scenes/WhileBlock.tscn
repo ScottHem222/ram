@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://fba5hcps4h7q"]
+
+[ext_resource type="PackedScene" uid="uid://bg358417trm0u" path="res://scenes/DragBlock.tscn" id="1_0vh57"]
+
+[node name="DragBlock" instance=ExtResource("1_0vh57")]
+
+[node name="ColorRect" parent="." index="0"]
+color = Color(0.7351631, 0.6151676, 3.85046e-07, 1)
