@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://babdb2oiywmsl"]
+[gd_scene load_steps=3 format=3 uid="uid://babdb2oiywmsl"]
 
-[ext_resource type="Script" uid="uid://d3y42p4rlticl" path="res://script/blockmove.gd" id="1_ufhvh"]
+[ext_resource type="Script" uid="uid://d3y42p4rlticl" path="res://scripts/blockmove.gd" id="1_ufhvh"]
+
+[sub_resource type="Theme" id="Theme_oc56j"]
 
 [node name="BlockMove" type="Control"]
 layout_mode = 3
@@ -13,6 +15,7 @@ script = ExtResource("1_ufhvh")
 layout_mode = 0
 offset_right = 368.0
 offset_bottom = 103.0
+theme = SubResource("Theme_oc56j")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer"]
 layout_mode = 2
@@ -26,3 +29,5 @@ layout_mode = 2
 placeholder_text = "<distance>"
 
 [node name="AutocompleteMenu" type="PopupMenu" parent="."]
+oversampling_override = 1.0
+visible = true

@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=3 uid="uid://bg358417trm0u"]
+
+[ext_resource type="Script" uid="uid://dnk3uwbclqarr" path="res://scripts/DragBlock.gd" id="1_etkp8"]
+
+[node name="DragBlock" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 947.0
+offset_bottom = 165.0
+script = ExtResource("1_etkp8")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 0
+offset_right = 947.0
+offset_bottom = 165.0
+mouse_filter = 2
+color = Color(0.27666545, 0.69339615, 0.723513, 1)

@@ -1,6 +1,6 @@
 extends Control
 
-@onready var block_container = $BlockContainer
+@onready var block_container = $BlockBoundBox
 @onready var robot = $Robot
 
 func _ready():

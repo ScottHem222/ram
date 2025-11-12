@@ -8,6 +8,28 @@ var autocomplete_items = ["10", "20", "robot.speed", "sensor.range", "cargo_weig
 func _ready():
 	distance_field.text_changed.connect(_on_text_changed)
 	autocomplete_menu.id_pressed.connect(_on_autocomplete_selected)
+	mouse_filter = Control.MOUSE_FILTER_STOP   # allow drag start
+	
+	
+
+
+# --- DRAGGING SUPPORT ---
+
+func _get_drag_data(_at_pos: Vector2):
+	var preview = duplicate()
+	preview.modulate = Color(1, 1, 1, 0.5)
+	set_drag_preview(preview)
+	return {"block": self}
+
+func _can_drop_data(at_position: Vector2, data):
+	# Not used for this node (we drop onto container)
+	return false
+
+func _drop_data(at_position: Vector2, data):
+	# Not used for this node
+	pass
+
+# --- AUTOCOMPLETE ---
 
 func _on_text_changed(new_text: String):
 	autocomplete_menu.clear()
