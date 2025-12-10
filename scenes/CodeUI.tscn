@@ -1,0 +1,85 @@
+[gd_scene load_steps=8 format=3 uid="uid://dn0ldn8kemnnw"]
+
+[ext_resource type="Script" uid="uid://bfbx155fa2i08" path="res://scripts/codeUI.gd" id="1_8gbba"]
+[ext_resource type="Script" uid="uid://cnc3h0lpcsesq" path="res://scripts/SpawnBlock.gd" id="2_tbgi4"]
+[ext_resource type="Script" uid="uid://chtlsw6eigcvp" path="res://scripts/CodeBox.gd" id="3_jyhfs"]
+[ext_resource type="PackedScene" uid="uid://dm4q5tem3ym47" path="res://scenes/IfBlock.tscn" id="3_tefeu"]
+[ext_resource type="PackedScene" uid="uid://fba5hcps4h7q" path="res://scenes/WhileBlock.tscn" id="4_o6xl0"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tipki"]
+bg_color = Color(0.122064196, 0.05740781, 0.067508586, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_aa5j4"]
+bg_color = Color(0.12156863, 0.05882353, 0.06666667, 1)
+
+[node name="level_UI" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_8gbba")
+
+[node name="Panel" type="Panel" parent="."]
+top_level = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1181.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_tipki")
+
+[node name="SpawnIfBlock" type="Button" parent="Panel" node_paths=PackedStringArray("block_bound_box")]
+layout_mode = 0
+offset_left = 63.0
+offset_top = 1191.0
+offset_right = 180.0
+offset_bottom = 1283.0
+text = "IF Block
+"
+script = ExtResource("2_tbgi4")
+block_scene = ExtResource("3_tefeu")
+block_bound_box = NodePath("../BlockBoundBox")
+
+[node name="SpawnWhileBlock" type="Button" parent="Panel" node_paths=PackedStringArray("block_bound_box")]
+layout_mode = 0
+offset_left = 202.0
+offset_top = 1192.0
+offset_right = 319.0
+offset_bottom = 1284.0
+text = "While Block"
+script = ExtResource("2_tbgi4")
+block_scene = ExtResource("4_o6xl0")
+block_bound_box = NodePath("../BlockBoundBox")
+
+[node name="BlockBoundBox" type="ColorRect" parent="Panel"]
+layout_mode = 0
+offset_left = 46.0
+offset_top = 21.0
+offset_right = 1065.0
+offset_bottom = 1173.0
+color = Color(0.045312412, 0.04531242, 0.04531242, 1)
+script = ExtResource("3_jyhfs")
+
+[node name="Panel2" type="Panel" parent="."]
+layout_mode = 0
+offset_left = 1099.0
+offset_top = 1.0
+offset_right = 2302.0
+offset_bottom = 65.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_aa5j4")
+
+[node name="Panel3" type="Panel" parent="."]
+layout_mode = 0
+offset_left = 2251.0
+offset_top = 1.0
+offset_right = 2302.0
+offset_bottom = 1272.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_aa5j4")
+
+[node name="Panel4" type="Panel" parent="."]
+layout_mode = 0
+offset_left = 1107.0
+offset_top = 1233.0
+offset_right = 2310.0
+offset_bottom = 1297.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_aa5j4")

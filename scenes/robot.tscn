@@ -1,12 +1,21 @@
 [gd_scene load_steps=3 format=3 uid="uid://c3vroyc0ggbck"]
 
-[ext_resource type="Texture2D" uid="uid://ckxuwd4fydxgs" path="res://assets/robot.png" id="1_3cn6f"]
-[ext_resource type="Script" uid="uid://c0xe0e1ti64lf" path="res://scripts/robot.gd" id="1_dfm56"]
+[ext_resource type="Texture2D" uid="uid://ckxuwd4fydxgs" path="res://assets/robot.png" id="1_py6e5"]
+[ext_resource type="Script" uid="uid://dnpwv6f6n3aso" path="res://scripts/robot.gd" id="1_ykvnc"]
 
-[node name="Robot" type="Node2D"]
-script = ExtResource("1_dfm56")
+[node name="Robot" type="CharacterBody2D"]
+script = ExtResource("1_ykvnc")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(1710, 678)
-scale = Vector2(0.5, 0.5)
-texture = ExtResource("1_3cn6f")
+scale = Vector2(0.35, 0.35)
+texture = ExtResource("1_py6e5")
+
+[node name="ray_fw" type="RayCast2D" parent="."]
+target_position = Vector2(0, 40)
+
+[node name="ray_side" type="RayCast2D" parent="."]
+visible = false
+target_position = Vector2(96, 0)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+offset = Vector2(-600, 0)
