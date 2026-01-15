@@ -126,9 +126,9 @@ vertical_alignment = 1
 
 [node name="Run" type="Button" parent="Panel"]
 layout_mode = 0
-offset_left = 681.0
+offset_left = 713.0
 offset_top = 1190.0
-offset_right = 798.0
+offset_right = 830.0
 offset_bottom = 1282.0
 theme = SubResource("Theme_1ais2")
 theme_override_styles/normal = SubResource("StyleBoxFlat_6es81")

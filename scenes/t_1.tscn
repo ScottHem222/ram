@@ -13,3 +13,6 @@ tile_set = ExtResource("1_iqg7r")
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="Robot" parent="." instance=ExtResource("2_8nxhb")]
+speed = null
+turn_degrees = null
+tilemap_path = NodePath("../TileMapLayer")

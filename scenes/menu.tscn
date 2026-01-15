@@ -1,9 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://dx04rhfotepfv"]
+[gd_scene load_steps=9 format=3 uid="uid://dx04rhfotepfv"]
 
 [ext_resource type="Script" uid="uid://djfcbjwryd5s" path="res://scenes/menu.gd" id="1_mhnvy"]
 [ext_resource type="Script" uid="uid://ctx6525cie55n" path="res://scenes/menu_main_but_tut.gd" id="1_yqeox"]
 [ext_resource type="Script" uid="uid://dwxlnvpsdh7q" path="res://scenes/menu_tut_but_main.gd" id="2_vjb58"]
 [ext_resource type="Script" uid="uid://cpdo6ujkbx3s4" path="res://scenes/menu_tut_but_t1.gd" id="3_con2f"]
+[ext_resource type="Theme" uid="uid://c4py26idpc8q6" path="res://scenes/menu_tut_button.tres" id="4_4ytvr"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yqeox"]
 bg_color = Color(0.12156863, 0.05882353, 0.06666667, 1)
@@ -12,7 +13,7 @@ bg_color = Color(0.12156863, 0.05882353, 0.06666667, 1)
 bg_color = Color(0.12156863, 0.05882353, 0.06666667, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mhnvy"]
-bg_color = Color(0.5464861, 0.6098196, 0.66424435, 1)
+bg_color = Color(0.04495208, 0.060939565, 0.07306325, 1)
 border_width_left = 5
 border_width_top = 5
 border_width_right = 5
@@ -55,23 +56,37 @@ text = "main menu
 "
 script = ExtResource("2_vjb58")
 
+[node name="4" type="Button" parent="TutLayer"]
+layout_mode = 0
+offset_left = 938.0
+offset_top = 890.0
+offset_right = 1350.0
+offset_bottom = 1010.0
+theme_override_font_sizes/font_size = 64
+disabled = true
+text = "4. Final Test
+"
+
 [node name="3" type="Button" parent="TutLayer"]
 layout_mode = 0
-offset_left = 929.0
-offset_top = 553.0
-offset_right = 1341.0
-offset_bottom = 673.0
+offset_left = 1612.0
+offset_top = 561.0
+offset_right = 2024.0
+offset_bottom = 681.0
+theme = ExtResource("4_4ytvr")
 theme_override_font_sizes/font_size = 64
+disabled = true
 text = "3. Conditions
 "
 
 [node name="2" type="Button" parent="TutLayer"]
 layout_mode = 0
-offset_left = 1600.0
+offset_left = 939.0
 offset_top = 551.0
-offset_right = 2012.0
+offset_right = 1351.0
 offset_bottom = 671.0
 theme_override_font_sizes/font_size = 64
+disabled = true
 text = "2. Looping
 "
 
@@ -81,6 +96,7 @@ offset_left = 311.0
 offset_top = 548.0
 offset_right = 730.0
 offset_bottom = 668.0
+theme = ExtResource("4_4ytvr")
 theme_override_font_sizes/font_size = 64
 theme_override_styles/normal = SubResource("StyleBoxFlat_mhnvy")
 text = "1. Movement

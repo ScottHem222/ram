@@ -5,7 +5,7 @@ var curr_lvl = 1
 var t1 := [
 	"> Welcome to your new job remote controling our mining robot",
     "> Unfortunately, your predecesor left no documentation on how anything works, so we're gonna have
-	to figure it out.",
+	to figure that out together in the simulator.",
 	"> Lets start by moving the robot to the gold deposit",
 	"> Good luck!",
 	"(Key Programming Concept/s: Function Calls and Basic IF statements)"

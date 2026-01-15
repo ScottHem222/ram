@@ -1,9 +1,67 @@
-[gd_scene format=3 uid="uid://bj8gqqnace1y3"]
+[gd_scene load_steps=7 format=3 uid="uid://bj8gqqnace1y3"]
 
-[node name="Control" type="Control"]
+[ext_resource type="Script" uid="uid://dr4n4pnmb24rh" path="res://scenes/error_ui.gd" id="1_n3v3g"]
+[ext_resource type="Texture2D" uid="uid://c4rbyrfd383h4" path="res://assets/error_onr.png" id="1_s6eha"]
+[ext_resource type="Texture2D" uid="uid://cvhuhu1k2ojno" path="res://assets/error.png" id="1_vqm7h"]
+[ext_resource type="Script" uid="uid://bqyl0n6lbj2h3" path="res://scenes/fail_again.gd" id="4_0ppyw"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_idij3"]
+bg_color = Color(0.30588236, 0.05882353, 0.12156863, 0.49019608)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n3v3g"]
+bg_color = Color(0, 0, 0, 1)
+
+[node name="ErrorUI" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_n3v3g")
+
+[node name="BG" type="Panel" parent="."]
+layout_mode = 0
+offset_right = 2311.0
+offset_bottom = 1320.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_idij3")
+
+[node name="msg" type="Label" parent="."]
+layout_mode = 0
+offset_left = 611.0
+offset_top = 891.0
+offset_right = 1635.0
+offset_bottom = 1147.0
+theme_override_colors/font_color = Color(0.2901961, 0.84313726, 0.28235295, 1)
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_n3v3g")
+autowrap_mode = 2
+
+[node name="NotReached" type="Sprite2D" parent="."]
+position = Vector2(1124, 502.00006)
+scale = Vector2(1.631, 1.631)
+texture = ExtResource("1_s6eha")
+
+[node name="Stuck" type="Sprite2D" parent="."]
+position = Vector2(1122, 501)
+scale = Vector2(1.631488, 1.6314878)
+texture = ExtResource("1_vqm7h")
+
+[node name="Hint" type="Button" parent="."]
+layout_mode = 0
+offset_left = 774.0
+offset_top = 725.0
+offset_right = 1076.0
+offset_bottom = 840.0
+theme_override_font_sizes/font_size = 32
+text = "Hint"
+
+[node name="Again" type="Button" parent="."]
+layout_mode = 0
+offset_left = 1161.0
+offset_top = 728.0
+offset_right = 1463.0
+offset_bottom = 843.0
+theme_override_font_sizes/font_size = 32
+text = "Try Again"
+script = ExtResource("4_0ppyw")

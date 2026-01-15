@@ -1,9 +1,57 @@
-[gd_scene load_steps=2 format=3 uid="uid://dm4q5tem3ym47"]
+[gd_scene load_steps=4 format=3 uid="uid://dm4q5tem3ym47"]
 
 [ext_resource type="PackedScene" uid="uid://bg358417trm0u" path="res://scenes/DragBlock.tscn" id="1_o7527"]
+[ext_resource type="Script" uid="uid://b866tjgrx6a0n" path="res://scenes/if_then.gd" id="2_1p5ar"]
+[ext_resource type="Script" uid="uid://qsomrauqv6vf" path="res://scenes/if_cond.gd" id="2_hvasg"]
 
-[node name="IfBlock" instance=ExtResource("1_o7527")]
+[node name="IfBlock" groups=["if_block"] instance=ExtResource("1_o7527")]
 count_var_name = &"if_blocks"
 
 [node name="ColorRect" parent="." index="0"]
 color = Color(0.8623331, 0.48496103, 0.64655197, 1)
+
+[node name="Label2" type="Label" parent="." index="2"]
+layout_mode = 0
+offset_left = 384.0
+offset_top = 29.0
+offset_right = 569.0
+offset_bottom = 137.0
+theme_override_colors/font_color = Color(0.9560098, 0.90937364, 0.4153526, 1)
+theme_override_font_sizes/font_size = 64
+text = "THEN"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label" type="Label" parent="." index="3"]
+layout_mode = 0
+offset_left = -23.0
+offset_top = 27.0
+offset_right = 162.0
+offset_bottom = 135.0
+theme_override_colors/font_color = Color(0.9560098, 0.90937364, 0.4153526, 1)
+theme_override_font_sizes/font_size = 64
+text = "IF"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="then" type="LineEdit" parent="." index="4"]
+layout_mode = 0
+offset_left = 588.0
+offset_top = 48.0
+offset_right = 829.0
+offset_bottom = 125.0
+script = ExtResource("2_1p5ar")
+
+[node name="Suggest" type="PopupMenu" parent="then" index="0"]
+oversampling_override = 1.0
+
+[node name="cond" type="LineEdit" parent="." index="5"]
+layout_mode = 0
+offset_left = 131.0
+offset_top = 47.0
+offset_right = 372.0
+offset_bottom = 124.0
+script = ExtResource("2_hvasg")
+
+[node name="Suggest" type="PopupMenu" parent="cond" index="0" groups=["if_block"]]
+oversampling_override = 1.0

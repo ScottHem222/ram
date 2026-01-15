@@ -1,9 +1,50 @@
-[gd_scene format=3 uid="uid://1suq8bys24u4"]
+[gd_scene load_steps=5 format=3 uid="uid://1suq8bys24u4"]
 
-[node name="Control" type="Control"]
+[ext_resource type="Script" uid="uid://bny4wadgtol62" path="res://scenes/victory_ui.gd" id="1_1am8u"]
+[ext_resource type="Texture2D" uid="uid://db67w0j0txh7d" path="res://assets/done.png" id="1_t2it0"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1am8u"]
+bg_color = Color(0.2791213, 0.680668, 0.5907944, 0.4117647)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xftm4"]
+bg_color = Color(0, 0, 0, 1)
+
+[node name="WinUI" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_1am8u")
+
+[node name="BG" type="Panel" parent="."]
+layout_mode = 0
+offset_right = 2311.0
+offset_bottom = 1320.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_1am8u")
+
+[node name="msg" type="Label" parent="."]
+layout_mode = 0
+offset_left = 611.0
+offset_top = 891.0
+offset_right = 1635.0
+offset_bottom = 1147.0
+theme_override_colors/font_color = Color(0.2901961, 0.84313726, 0.28235295, 1)
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_xftm4")
+autowrap_mode = 2
+
+[node name="win" type="Sprite2D" parent="."]
+position = Vector2(1122, 501)
+scale = Vector2(1.631488, 1.6314878)
+texture = ExtResource("1_t2it0")
+
+[node name="Menu" type="Button" parent="."]
+layout_mode = 0
+offset_left = 976.0
+offset_top = 725.0
+offset_right = 1278.0
+offset_bottom = 840.0
+theme_override_font_sizes/font_size = 32
+text = "Main Menu"

@@ -20,3 +20,5 @@ scale = Vector2(0.8, 0.8)
 visible = false
 
 [node name="beginUI" parent="BeginLayer" instance=ExtResource("4_jyhfs")]
+
+[node name="FailLayer" type="CanvasLayer" parent="."]
