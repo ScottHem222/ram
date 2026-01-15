@@ -1,13 +1,20 @@
 extends Control
 
-@export var boundary_node: Node    # Assign CodeBox node
+@export var boundary_node: Node    # Assign CodeBox/BlockBoundBox node
 @export var snap_slots := 7
+
+# Set this in each block scene:
+#  - Move block scene -> "move_blocks"
+#  - If block scene   -> "if_blocks"
+@export var count_var_name: StringName = &"move_blocks"
 
 var dragging := false
 var drag_offset := Vector2.ZERO
 var current_slot := -1
 
+
 @onready var delete_button = $DeleteButton
+@onready var main := get_tree().current_scene
 
 
 func _ready():
@@ -18,6 +25,14 @@ func _on_delete_pressed():
 	# Free slot and auto-shuffle others upward
 	if boundary_node and current_slot != -1:
 		boundary_node.clear_slot(self)
+
+	# Refund count
+	if main != null:
+		main.set(count_var_name, int(main.get(count_var_name)) + 1)
+
+		# NEW: tell all UI to refresh
+		if main.has_signal("block_count_changed"):
+			main.emit_signal("block_count_changed")
 
 	queue_free()
 
@@ -50,9 +65,6 @@ func _gui_input(event):
 		global_position = new_pos
 
 
-# ---------------------------------------------------------
-# NEW: Always snap to the highest available slot
-# ---------------------------------------------------------
 func _snap_to_highest_slot():
 	if not boundary_node:
 		return
@@ -66,13 +78,9 @@ func _snap_to_highest_slot():
 	current_slot = slot
 
 
-# ---------------------------------------------------------
-# Called by BOTH dragging + CodeBox shuffle
-# ---------------------------------------------------------
 func snap_to_slot(idx):
 	var snapped_y = boundary_node.slot_positions[idx]
 	var bbox = boundary_node
-
 	var centered_x = bbox.global_position.x + (bbox.size.x - size.x) / 2.0
 
 	var tween = get_tree().create_tween()

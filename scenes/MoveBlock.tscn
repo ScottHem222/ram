@@ -1,0 +1,39 @@
+[gd_scene load_steps=2 format=3 uid="uid://cqvd3ie8mdfjo"]
+
+[ext_resource type="PackedScene" uid="uid://bg358417trm0u" path="res://scenes/DragBlock.tscn" id="1_56leh"]
+
+[node name="MoveBlock" instance=ExtResource("1_56leh")]
+
+[node name="Label2" type="Label" parent="ColorRect" index="0"]
+layout_mode = 0
+offset_left = 508.0
+offset_top = 26.0
+offset_right = 693.0
+offset_bottom = 134.0
+theme_override_colors/font_color = Color(0.9560098, 0.90937364, 0.4153526, 1)
+theme_override_font_sizes/font_size = 64
+text = "units"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label" type="Label" parent="ColorRect" index="1"]
+layout_mode = 0
+offset_left = 18.0
+offset_top = 24.0
+offset_right = 203.0
+offset_bottom = 132.0
+theme_override_colors/font_color = Color(0.9560098, 0.90937364, 0.4153526, 1)
+theme_override_font_sizes/font_size = 64
+text = "MOVE"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="units" type="LineEdit" parent="ColorRect" index="2"]
+layout_mode = 0
+offset_left = 256.0
+offset_top = 50.0
+offset_right = 442.0
+offset_bottom = 123.0
+theme_override_font_sizes/font_size = 50
+placeholder_text = "0"
+alignment = 1

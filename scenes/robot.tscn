@@ -1,7 +1,10 @@
-[gd_scene load_steps=3 format=3 uid="uid://c3vroyc0ggbck"]
+[gd_scene load_steps=4 format=3 uid="uid://c3vroyc0ggbck"]
 
 [ext_resource type="Texture2D" uid="uid://ckxuwd4fydxgs" path="res://assets/robot.png" id="1_py6e5"]
 [ext_resource type="Script" uid="uid://dnpwv6f6n3aso" path="res://scripts/robot.gd" id="1_ykvnc"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ykvnc"]
+size = Vector2(90, 90)
 
 [node name="Robot" type="CharacterBody2D"]
 script = ExtResource("1_ykvnc")
@@ -11,7 +14,7 @@ scale = Vector2(0.35, 0.35)
 texture = ExtResource("1_py6e5")
 
 [node name="ray_fw" type="RayCast2D" parent="."]
-target_position = Vector2(0, 40)
+target_position = Vector2(64, 0)
 
 [node name="ray_side" type="RayCast2D" parent="."]
 visible = false
@@ -19,3 +22,6 @@ target_position = Vector2(96, 0)
 
 [node name="Camera2D" type="Camera2D" parent="."]
 offset = Vector2(-600, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_ykvnc")

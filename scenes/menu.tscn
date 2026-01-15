@@ -1,0 +1,88 @@
+[gd_scene load_steps=8 format=3 uid="uid://dx04rhfotepfv"]
+
+[ext_resource type="Script" uid="uid://djfcbjwryd5s" path="res://scenes/menu.gd" id="1_mhnvy"]
+[ext_resource type="Script" uid="uid://ctx6525cie55n" path="res://scenes/menu_main_but_tut.gd" id="1_yqeox"]
+[ext_resource type="Script" uid="uid://dwxlnvpsdh7q" path="res://scenes/menu_tut_but_main.gd" id="2_vjb58"]
+[ext_resource type="Script" uid="uid://cpdo6ujkbx3s4" path="res://scenes/menu_tut_but_t1.gd" id="3_con2f"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yqeox"]
+bg_color = Color(0.12156863, 0.05882353, 0.06666667, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vjb58"]
+bg_color = Color(0.12156863, 0.05882353, 0.06666667, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mhnvy"]
+bg_color = Color(0.5464861, 0.6098196, 0.66424435, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.8046996, 2.117753e-06, 7.70092e-07, 1)
+
+[node name="menu_sys" type="Node2D"]
+script = ExtResource("1_mhnvy")
+
+[node name="MainLayer" type="Panel" parent="."]
+visible = false
+offset_right = 2311.0
+offset_bottom = 1320.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_yqeox")
+
+[node name="Tutorials" type="Button" parent="MainLayer"]
+layout_mode = 0
+offset_left = 944.0
+offset_top = 670.0
+offset_right = 1339.0
+offset_bottom = 790.0
+theme_override_font_sizes/font_size = 64
+text = "Tutorials
+"
+script = ExtResource("1_yqeox")
+
+[node name="TutLayer" type="Panel" parent="."]
+offset_right = 2311.0
+offset_bottom = 1357.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_vjb58")
+
+[node name="menu" type="Button" parent="TutLayer"]
+layout_mode = 0
+offset_left = 924.0
+offset_top = 169.0
+offset_right = 1336.0
+offset_bottom = 244.0
+theme_override_font_sizes/font_size = 48
+text = "main menu
+"
+script = ExtResource("2_vjb58")
+
+[node name="3" type="Button" parent="TutLayer"]
+layout_mode = 0
+offset_left = 929.0
+offset_top = 553.0
+offset_right = 1341.0
+offset_bottom = 673.0
+theme_override_font_sizes/font_size = 64
+text = "3. Conditions
+"
+
+[node name="2" type="Button" parent="TutLayer"]
+layout_mode = 0
+offset_left = 1600.0
+offset_top = 551.0
+offset_right = 2012.0
+offset_bottom = 671.0
+theme_override_font_sizes/font_size = 64
+text = "2. Looping
+"
+
+[node name="1" type="Button" parent="TutLayer"]
+layout_mode = 0
+offset_left = 311.0
+offset_top = 548.0
+offset_right = 730.0
+offset_bottom = 668.0
+theme_override_font_sizes/font_size = 64
+theme_override_styles/normal = SubResource("StyleBoxFlat_mhnvy")
+text = "1. Movement
+"
+script = ExtResource("3_con2f")

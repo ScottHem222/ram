@@ -1,0 +1,47 @@
+[gd_scene load_steps=5 format=3 uid="uid://bu0pqmssnipyd"]
+
+[ext_resource type="Script" uid="uid://dtagwqmobex25" path="res://scenes/begin_ui.gd" id="1_v4dxp"]
+[ext_resource type="Script" uid="uid://dksv31e2x62g" path="res://scenes/beginUI_remove.gd" id="2_u1xyg"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_01omy"]
+bg_color = Color(0.77254903, 0.5372549, 0.4627451, 0.5647059)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v4dxp"]
+bg_color = Color(0, 0, 0, 1)
+
+[node name="beginUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_v4dxp")
+
+[node name="bg" type="Panel" parent="."]
+layout_mode = 0
+offset_right = 2381.0
+offset_bottom = 1521.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_01omy")
+
+[node name="LevelMsg" type="Label" parent="."]
+layout_mode = 0
+offset_left = 575.0
+offset_top = 224.0
+offset_right = 1760.0
+offset_bottom = 866.0
+theme_override_colors/font_color = Color(0.2901961, 0.84313726, 0.28235295, 1)
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_v4dxp")
+autowrap_mode = 2
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 0
+offset_left = 1009.0
+offset_top = 922.0
+offset_right = 1354.0
+offset_bottom = 1086.0
+theme_override_font_sizes/font_size = 50
+disabled = true
+text = "Begin"
+script = ExtResource("2_u1xyg")
