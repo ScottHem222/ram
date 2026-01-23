@@ -1,11 +1,14 @@
-[gd_scene load_steps=14 format=3 uid="uid://dn0ldn8kemnnw"]
+[gd_scene load_steps=21 format=3 uid="uid://dn0ldn8kemnnw"]
 
 [ext_resource type="Script" uid="uid://bfbx155fa2i08" path="res://scripts/codeUI.gd" id="1_8gbba"]
+[ext_resource type="Script" uid="uid://dup8paa3nget" path="res://scenes/tour1_next.gd" id="2_1ais2"]
+[ext_resource type="Script" uid="uid://bsd3lmltiu2q0" path="res://scenes/tour2_next.gd" id="2_6es81"]
 [ext_resource type="Script" uid="uid://cnc3h0lpcsesq" path="res://scripts/SpawnBlock.gd" id="2_tbgi4"]
 [ext_resource type="Script" uid="uid://chtlsw6eigcvp" path="res://scripts/CodeBox.gd" id="3_jyhfs"]
 [ext_resource type="PackedScene" uid="uid://dm4q5tem3ym47" path="res://scenes/IfBlock.tscn" id="3_tefeu"]
 [ext_resource type="Script" uid="uid://dg2x7dqhlepr0" path="res://scenes/but_run.gd" id="6_1ais2"]
 [ext_resource type="PackedScene" uid="uid://cqvd3ie8mdfjo" path="res://scenes/MoveBlock.tscn" id="6_oojb5"]
+[ext_resource type="TileSet" uid="uid://dk1ojtjrx14v7" path="res://scenes/maintiles.tres" id="9_ap2rb"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tipki"]
 bg_color = Color(0.122064196, 0.05740781, 0.067508586, 1)
@@ -26,6 +29,18 @@ bg_color = Color(0, 0, 0, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_aa5j4"]
 bg_color = Color(0.12156863, 0.05882353, 0.06666667, 1)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dnnvh"]
+bg_color = Color(1, 0.28627452, 0.5647059, 0.20784314)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a7ae3"]
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t27nk"]
+bg_color = Color(0.04303915, 0.043039158, 0.043039113, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n0p60"]
+bg_color = Color(0, 0, 0, 1)
+
 [node name="level_UI" type="Control"]
 layout_mode = 3
 anchors_preset = 0
@@ -40,6 +55,7 @@ anchor_bottom = 1.0
 offset_right = -1181.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_tipki")
 
 [node name="BlockBoundBox" type="ColorRect" parent="Panel"]
@@ -143,6 +159,7 @@ offset_left = 809.0
 offset_top = 1189.0
 offset_right = 1083.0
 offset_bottom = 1285.0
+theme_override_colors/font_color = Color(0.9490196, 0.8117647, 0.14901961, 1)
 theme_override_font_sizes/font_size = 24
 text = "STATUS: Idle"
 horizontal_alignment = 1
@@ -153,7 +170,7 @@ layout_mode = 0
 offset_left = 1099.0
 offset_top = -6.0
 offset_right = 2302.0
-offset_bottom = 116.0
+offset_bottom = 181.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_aa5j4")
 
 [node name="Panel3" type="Panel" parent="."]
@@ -171,3 +188,99 @@ offset_top = 1233.0
 offset_right = 2310.0
 offset_bottom = 1297.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_aa5j4")
+
+[node name="scanner" type="Label" parent="."]
+layout_mode = 0
+offset_left = 1879.0
+offset_top = 20.0
+offset_right = 2153.0
+offset_bottom = 160.0
+theme_override_colors/font_color = Color(0.9490196, 0.8117647, 0.14901961, 1)
+theme_override_font_sizes/font_size = 24
+text = "SCANNER
+Type: Tunnel"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Tour2" type="Panel" parent="CanvasLayer"]
+visible = false
+z_index = 1
+offset_left = -54.0
+offset_top = -124.0
+offset_right = 1105.0
+offset_bottom = 1419.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_dnnvh")
+
+[node name="Tour2_msg" type="Label" parent="CanvasLayer/Tour2"]
+layout_mode = 0
+offset_left = 222.0
+offset_top = 448.0
+offset_right = 1024.0
+offset_bottom = 808.0
+theme_override_colors/font_color = Color(0.2901961, 0.84313726, 0.28235295, 1)
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_a7ae3")
+text = "This side of your screen shows the robots code blocks. Click one of the buttons below to add a block of that type, with each having a count of how many there are available. Press the run button to try your code."
+autowrap_mode = 2
+
+[node name="Tour2_next" type="Button" parent="CanvasLayer/Tour2"]
+layout_mode = 0
+offset_left = 519.0
+offset_top = 854.0
+offset_right = 711.0
+offset_bottom = 921.0
+text = "Next"
+script = ExtResource("2_6es81")
+
+[node name="Panel" type="Panel" parent="CanvasLayer/Tour2"]
+layout_mode = 0
+offset_left = 1160.0
+offset_right = 2370.0
+offset_bottom = 1592.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_t27nk")
+
+[node name="Tour1" type="Panel" parent="CanvasLayer"]
+visible = false
+z_index = 1
+offset_left = 1091.0
+offset_top = -130.0
+offset_right = 2314.0
+offset_bottom = 1413.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_dnnvh")
+
+[node name="Tour1_msg" type="Label" parent="CanvasLayer/Tour1"]
+layout_mode = 0
+offset_left = 232.0
+offset_top = 529.0
+offset_right = 1034.0
+offset_bottom = 889.0
+theme_override_colors/font_color = Color(0.2901961, 0.84313726, 0.28235295, 1)
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_a7ae3")
+text = "This side of your screen shows the robot in the mines. Hover over the robot to see what you can see what you can do with it. "
+autowrap_mode = 2
+
+[node name="Tour1_next" type="Button" parent="CanvasLayer/Tour1"]
+layout_mode = 0
+offset_left = 534.0
+offset_top = 935.0
+offset_right = 726.0
+offset_bottom = 1002.0
+text = "Next"
+script = ExtResource("2_1ais2")
+
+[node name="Panel" type="Panel" parent="CanvasLayer/Tour1"]
+layout_mode = 0
+offset_left = -1158.0
+offset_right = 40.0
+offset_bottom = 1538.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_n0p60")
+
+[node name="ScannerTile" type="TileMapLayer" parent="."]
+position = Vector2(30, 45)
+scale = Vector2(1.5, 1.5)
+tile_map_data = PackedByteArray(0, 0, 22, 0, 0, 0, 1, 0, 4, 0, 0, 0, 0, 0)
+tile_set = ExtResource("9_ap2rb")

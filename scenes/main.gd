@@ -3,20 +3,37 @@ extends Node2D
 var level = 1
 
 var move_blocks: int
+var turn_blocks: int
 var if_blocks: int
 
 signal block_count_changed
 var error_ui_scene := preload("res://scenes/ErrorUI.tscn")
 var win_ui_scene := preload("res://scenes/VictoryUI.tscn")
+var t1_scene := preload("res://scenes/t_1.tscn")
+var robot: Node = null
+var t1: Node = null
 
-@onready var robot = $t_1/Robot
 @onready var game_UI = $GameUILayer/level_UI
 
 func _ready():
 	
+	level = LevelState.curr_lvl
+	
 	if level == 1:
-		move_blocks = 1
+		move_blocks = 5
+		turn_blocks = 5
 		if_blocks = 1
+		t1 = t1_scene.instantiate()
+		add_child(t1)
+		robot = t1.get_node("Robot")
+	
+	if level == 2:
+		move_blocks = 1
+		turn_blocks = 0
+		if_blocks = 1
+		t1 = t1_scene.instantiate()
+		add_child(t1)
+		robot = t1.get_node("Robot")
 		
 	emit_signal("block_count_changed")
 	

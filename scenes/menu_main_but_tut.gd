@@ -10,5 +10,6 @@ func _ready():
 	
 func _button_pressed():
 	main_menu.visible = false
+	tut_menu.update_locks()
 	tut_menu.visible = true
 	

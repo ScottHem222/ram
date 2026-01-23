@@ -15,6 +15,10 @@ run/main_scene="uid://dx04rhfotepfv"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
 
+[autoload]
+
+LevelState="*res://LevelState.gd"
+
 [display]
 
 window/size/viewport_width=2304

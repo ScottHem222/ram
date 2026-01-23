@@ -80,8 +80,7 @@ func run_blocks(robot: Node) -> void:
 
 		if block == null:
 			continue
-
-		# Best: put MoveBlock nodes in a group named "move_block"
+			
 		if block.is_in_group("move_block"):
 			var units := _get_move_units(block)
 			print("  MoveBlock units =", units)
@@ -122,7 +121,7 @@ func apply_if_blocks(robot: Node) -> void:
 			print("Cond: ", cond)
 			print("Then: ", then_txt)
 
-			if cond == "obstacle" and then_txt == "turn":
+			if cond == "obstacle" and then_txt == "turn()":
 				robot.turn = true
 				return  # one match is enough
 

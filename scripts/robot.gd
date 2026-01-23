@@ -23,6 +23,9 @@ var _step_dir: Vector2 = Vector2.RIGHT
 var _just_turned: bool = false
 
 
+@export var scanner_cell: Vector2i = Vector2i(21, 0) # where the preview tile goes
+
+
 func _physics_process(delta: float) -> void:
 	if auto_move:
 		if turn and ray.is_colliding():
@@ -50,7 +53,6 @@ func _physics_process(delta: float) -> void:
 		var moved: float = get_last_motion().length()
 		_step_remaining -= moved
 
-		# ✅ NEW: check for GOLD during movement (not just at the end)
 		if check_tile_ahead() == "gold":
 			_step_remaining = 0.0
 			_step_active = false
@@ -117,6 +119,7 @@ func move_step(distance: float) -> void:
 
 func reset_pos() -> void:
 	position = Vector2.ZERO
+	_step_dir = Vector2.RIGHT
 
 
 func check_tile_ahead() -> String:
@@ -132,3 +135,4 @@ func check_tile_ahead() -> String:
 		return String(td.get_custom_data("type"))
 
 	return ""
+	

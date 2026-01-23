@@ -1,24 +1,18 @@
-[gd_scene load_steps=9 format=3 uid="uid://dx04rhfotepfv"]
+[gd_scene load_steps=10 format=3 uid="uid://dx04rhfotepfv"]
 
 [ext_resource type="Script" uid="uid://djfcbjwryd5s" path="res://scenes/menu.gd" id="1_mhnvy"]
 [ext_resource type="Script" uid="uid://ctx6525cie55n" path="res://scenes/menu_main_but_tut.gd" id="1_yqeox"]
 [ext_resource type="Script" uid="uid://dwxlnvpsdh7q" path="res://scenes/menu_tut_but_main.gd" id="2_vjb58"]
 [ext_resource type="Script" uid="uid://cpdo6ujkbx3s4" path="res://scenes/menu_tut_but_t1.gd" id="3_con2f"]
+[ext_resource type="Script" uid="uid://l6pk4ptgrm4k" path="res://scenes/tut_layer.gd" id="3_v86rl"]
 [ext_resource type="Theme" uid="uid://c4py26idpc8q6" path="res://scenes/menu_tut_button.tres" id="4_4ytvr"]
+[ext_resource type="Script" uid="uid://lt7e2bpngppq" path="res://scenes/menu_tut_but_t2.gd" id="5_g3eks"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yqeox"]
 bg_color = Color(0.12156863, 0.05882353, 0.06666667, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vjb58"]
 bg_color = Color(0.12156863, 0.05882353, 0.06666667, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mhnvy"]
-bg_color = Color(0.04495208, 0.060939565, 0.07306325, 1)
-border_width_left = 5
-border_width_top = 5
-border_width_right = 5
-border_width_bottom = 5
-border_color = Color(0.8046996, 2.117753e-06, 7.70092e-07, 1)
 
 [node name="menu_sys" type="Node2D"]
 script = ExtResource("1_mhnvy")
@@ -44,6 +38,7 @@ script = ExtResource("1_yqeox")
 offset_right = 2311.0
 offset_bottom = 1357.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_vjb58")
+script = ExtResource("3_v86rl")
 
 [node name="menu" type="Button" parent="TutLayer"]
 layout_mode = 0
@@ -62,6 +57,7 @@ offset_left = 938.0
 offset_top = 890.0
 offset_right = 1350.0
 offset_bottom = 1010.0
+theme = ExtResource("4_4ytvr")
 theme_override_font_sizes/font_size = 64
 disabled = true
 text = "4. Final Test
@@ -69,10 +65,10 @@ text = "4. Final Test
 
 [node name="3" type="Button" parent="TutLayer"]
 layout_mode = 0
-offset_left = 1612.0
-offset_top = 561.0
-offset_right = 2024.0
-offset_bottom = 681.0
+offset_left = 1611.0
+offset_top = 555.0
+offset_right = 2030.0
+offset_bottom = 675.0
 theme = ExtResource("4_4ytvr")
 theme_override_font_sizes/font_size = 64
 disabled = true
@@ -85,10 +81,12 @@ offset_left = 939.0
 offset_top = 551.0
 offset_right = 1351.0
 offset_bottom = 671.0
+theme = ExtResource("4_4ytvr")
 theme_override_font_sizes/font_size = 64
 disabled = true
 text = "2. Looping
 "
+script = ExtResource("5_g3eks")
 
 [node name="1" type="Button" parent="TutLayer"]
 layout_mode = 0
@@ -98,7 +96,7 @@ offset_right = 730.0
 offset_bottom = 668.0
 theme = ExtResource("4_4ytvr")
 theme_override_font_sizes/font_size = 64
-theme_override_styles/normal = SubResource("StyleBoxFlat_mhnvy")
+disabled = true
 text = "1. Movement
 "
 script = ExtResource("3_con2f")

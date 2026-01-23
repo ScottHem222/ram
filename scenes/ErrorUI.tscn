@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://bj8gqqnace1y3"]
+[gd_scene load_steps=8 format=3 uid="uid://bj8gqqnace1y3"]
 
 [ext_resource type="Script" uid="uid://dr4n4pnmb24rh" path="res://scenes/error_ui.gd" id="1_n3v3g"]
 [ext_resource type="Texture2D" uid="uid://c4rbyrfd383h4" path="res://assets/error_onr.png" id="1_s6eha"]
 [ext_resource type="Texture2D" uid="uid://cvhuhu1k2ojno" path="res://assets/error.png" id="1_vqm7h"]
 [ext_resource type="Script" uid="uid://bqyl0n6lbj2h3" path="res://scenes/fail_again.gd" id="4_0ppyw"]
+[ext_resource type="Script" uid="uid://crotntequigcm" path="res://scenes/error_hint.gd" id="4_mo7io"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_idij3"]
 bg_color = Color(0.30588236, 0.05882353, 0.12156863, 0.49019608)
@@ -55,6 +56,7 @@ offset_right = 1076.0
 offset_bottom = 840.0
 theme_override_font_sizes/font_size = 32
 text = "Hint"
+script = ExtResource("4_mo7io")
 
 [node name="Again" type="Button" parent="."]
 layout_mode = 0
