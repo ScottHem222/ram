@@ -7,11 +7,15 @@ extends Control
 func disable_buttons():
 	$Panel/SpawnIfBlock.disabled = true
 	$Panel/SpawnMoveBlock.disabled = true
+	$Panel/SpawnTurnBlock.disabled = true
+	$Panel/SpawnWhileBlock.disabled = true
 	$Panel/Run.disabled = true
 	
 func enable_buttons():
 	$Panel/SpawnIfBlock.disabled = false
 	$Panel/SpawnMoveBlock.disabled = false
+	$Panel/SpawnTurnBlock.disabled = false
+	$Panel/SpawnWhileBlock.disabled = false
 	$Panel/Run.disabled = false
 
 
@@ -24,6 +28,28 @@ func update_status(new, col):
 		new_col = Color(0.106, 0.8, 0.0, 1.0)
 		
 	$Panel/Status.set("theme_override_colors/font_color",new_col)
+	
+func setup_block_buttons():
+	if LevelState.curr_lvl == 1:
+		$Panel/SpawnIfBlock.visible = false
+		$Panel/SpawnTurnBlock.visible = true
+		
+		$Panel/SpawnWhileBlock.visible = false
+		$Panel/SpawnMoveBlock.visible = true
+	elif LevelState.curr_lvl == 2:
+		$Panel/SpawnIfBlock.visible = true
+		$Panel/SpawnTurnBlock.visible = false
+		
+		$Panel/SpawnWhileBlock.visible = false
+		$Panel/SpawnMoveBlock.visible = true
+	elif LevelState.curr_lvl == 3:
+		$Panel/SpawnIfBlock.visible = true
+		$Panel/SpawnTurnBlock.visible = false
+		
+		$Panel/SpawnWhileBlock.visible = true
+		$Panel/SpawnMoveBlock.visible = false
+		
+		
 	
 func _ready() -> void:
 	tour_1.visible = false

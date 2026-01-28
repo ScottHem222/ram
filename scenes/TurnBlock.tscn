@@ -1,0 +1,33 @@
+[gd_scene load_steps=3 format=3 uid="uid://dcjyc7ga2dbhf"]
+
+[ext_resource type="PackedScene" uid="uid://bg358417trm0u" path="res://scenes/DragBlock.tscn" id="1_qowjr"]
+[ext_resource type="Script" uid="uid://bwls7lrbe6quj" path="res://scenes/turn_dir.gd" id="2_kp6ew"]
+
+[node name="TurnBlock" groups=["turn_block"] instance=ExtResource("1_qowjr")]
+count_var_name = &"turn_blocks"
+
+[node name="ColorRect" parent="." index="0"]
+color = Color(0.39364734, 0.6991832, 0.5322247, 1)
+
+[node name="Label" type="Label" parent="." index="2"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 28.0
+offset_right = 195.0
+offset_bottom = 136.0
+theme_override_colors/font_color = Color(0.9560098, 0.90937364, 0.4153526, 1)
+theme_override_font_sizes/font_size = 64
+text = "TURN DIRECTION"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="dir" type="LineEdit" parent="." index="3"]
+layout_mode = 0
+offset_left = 562.0
+offset_top = 47.0
+offset_right = 803.0
+offset_bottom = 124.0
+script = ExtResource("2_kp6ew")
+
+[node name="Suggest" type="PopupMenu" parent="dir" index="0" groups=["turn_block"]]
+oversampling_override = 1.0

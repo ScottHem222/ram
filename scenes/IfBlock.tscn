@@ -8,7 +8,7 @@
 count_var_name = &"if_blocks"
 
 [node name="ColorRect" parent="." index="0"]
-color = Color(0.8623331, 0.48496103, 0.64655197, 1)
+color = Color(0.68915725, 0.56169283, 0.807088, 1)
 
 [node name="Label2" type="Label" parent="." index="2"]
 layout_mode = 0

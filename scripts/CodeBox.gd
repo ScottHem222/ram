@@ -41,6 +41,12 @@ func is_slot_free(idx: int) -> bool:
 
 func occupy_slot(idx: int, block: Node) -> void:
 	slot_occupants[idx] = block
+	
+
+func _get_slot_size(block: Node) -> int:
+	if block != null:
+		return maxi(1, int(block.slot_size))
+	return 1
 
 
 # ---------------------------------------------------------
@@ -48,48 +54,103 @@ func occupy_slot(idx: int, block: Node) -> void:
 # Removes block from array and auto-shuffles other blocks up
 # ---------------------------------------------------------
 func clear_slot(block: Node) -> void:
+	var first := -1
+
+	# Clear every slot that points to this block
 	for i in range(slot_occupants.size()):
 		if slot_occupants[i] == block:
+			if first == -1:
+				first = i
 			slot_occupants[i] = null
-			_shuffle_up_from(i)
-			return
+
+	# If we cleared something, compact everything down
+	if first != -1:
+		_compact_slots()
 
 
 # ---------------------------------------------------------
 # Shuffle every block below upwards by 1 slot
 # Used when a block gets deleted above
 # ---------------------------------------------------------
-func _shuffle_up_from(start_slot: int) -> void:
-	for i in range(start_slot, snap_slots - 1):
-		slot_occupants[i] = slot_occupants[i + 1]
+func _has_prop(obj: Object, prop_name: StringName) -> bool:
+	for p in obj.get_property_list():
+		if StringName(p.name) == prop_name:
+			return true
+	return false
 
-		# If a block occupies new index, tell it to snap to this slot
-		if slot_occupants[i] != null:
-			slot_occupants[i].snap_to_slot(i)
+func _get_int_prop(obj: Object, prop_name: StringName, default_val: int) -> int:
+	if _has_prop(obj, prop_name):
+		return int(obj.get(prop_name))
+	return default_val
 
-	# Last slot becomes empty
-	slot_occupants[snap_slots - 1] = null
+func _compact_slots() -> void:
+	var seen := {}
+	var blocks_in_order: Array[Node] = []
+
+	for i in range(snap_slots):
+		var b := slot_occupants[i]
+		if b == null:
+			continue
+		if not seen.has(b):
+			seen[b] = true
+			blocks_in_order.append(b)
+
+	for i in range(snap_slots):
+		slot_occupants[i] = null
+
+	var write_idx := 0
+	for b in blocks_in_order:
+		var sz := _get_int_prop(b, &"slot_size", 1)
+		sz = maxi(sz, 1)
+
+		if write_idx + sz > snap_slots:
+			break
+
+		for j in range(sz):
+			slot_occupants[write_idx + j] = b
+
+		if b.has_method("snap_to_slot"):
+			b.snap_to_slot(write_idx)
+
+		if _has_prop(b, &"current_slot"):
+			b.set(&"current_slot", write_idx)
+
+		write_idx += sz
 	
 func run_blocks(robot: Node) -> void:
 	print("RUN pressed. Robot =", robot)
 	apply_if_blocks(robot)
 
-	for i in range(snap_slots):
-		var block = slot_occupants[i]
-		print("slot", i, "=", block)
+	var seen := {}
 
+	for i in range(snap_slots):
+		var block: Node = slot_occupants[i]
 		if block == null:
 			continue
-			
+		if seen.has(block):
+			continue
+		seen[block] = true
+
+		print("slot", i, "=", block)
+
 		if block.is_in_group("move_block"):
 			var units := _get_move_units(block)
-			print("  MoveBlock units =", units)
-
 			var distance := float(units) * tile_size
-			if robot.has_method("move_step"):
-				await robot.move_step(distance)
-			else:
-				push_error("Robot has no move_step(distance) method")
+			await robot.move_step(distance)
+
+		elif block.is_in_group("turn_block"):
+			var dir := _get_turn_dir(block)
+			if dir == 0:
+				robot.turn_left()
+			elif dir == 1:
+				robot.turn_right()
+
+		elif block.is_in_group("while_block"):
+			# you can implement while logic later
+			print("WHILE block runs once here (implement loop logic)")
+
+	robot.check_done_cond()
+			
 
 
 func _get_move_units(block: Node) -> int:
@@ -106,6 +167,25 @@ func _get_move_units(block: Node) -> int:
 
 	push_warning("Unsupported 'units' node type: %s" % [units_node.get_class()])
 	return 0
+	
+# 0 Left , 1 Right, 2 invalid
+func _get_turn_dir(block: Node) -> int:
+	
+	var units_node := block.find_child("dir", true, false) # recursive
+	if units_node == null:
+		push_warning("No node named 'units' found under %s" % block.name)
+		return 0
+		
+	# LineEdit
+	if units_node is LineEdit:
+		var ut = units_node.text.to_lower()
+		print("units text =", ut)
+		if ut == "left":
+			return 0
+		elif ut == "right":
+			return 1
+	
+	return 2
 	
 func apply_if_blocks(robot: Node) -> void:
 	robot.turn = false

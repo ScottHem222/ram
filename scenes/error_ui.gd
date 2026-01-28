@@ -5,23 +5,30 @@ var err_type = 1
 
 signal error_reset
 
-var h1_l1 := [
+
+var l1_onr := [
 	"> Move the robot further, the gold is 20 units away."
 ]
 
-var h1_l2 := [
+var l1_stuck := [
+	"> Hover over the robot and see if we can use something to avoid the obstacles"
+]
+
+var l2_onr := [
 	"> Move the robot further, the gold is 20 units away.",
 	"> The robot turns also seem to be random so you might need to go further than that"
 ]
 
-var h2_l1 := [
-	"Hover over the robot to see what else it can do"
-]
-
-var h2_l2 := [
+#stuck
+var l2_stuck := [
 	"> Use an IF block",
 	"> Hovering over the robot lists what it can do",
 	"> The scanner also shows the type of tile currently infront of the robot"
+]
+
+var l3_stuck := [
+	"> Make sure your turn block is part of the loop!",
+	"> Drag it into the lower slot in the code section"
 ]
 
 @export var line_delay := 0.2 # seconds between lines
@@ -47,24 +54,33 @@ func reset_pressed():
 	
 func play_hint_msg():
 	
+	print("Err level: ", LevelState.curr_lvl)
+	$msg.text = ""
+	
 	if LevelState.curr_lvl == 1:
 		if err_type == 1:
-			for line in h1_l1:
+			for line in l1_onr:
 				$msg.text += line + "\n"
 				await get_tree().create_timer(line_delay).timeout
 		elif err_type == 2:
-			for line in h2_l1:
+			for line in l1_stuck:
 				$msg.text += line + "\n"
 				await get_tree().create_timer(line_delay).timeout
 	elif LevelState.curr_lvl == 2:
 		if err_type == 1:
-			for line in h1_l2:
+			for line in l2_onr:
 				$msg.text += line + "\n"
 				await get_tree().create_timer(line_delay).timeout
 		elif err_type == 2:
-			for line in h2_l2:
+			for line in l2_stuck:
 				$msg.text += line + "\n"
 				await get_tree().create_timer(line_delay).timeout
+	elif LevelState.curr_lvl == 3:
+		if err_type == 2:
+			for line in l3_stuck:
+				$msg.text += line + "\n"
+				await get_tree().create_timer(line_delay).timeout
+				
 				
 			
 			

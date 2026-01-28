@@ -2,6 +2,7 @@ extends Control
 
 @export var boundary_node: Node    # Assign CodeBox/BlockBoundBox node
 @export var snap_slots := 7
+@export var slot_size := 1
 
 # Set this in each block scene:
 #  - Move block scene -> "move_blocks"

@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://dx04rhfotepfv"]
+[gd_scene load_steps=11 format=3 uid="uid://dx04rhfotepfv"]
 
 [ext_resource type="Script" uid="uid://djfcbjwryd5s" path="res://scenes/menu.gd" id="1_mhnvy"]
 [ext_resource type="Script" uid="uid://ctx6525cie55n" path="res://scenes/menu_main_but_tut.gd" id="1_yqeox"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://l6pk4ptgrm4k" path="res://scenes/tut_layer.gd" id="3_v86rl"]
 [ext_resource type="Theme" uid="uid://c4py26idpc8q6" path="res://scenes/menu_tut_button.tres" id="4_4ytvr"]
 [ext_resource type="Script" uid="uid://lt7e2bpngppq" path="res://scenes/menu_tut_but_t2.gd" id="5_g3eks"]
+[ext_resource type="Script" uid="uid://cauy7el312xyd" path="res://scenes/menu_tut_but_t3.gd" id="6_13sgg"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yqeox"]
 bg_color = Color(0.12156863, 0.05882353, 0.06666667, 1)
@@ -18,7 +19,6 @@ bg_color = Color(0.12156863, 0.05882353, 0.06666667, 1)
 script = ExtResource("1_mhnvy")
 
 [node name="MainLayer" type="Panel" parent="."]
-visible = false
 offset_right = 2311.0
 offset_bottom = 1320.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_yqeox")
@@ -29,12 +29,37 @@ offset_left = 944.0
 offset_top = 670.0
 offset_right = 1339.0
 offset_bottom = 790.0
+theme = ExtResource("4_4ytvr")
 theme_override_font_sizes/font_size = 64
 text = "Tutorials
 "
 script = ExtResource("1_yqeox")
 
+[node name="Final" type="Button" parent="MainLayer"]
+layout_mode = 0
+offset_left = 948.0
+offset_top = 824.0
+offset_right = 1343.0
+offset_bottom = 944.0
+theme = ExtResource("4_4ytvr")
+theme_override_font_sizes/font_size = 64
+disabled = true
+text = "Endless
+"
+
+[node name="Label" type="Label" parent="MainLayer"]
+layout_mode = 0
+offset_left = 538.0
+offset_top = 149.0
+offset_right = 1778.0
+offset_bottom = 631.0
+theme_override_font_sizes/font_size = 150
+text = "Repeat After Me."
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="TutLayer" type="Panel" parent="."]
+visible = false
 offset_right = 2311.0
 offset_bottom = 1357.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_vjb58")
@@ -65,15 +90,16 @@ text = "4. Final Test
 
 [node name="3" type="Button" parent="TutLayer"]
 layout_mode = 0
-offset_left = 1611.0
-offset_top = 555.0
-offset_right = 2030.0
-offset_bottom = 675.0
+offset_left = 1569.0
+offset_top = 548.0
+offset_right = 1988.0
+offset_bottom = 668.0
 theme = ExtResource("4_4ytvr")
 theme_override_font_sizes/font_size = 64
 disabled = true
-text = "3. Conditions
+text = "3. Looping
 "
+script = ExtResource("6_13sgg")
 
 [node name="2" type="Button" parent="TutLayer"]
 layout_mode = 0
@@ -84,19 +110,18 @@ offset_bottom = 671.0
 theme = ExtResource("4_4ytvr")
 theme_override_font_sizes/font_size = 64
 disabled = true
-text = "2. Looping
-"
+text = "2. Conditions"
 script = ExtResource("5_g3eks")
 
 [node name="1" type="Button" parent="TutLayer"]
 layout_mode = 0
-offset_left = 311.0
+offset_left = 201.0
 offset_top = 548.0
-offset_right = 730.0
+offset_right = 766.0
 offset_bottom = 668.0
 theme = ExtResource("4_4ytvr")
 theme_override_font_sizes/font_size = 64
 disabled = true
-text = "1. Movement
+text = "1. Basic Functions
 "
 script = ExtResource("3_con2f")

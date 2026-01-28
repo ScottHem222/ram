@@ -1,12 +1,10 @@
 extends LineEdit
 
 @export var allowed_phrases: Array[String] = [
-	"Obstacle",
-	"obstacle",
-	"Tunnel",
-	"tunnel",
-	"Valueable",
-	"valueable"
+	"Left",
+	"left",
+	"Right",
+	"right"
 ]
 
 @onready var suggest: PopupMenu = $Suggest

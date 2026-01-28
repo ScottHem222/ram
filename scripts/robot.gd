@@ -22,8 +22,85 @@ var _step_remaining: float = 0.0
 var _step_dir: Vector2 = Vector2.RIGHT
 var _just_turned: bool = false
 
+# hover panel
+@export var tooltip_panel_path: NodePath
+@export var tooltip_label_path: NodePath
+var tooltip_panel
+var tooltip_label
 
-@export var scanner_cell: Vector2i = Vector2i(21, 0) # where the preview tile goes
+@onready var hover_area: Area2D = $HoverArea
+
+var tt_methods_1: Array[String] = [
+	"Move()",
+	"Turn()",
+	"NotAtGoal"
+]
+
+#Scanning
+
+@export var scanner_cell: Vector2i = Vector2i(22, 0)
+@onready var scanner_tilemap: TileMapLayer = get_node("/root/Node2D/GameUILayer/level_UI/ScannerTile")
+@onready var scanner_label: Label = get_node("/root/Node2D/GameUILayer/level_UI/scanner")
+
+
+
+func _ready() -> void:
+	tooltip_panel = get_node("/root/Node2D/GameUILayer/level_UI/RobotTooltip")
+	tooltip_label = get_node("/root/Node2D/GameUILayer/level_UI/RobotTooltip/Text")
+	hover_area.mouse_entered.connect(_on_robot_mouse_entered)
+	hover_area.mouse_exited.connect(_on_robot_mouse_exited)
+	tooltip_panel.visible = false
+
+
+func _process(_delta: float) -> void:
+	if tooltip_panel and tooltip_panel.visible:
+		var screen_pos := get_viewport().get_canvas_transform() * global_position
+		tooltip_panel.position = screen_pos + Vector2(40, -20)
+
+func _on_robot_mouse_entered() -> void:
+	
+	var methods
+	if LevelState.curr_lvl < 5:
+		methods = tt_methods_1
+	
+	tooltip_label.text = "Robot Functions:\n- " + "\n- ".join(methods)
+	tooltip_panel.visible = true
+
+func _on_robot_mouse_exited() -> void:
+	tooltip_panel.visible = false
+	
+
+func update_scanner_tile() -> void:
+	if scanner_tilemap == null or tilemap == null:
+		return
+
+	# cell under robot
+	var cell: Vector2i = tilemap.local_to_map(tilemap.to_local(global_position))
+
+	# one-tile step in facing direction
+	var step := Vector2i(int(sign(_step_dir.x)), int(sign(_step_dir.y)))
+	var ahead_cell := cell + step
+
+	# read tile from LEVEL tilemap
+	var source_id: int = tilemap.get_cell_source_id(ahead_cell)
+	if source_id == -1:
+		scanner_tilemap.erase_cell(scanner_cell) # empty
+		return
+
+	var atlas: Vector2i = tilemap.get_cell_atlas_coords(ahead_cell)
+	var alt: int = tilemap.get_cell_alternative_tile(ahead_cell)
+
+	# write same tile into UI scanner tilemap"
+	scanner_tilemap.set_cell(scanner_cell, source_id, atlas, alt)
+	
+	var tile_name = check_tile_ahead()
+	if tile_name == "tunnel":
+		scanner_label.text = "SCANNER\nType: Tunnel\nValue: 0"
+	elif tile_name.begins_with("wall") or tile_name == "stone":
+		scanner_label.text = "SCANNER\nType: Obstacle\nValue: -1"
+	elif tile_name.begins_with("gem") or tile_name == "gold":
+		scanner_label.text = "SCANNER\nType: Valueable\nValue: 20"
+	
 
 
 func _physics_process(delta: float) -> void:
@@ -49,6 +126,8 @@ func _physics_process(delta: float) -> void:
 		var safe_delta: float = maxf(delta, 0.000001)
 		velocity = _step_dir * (step_dist / safe_delta)
 		move_and_slide()
+		
+		update_scanner_tile()
 
 		var moved: float = get_last_motion().length()
 		_step_remaining -= moved
@@ -90,19 +169,21 @@ func _physics_process(delta: float) -> void:
 			_step_active = false
 			velocity = Vector2.ZERO
 
-			# keep your original end-of-step behavior
-			var t := check_tile_ahead()
-			if t == "gold":
-				gold_reached.emit()
-			elif t == "stone":
-				blocked.emit()
-			else:
-				onr.emit()
-
 			step_finished.emit()
 			return
 
 	velocity = Vector2.ZERO
+	
+
+func check_done_cond():
+	# keep your original end-of-step behavior
+	var t := check_tile_ahead()
+	if t == "gold":
+		gold_reached.emit()
+	elif t == "stone" or t.begins_with("wall"):
+		blocked.emit()
+	else:
+		onr.emit()
 
 
 func move_step(distance: float) -> void:
@@ -119,7 +200,26 @@ func move_step(distance: float) -> void:
 
 func reset_pos() -> void:
 	position = Vector2.ZERO
+
+	direction = Vector2.RIGHT
 	_step_dir = Vector2.RIGHT
+	rotation = 0.0
+
+	_step_active = false
+	_step_remaining = 0.0
+	_just_turned = false
+	velocity = Vector2.ZERO
+	
+func turn_left() -> void:
+	direction = direction.rotated(-deg_to_rad(turn_degrees))
+	_step_dir = direction.normalized()
+	rotation = direction.angle()
+
+func turn_right() -> void:
+	direction = direction.rotated(deg_to_rad(turn_degrees))
+	_step_dir = direction.normalized()
+	rotation = direction.angle()
+
 
 
 func check_tile_ahead() -> String:

@@ -5,11 +5,13 @@ var level = 1
 var move_blocks: int
 var turn_blocks: int
 var if_blocks: int
+var while_blocks: int
 
 signal block_count_changed
 var error_ui_scene := preload("res://scenes/ErrorUI.tscn")
 var win_ui_scene := preload("res://scenes/VictoryUI.tscn")
 var t1_scene := preload("res://scenes/t_1.tscn")
+var t3_scene := preload("res://scenes/t_3.tscn")
 var robot: Node = null
 var t1: Node = null
 
@@ -18,11 +20,14 @@ var t1: Node = null
 func _ready():
 	
 	level = LevelState.curr_lvl
+	print("level: ", level)
+	game_UI.setup_block_buttons()
 	
 	if level == 1:
 		move_blocks = 5
 		turn_blocks = 5
 		if_blocks = 1
+		while_blocks = 0
 		t1 = t1_scene.instantiate()
 		add_child(t1)
 		robot = t1.get_node("Robot")
@@ -31,13 +36,22 @@ func _ready():
 		move_blocks = 1
 		turn_blocks = 0
 		if_blocks = 1
+		while_blocks = 0
 		t1 = t1_scene.instantiate()
+		add_child(t1)
+		robot = t1.get_node("Robot")
+		
+	if level == 3:
+		move_blocks = 0
+		turn_blocks = 0
+		if_blocks = 1
+		while_blocks = 1
+		t1 = t3_scene.instantiate()
 		add_child(t1)
 		robot = t1.get_node("Robot")
 		
 	emit_signal("block_count_changed")
 	
-	$BeginLayer/beginUI.set_lvl(level)
 	$BeginLayer.visible = true
 	
 	robot.onr.connect(fail_onr)
