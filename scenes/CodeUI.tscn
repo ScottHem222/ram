@@ -380,15 +380,15 @@ tile_set = ExtResource("9_ap2rb")
 
 [node name="RobotTooltip" type="Panel" parent="."]
 layout_mode = 0
-offset_left = 82.0
-offset_top = -155.0
-offset_right = 252.0
-offset_bottom = -35.0
+offset_left = 104.0
+offset_top = -504.0
+offset_right = 337.0
+offset_bottom = -267.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_d5hkw")
 
 [node name="Text" type="Label" parent="RobotTooltip"]
 layout_mode = 0
-offset_right = 168.0
-offset_bottom = 121.0
+offset_right = 241.0
+offset_bottom = 227.0
 theme_override_font_sizes/font_size = 20
 horizontal_alignment = 1

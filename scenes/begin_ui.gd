@@ -21,11 +21,12 @@ var t2 := [
 ]
 
 var t3 := [
-	"> Surely theres a better way to move the robot without guessing how far wer have to go",
-	"> Try and figure out how to repeat something until we get to the gold!",
+	"> Ok, lets try finding the gold again in a much larger mine.",
+	"> We dont know exactly how far away it is this time, so try looping the movement",
+	"> Make sure to still check for obstacles",
 	">",
-	"(Key Programming Concept/s: WHILE Loops)"
-	
+	"(Key Programming Concept/s: WHILE Loops)",
+	"> TIP: If a loops condition is True, it will loop forever"
 ]
 
 @export var line_delay := 2.5 # seconds between lines

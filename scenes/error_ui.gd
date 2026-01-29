@@ -27,7 +27,7 @@ var l2_stuck := [
 ]
 
 var l3_stuck := [
-	"> Make sure your turn block is part of the loop!",
+	"> Make sure you still have the Turn() condition from last time!",
 	"> Drag it into the lower slot in the code section"
 ]
 

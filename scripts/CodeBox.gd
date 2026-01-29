@@ -119,9 +119,11 @@ func _compact_slots() -> void:
 	
 func run_blocks(robot: Node) -> void:
 	print("RUN pressed. Robot =", robot)
+	
 	apply_if_blocks(robot)
 
 	var seen := {}
+	var in_while = apply_while_loop(robot)
 
 	for i in range(snap_slots):
 		var block: Node = slot_occupants[i]
@@ -149,7 +151,7 @@ func run_blocks(robot: Node) -> void:
 			# you can implement while logic later
 			print("WHILE block runs once here (implement loop logic)")
 
-	robot.check_done_cond()
+	robot.check_done_cond(in_while)
 			
 
 
@@ -203,7 +205,28 @@ func apply_if_blocks(robot: Node) -> void:
 
 			if cond == "obstacle" and then_txt == "turn()":
 				robot.turn = true
-				return  # one match is enough
+			
+			elif cond == "gold" and then_txt == "stop()":
+				robot.auto_stop = true
+				
+				
+func apply_while_loop(robot: Node) -> bool:
+	
+	
+	for i in range(snap_slots):
+		var block := slot_occupants[i]
+		if block == null:
+			continue
+			
+		if block.is_in_group("while_block"):
+			var cond := _get_text_field(block, "cond").to_lower()
+			var do := _get_text_field(block, "do").to_lower()
+			
+			if (cond == "notatgoal" or cond == "true") and do == "move()":
+				robot.move_step(10000)
+				return true
+	
+	return false
 
 
 func _get_text_field(block: Node, field_name: String) -> String:

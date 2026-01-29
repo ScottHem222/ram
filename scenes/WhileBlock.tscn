@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://bbw58hqs1i41y" path="res://scenes/while_cond.gd" id="3_0mtcy"]
 
 [node name="DragBlock" groups=["while_block"] instance=ExtResource("1_0vh57")]
-slot_size = 2
+count_var_name = &"while_blocks"
 
 [node name="ColorRect2" type="ColorRect" parent="." index="0"]
 layout_mode = 0
@@ -15,9 +15,10 @@ mouse_filter = 2
 color = Color(0.7351631, 0.6151676, 3.85046e-07, 1)
 
 [node name="ColorRect" parent="." index="1"]
-offset_top = 166.0
+visible = false
+offset_top = 165.0
 offset_right = 45.0
-offset_bottom = 331.0
+offset_bottom = 330.0
 color = Color(0.7351631, 0.6151676, 3.85046e-07, 1)
 
 [node name="Label" type="Label" parent="." index="3"]

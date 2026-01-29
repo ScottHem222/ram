@@ -11,6 +11,8 @@ func _ready() -> void:
 		$msg.text = "You now know how to use a block to call a specific function of the Robot!"
 	elif LevelState.curr_lvl == 2:
 		$msg.text = "You now know how to call robot functions conditionally with an IF block"
+	elif LevelState.curr_lvl == 3:
+		$msg.text = "You now know how to use a WHILE loop to repeat things until its condition is met"
 		
 	
 func reset_pressed():

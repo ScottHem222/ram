@@ -14,6 +14,10 @@ signal gold_reached()
 var auto_move: bool = false
 var turn: bool = false
 var direction: Vector2 = Vector2.RIGHT
+var auto_stop: bool = false
+
+@export var gold_cell: Vector2i = Vector2i.ZERO   # tilemap coords of gold
+@export var gold_turn_bias: float = 0.75          # 0.5 = random, 1.0 = always choose best
 
 # --- step-move state ---
 signal step_finished
@@ -33,7 +37,7 @@ var tooltip_label
 var tt_methods_1: Array[String] = [
 	"Move()",
 	"Turn()",
-	"NotAtGoal"
+	"Stop()"
 ]
 
 #Scanning
@@ -50,6 +54,10 @@ func _ready() -> void:
 	hover_area.mouse_entered.connect(_on_robot_mouse_entered)
 	hover_area.mouse_exited.connect(_on_robot_mouse_exited)
 	tooltip_panel.visible = false
+	add_to_group("robot")
+	
+	if LevelState.curr_lvl == 3:
+		gold_cell = Vector2i(21, -6)
 
 
 func _process(_delta: float) -> void:
@@ -98,8 +106,10 @@ func update_scanner_tile() -> void:
 		scanner_label.text = "SCANNER\nType: Tunnel\nValue: 0"
 	elif tile_name.begins_with("wall") or tile_name == "stone":
 		scanner_label.text = "SCANNER\nType: Obstacle\nValue: -1"
-	elif tile_name.begins_with("gem") or tile_name == "gold":
-		scanner_label.text = "SCANNER\nType: Valueable\nValue: 20"
+	elif tile_name.begins_with("gem"):
+		scanner_label.text = "SCANNER\nType: Gem\nValue: 20"
+	elif tile_name == "gold":
+		scanner_label.text = "SCANNER\nType: Gold\nValue: 25"
 	
 
 
@@ -152,10 +162,16 @@ func _physics_process(delta: float) -> void:
 			if turn:
 				if not _just_turned:
 					_just_turned = true
-					if randi() % 2 == 0:
-						direction = direction.rotated(deg_to_rad(turn_degrees))
+					
+					if LevelState.curr_lvl == 3:
+						var turn_sign := _choose_turn_toward_gold()
+						direction = direction.rotated(turn_sign * deg_to_rad(turn_degrees))
 					else:
-						direction = direction.rotated(-deg_to_rad(turn_degrees))
+						if randi() % 2 == 0:
+							direction = direction.rotated(deg_to_rad(turn_degrees))
+						else:
+							direction = direction.rotated(-deg_to_rad(turn_degrees))
+					
 					_step_dir = direction.normalized()
 					rotation = direction.angle()
 				else:
@@ -170,12 +186,13 @@ func _physics_process(delta: float) -> void:
 			velocity = Vector2.ZERO
 
 			step_finished.emit()
+			check_done_cond(true)
 			return
 
 	velocity = Vector2.ZERO
 	
 
-func check_done_cond():
+func check_done_cond(in_while):
 	# keep your original end-of-step behavior
 	var t := check_tile_ahead()
 	if t == "gold":
@@ -183,7 +200,8 @@ func check_done_cond():
 	elif t == "stone" or t.begins_with("wall"):
 		blocked.emit()
 	else:
-		onr.emit()
+		if not in_while:
+			onr.emit()
 
 
 func move_step(distance: float) -> void:
@@ -219,6 +237,28 @@ func turn_right() -> void:
 	direction = direction.rotated(deg_to_rad(turn_degrees))
 	_step_dir = direction.normalized()
 	rotation = direction.angle()
+	
+
+func _choose_turn_toward_gold() -> int:
+	var my_cell: Vector2i = tilemap.local_to_map(tilemap.to_local(global_position))
+	var to_gold: Vector2 = Vector2(gold_cell - my_cell)
+	if to_gold.length() < 0.001:
+		return -1 if randi() % 2 == 0 else 1
+
+	to_gold = to_gold.normalized()
+
+	var left_dir: Vector2 = _step_dir.rotated(-deg_to_rad(turn_degrees)).normalized()
+	var right_dir: Vector2 = _step_dir.rotated(deg_to_rad(turn_degrees)).normalized()
+
+	var left_score: float = left_dir.dot(to_gold)
+	var right_score: float = right_dir.dot(to_gold)
+
+	var best := 1 if right_score > left_score else -1
+
+	if randf() < gold_turn_bias:
+		return best
+
+	return -1 if randi() % 2 == 0 else 1
 
 
 

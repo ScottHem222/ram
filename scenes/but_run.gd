@@ -8,7 +8,7 @@ func _ready():
 	
 func _button_pressed():
 	
-	robot = get_node("../../../../t_1/Robot")
+	robot = get_tree().get_first_node_in_group("robot")
 	$"../..".disable_buttons()
 	$"../..".update_status("STATUS: Running", 1)
 	
