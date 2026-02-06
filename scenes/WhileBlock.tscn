@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://dghdeexx4tu24" path="res://scenes/while_do.gd" id="2_lsbws"]
 [ext_resource type="Script" uid="uid://bbw58hqs1i41y" path="res://scenes/while_cond.gd" id="3_0mtcy"]
 
-[node name="DragBlock" groups=["while_block"] instance=ExtResource("1_0vh57")]
+[node name="WhileBlock" groups=["while_block"] instance=ExtResource("1_0vh57")]
 count_var_name = &"while_blocks"
 
 [node name="ColorRect2" type="ColorRect" parent="." index="0"]
@@ -21,7 +21,19 @@ offset_right = 45.0
 offset_bottom = 330.0
 color = Color(0.7351631, 0.6151676, 3.85046e-07, 1)
 
-[node name="Label" type="Label" parent="." index="3"]
+[node name="Label2" type="Label" parent="." index="3"]
+layout_mode = 0
+offset_left = 419.0
+offset_top = 29.0
+offset_right = 618.0
+offset_bottom = 137.0
+theme_override_colors/font_color = Color(0.9560098, 0.90937364, 0.4153526, 1)
+theme_override_font_sizes/font_size = 64
+text = "DO"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label" type="Label" parent="." index="4"]
 layout_mode = 0
 offset_left = 10.0
 offset_top = 28.0
@@ -33,19 +45,7 @@ text = "WHILE"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Label" type="Label" parent="Label" index="0"]
-layout_mode = 0
-offset_left = 409.0
-offset_top = 1.0
-offset_right = 608.0
-offset_bottom = 109.0
-theme_override_colors/font_color = Color(0.9560098, 0.90937364, 0.4153526, 1)
-theme_override_font_sizes/font_size = 64
-text = "DO"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="do" type="LineEdit" parent="." index="4"]
+[node name="do" type="LineEdit" parent="." index="5"]
 layout_mode = 0
 offset_left = 598.0
 offset_top = 48.0
@@ -56,7 +56,7 @@ script = ExtResource("2_lsbws")
 [node name="Suggest" type="PopupMenu" parent="do" index="0" groups=["while_block"]]
 oversampling_override = 1.0
 
-[node name="cond" type="LineEdit" parent="." index="5"]
+[node name="cond" type="LineEdit" parent="." index="6"]
 layout_mode = 0
 offset_left = 227.0
 offset_top = 47.0

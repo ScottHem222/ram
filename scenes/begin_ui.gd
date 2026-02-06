@@ -29,6 +29,16 @@ var t3 := [
 	"> TIP: If a loops condition is True, it will loop forever"
 ]
 
+var t4 := [
+	"> Now all the work we have done to move the robot correctly is contained within the Move() block.",
+	"> Just call that to move the robot like before.",
+	"> This time we want to mine each of the gold ore then stop immeditely",
+	"> But we dont know how many ores there are to mine!",
+	">",
+	"(Key Programming Concept/s: FOR Loops)",
+	"> TIP: 'Gold' is contained within the 'Mine'"
+]
+
 @export var line_delay := 2.5 # seconds between lines
 
 func _ready():
@@ -51,6 +61,10 @@ func play_init_msg():
 			await get_tree().create_timer(line_delay).timeout
 	elif curr_lvl == 3:
 		for line in t3:
+			$LevelMsg.text += line + "\n"
+			await get_tree().create_timer(line_delay).timeout
+	elif curr_lvl == 4:
+		for line in t4:
 			$LevelMsg.text += line + "\n"
 			await get_tree().create_timer(line_delay).timeout
 			

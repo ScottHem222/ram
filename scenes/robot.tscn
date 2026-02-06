@@ -14,14 +14,6 @@ size = Vector2(180, 164.5)
 
 [node name="Robot" type="CharacterBody2D"]
 script = ExtResource("1_ykvnc")
-speed = null
-turn_degrees = null
-tilemap_path = null
-gold_cell = null
-gold_turn_bias = null
-tooltip_panel_path = null
-tooltip_label_path = null
-scanner_cell = null
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 scale = Vector2(0.35, 0.35)

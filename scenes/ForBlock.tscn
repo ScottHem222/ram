@@ -1,0 +1,68 @@
+[gd_scene load_steps=4 format=3 uid="uid://vb74ufwchgjc"]
+
+[ext_resource type="PackedScene" uid="uid://bg358417trm0u" path="res://scenes/DragBlock.tscn" id="1_pjwlo"]
+[ext_resource type="Script" uid="uid://b0a8cl4e7qcbr" path="res://scenes/for_in.gd" id="2_1x5t4"]
+[ext_resource type="Script" uid="uid://pk04xw0t64qp" path="res://scenes/for_do.gd" id="3_auf7u"]
+
+[node name="ForBlock" instance=ExtResource("1_pjwlo")]
+count_var_name = &"for_blocks"
+
+[node name="ColorRect" parent="." index="0"]
+color = Color(0.67215633, 0.63191235, 0.35111272, 1)
+
+[node name="Label2" type="Label" parent="." index="2"]
+layout_mode = 0
+offset_left = 407.0
+offset_top = -20.0
+offset_right = 606.0
+offset_bottom = 88.0
+theme_override_colors/font_color = Color(0.9560098, 0.90937364, 0.4153526, 1)
+theme_override_font_sizes/font_size = 64
+text = "IN"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label" type="Label" parent="." index="3"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = -6.0
+offset_right = 201.0
+offset_bottom = 173.0
+theme_override_colors/font_color = Color(0.9560098, 0.90937364, 0.4153526, 1)
+theme_override_font_sizes/font_size = 64
+text = "FOR
+DO"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="in" type="LineEdit" parent="." index="4"]
+layout_mode = 0
+offset_left = 594.0
+offset_top = 8.0
+offset_right = 805.0
+offset_bottom = 85.0
+script = ExtResource("2_1x5t4")
+
+[node name="Suggest" type="PopupMenu" parent="in" index="0" groups=["while_block"]]
+oversampling_override = 1.0
+
+[node name="do" type="LineEdit" parent="." index="5"]
+layout_mode = 0
+offset_left = 217.0
+offset_top = 88.0
+offset_right = 428.0
+offset_bottom = 165.0
+script = ExtResource("3_auf7u")
+
+[node name="Suggest" type="PopupMenu" parent="do" index="0" groups=["while_block"]]
+oversampling_override = 1.0
+
+[node name="for" type="LineEdit" parent="." index="6"]
+layout_mode = 0
+offset_left = 216.0
+offset_top = 6.0
+offset_right = 427.0
+offset_bottom = 83.0
+
+[node name="Suggest" type="PopupMenu" parent="for" index="0" groups=["while_block"]]
+oversampling_override = 1.0

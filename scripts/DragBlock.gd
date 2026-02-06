@@ -5,8 +5,6 @@ extends Control
 @export var slot_size := 1
 
 # Set this in each block scene:
-#  - Move block scene -> "move_blocks"
-#  - If block scene   -> "if_blocks"
 @export var count_var_name: StringName = &"move_blocks"
 
 var dragging := false

@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://dx04rhfotepfv"]
+[gd_scene load_steps=12 format=3 uid="uid://dx04rhfotepfv"]
 
 [ext_resource type="Script" uid="uid://djfcbjwryd5s" path="res://scenes/menu.gd" id="1_mhnvy"]
 [ext_resource type="Script" uid="uid://ctx6525cie55n" path="res://scenes/menu_main_but_tut.gd" id="1_yqeox"]
@@ -8,6 +8,7 @@
 [ext_resource type="Theme" uid="uid://c4py26idpc8q6" path="res://scenes/menu_tut_button.tres" id="4_4ytvr"]
 [ext_resource type="Script" uid="uid://lt7e2bpngppq" path="res://scenes/menu_tut_but_t2.gd" id="5_g3eks"]
 [ext_resource type="Script" uid="uid://cauy7el312xyd" path="res://scenes/menu_tut_but_t3.gd" id="6_13sgg"]
+[ext_resource type="Script" uid="uid://dea2cpotjcvnw" path="res://scenes/menu_tut_but_t4.gd" id="6_i6lef"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yqeox"]
 bg_color = Color(0.12156863, 0.05882353, 0.06666667, 1)
@@ -87,6 +88,7 @@ theme_override_font_sizes/font_size = 64
 disabled = true
 text = "4. Final Test
 "
+script = ExtResource("6_i6lef")
 
 [node name="3" type="Button" parent="TutLayer"]
 layout_mode = 0

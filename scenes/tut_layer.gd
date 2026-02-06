@@ -8,9 +8,8 @@ func update_locks():
 	var buts = [$"1", $"2", $"3", $"4"]
 	
 	var r = LevelState.levels_done
-	if r > 4:
+	if r >= 4:
 		r = 3
-	
 	
 	for ii in range(r):
 		set_button_border_color(buts[ii], grn)

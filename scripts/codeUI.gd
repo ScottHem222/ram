@@ -9,6 +9,8 @@ func disable_buttons():
 	$Panel/SpawnMoveBlock.disabled = true
 	$Panel/SpawnTurnBlock.disabled = true
 	$Panel/SpawnWhileBlock.disabled = true
+	$Panel/SpawnAMoveBlock.disabled = true
+	$Panel/SpawnForBlock.disabled = true
 	$Panel/Run.disabled = true
 	
 func enable_buttons():
@@ -16,6 +18,8 @@ func enable_buttons():
 	$Panel/SpawnMoveBlock.disabled = false
 	$Panel/SpawnTurnBlock.disabled = false
 	$Panel/SpawnWhileBlock.disabled = false
+	$Panel/SpawnAMoveBlock.disabled = false
+	$Panel/SpawnForBlock.disabled = false
 	$Panel/Run.disabled = false
 
 
@@ -36,12 +40,18 @@ func setup_block_buttons():
 		
 		$Panel/SpawnWhileBlock.visible = false
 		$Panel/SpawnMoveBlock.visible = true
+		
+		$Panel/SpawnAMoveBlock.visible = false
+		$Panel/SpawnForBlock.visible = false
 	elif LevelState.curr_lvl == 2:
 		$Panel/SpawnIfBlock.visible = true
 		$Panel/SpawnTurnBlock.visible = false
 		
 		$Panel/SpawnWhileBlock.visible = false
 		$Panel/SpawnMoveBlock.visible = true
+		
+		$Panel/SpawnAMoveBlock.visible = false
+		$Panel/SpawnForBlock.visible = false
 	elif LevelState.curr_lvl == 3:
 		$Panel/SpawnIfBlock.visible = true
 		$Panel/SpawnTurnBlock.visible = false
@@ -49,6 +59,17 @@ func setup_block_buttons():
 		$Panel/SpawnWhileBlock.visible = true
 		$Panel/SpawnMoveBlock.visible = false
 		
+		$Panel/SpawnAMoveBlock.visible = false
+		$Panel/SpawnForBlock.visible = false
+	elif LevelState.curr_lvl == 4:
+		$Panel/SpawnIfBlock.visible = false
+		$Panel/SpawnTurnBlock.visible = false
+		
+		$Panel/SpawnWhileBlock.visible = false
+		$Panel/SpawnMoveBlock.visible = false
+		
+		$Panel/SpawnAMoveBlock.visible = true
+		$Panel/SpawnForBlock.visible = true	
 		
 	
 func _ready() -> void:

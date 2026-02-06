@@ -6,12 +6,18 @@ var move_blocks: int
 var turn_blocks: int
 var if_blocks: int
 var while_blocks: int
+var for_blocks: int
+var a_move_blocks: int
+
+var gold_in_lvl: int
 
 signal block_count_changed
 var error_ui_scene := preload("res://scenes/ErrorUI.tscn")
+var fail_ui: Node = null
 var win_ui_scene := preload("res://scenes/VictoryUI.tscn")
 var t1_scene := preload("res://scenes/t_1.tscn")
 var t3_scene := preload("res://scenes/t_3.tscn")
+var t4_scene := preload("res://scenes/t_4.tscn")
 var robot: Node = null
 var t1: Node = null
 
@@ -28,6 +34,8 @@ func _ready():
 		turn_blocks = 5
 		if_blocks = 1
 		while_blocks = 0
+		for_blocks = 0
+		a_move_blocks = 0
 		t1 = t1_scene.instantiate()
 		add_child(t1)
 		robot = t1.get_node("Robot")
@@ -37,6 +45,8 @@ func _ready():
 		turn_blocks = 0
 		if_blocks = 1
 		while_blocks = 0
+		for_blocks = 0
+		a_move_blocks = 0
 		t1 = t1_scene.instantiate()
 		add_child(t1)
 		robot = t1.get_node("Robot")
@@ -46,7 +56,23 @@ func _ready():
 		turn_blocks = 0
 		if_blocks = 1
 		while_blocks = 1
+		for_blocks = 0
+		a_move_blocks = 0
 		t1 = t3_scene.instantiate()
+		add_child(t1)
+		robot = t1.get_node("Robot")
+		
+	if level == 4:
+		move_blocks = 0
+		turn_blocks = 0
+		if_blocks = 0
+		while_blocks = 0
+		for_blocks = 1
+		a_move_blocks = 1
+		
+		gold_in_lvl = 9
+		
+		t1 = t4_scene.instantiate()
 		add_child(t1)
 		robot = t1.get_node("Robot")
 		
@@ -57,20 +83,24 @@ func _ready():
 	robot.onr.connect(fail_onr)
 	robot.blocked.connect(fail_blocked)
 	robot.gold_reached.connect(level_won)
-
-func fail_onr():
-	var error_ui = error_ui_scene.instantiate()
-	$FailLayer.add_child(error_ui)
-	error_ui.err_type = 1
-	error_ui.update()
-	error_ui.error_reset.connect(reset_on_fail)
 	
-func fail_blocked():
-	var error_ui = error_ui_scene.instantiate()
-	$FailLayer.add_child(error_ui)
-	error_ui.err_type = 2
-	error_ui.update()
-	error_ui.error_reset.connect(reset_on_fail)
+func _show_fail(err: int) -> void:
+	# prevent duplicates
+	if fail_ui != null and is_instance_valid(fail_ui):
+		return
+
+	fail_ui = error_ui_scene.instantiate()
+	$FailLayer.add_child(fail_ui)
+
+	fail_ui.err_type = err
+	fail_ui.update()
+	fail_ui.error_reset.connect(reset_on_fail)
+
+func fail_onr() -> void:
+	_show_fail(1)
+
+func fail_blocked() -> void:
+	_show_fail(2)
 
 func level_won():
 	var win_ui = win_ui_scene.instantiate()
@@ -78,7 +108,11 @@ func level_won():
 	win_ui.rtm.connect(return_to_menu)
 	
 	
-func reset_on_fail():
+func reset_on_fail() -> void:
+	if fail_ui != null and is_instance_valid(fail_ui):
+		fail_ui.queue_free()
+	fail_ui = null
+
 	robot.reset_pos()
 	game_UI.enable_buttons()
 	
