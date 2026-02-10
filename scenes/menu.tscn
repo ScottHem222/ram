@@ -1,7 +1,8 @@
-[gd_scene load_steps=12 format=3 uid="uid://dx04rhfotepfv"]
+[gd_scene load_steps=13 format=4 uid="uid://dx04rhfotepfv"]
 
 [ext_resource type="Script" uid="uid://djfcbjwryd5s" path="res://scenes/menu.gd" id="1_mhnvy"]
 [ext_resource type="Script" uid="uid://ctx6525cie55n" path="res://scenes/menu_main_but_tut.gd" id="1_yqeox"]
+[ext_resource type="TileSet" uid="uid://dk1ojtjrx14v7" path="res://scenes/maintiles.tres" id="2_70i5f"]
 [ext_resource type="Script" uid="uid://dwxlnvpsdh7q" path="res://scenes/menu_tut_but_main.gd" id="2_vjb58"]
 [ext_resource type="Script" uid="uid://cpdo6ujkbx3s4" path="res://scenes/menu_tut_but_t1.gd" id="3_con2f"]
 [ext_resource type="Script" uid="uid://l6pk4ptgrm4k" path="res://scenes/tut_layer.gd" id="3_v86rl"]
@@ -23,6 +24,11 @@ script = ExtResource("1_mhnvy")
 offset_right = 2311.0
 offset_bottom = 1320.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_yqeox")
+
+[node name="TileMapLayer" type="TileMapLayer" parent="MainLayer"]
+visible = false
+tile_map_data = PackedByteArray("AAAEAAsAAQAEAAEAAAAFAAYAAQABAAEAAAAJAAoAAQAEAAEAAAAJABEAAQAEAAEAAAAFABEAAQAEAAEAAAAYAAkAAQAEAAEAAAAcAA4AAQAEAAEAAAAVABEAAQAEAAEAAAAQABIAAQAEAAEAAAARAAIAAQAEAAEAAAAPAAcAAQAEAAEAAAANAAMAAQAEAAEAAAANAAYAAQAEAAEAAAAgAAUAAQAEAAEAAAAgAAoAAQAEAAEAAAAgABIAAQAEAAEAAAAYABAAAQAEAAEAAAAUAA4AAQAEAAEAAAAGAAsAAQAAAAEAAAAEAA4AAQAAAAEAAAACAAYAAQAAAAEAAAACABEAAQAAAAEAAAASAAgAAQAAAAEAAAASAAQAAQAAAAEAAAADAAAAAQAAAAEAAAAFAAIAAQAAAAEAAAAeAAYAAQAAAAEAAAAeABAAAQAAAAEAAAAdAAMAAQABAAEAAAAcAAIAAQABAAEAAAAbAAIAAQABAAEAAAAaAAIAAQABAAEAAAAZAAIAAQABAAEAAAAZAAMAAQABAAEAAAAZAAQAAQABAAEAAAAaAAQAAQABAAEAAAAbAAQAAQABAAEAAAAcAAQAAQABAAEAAAAdAAQAAQABAAEAAAAeAAQAAQABAAEAAAAfAAMAAQABAAEAAAAJAAgAAQABAAEAAAAHAAwAAQABAAEAAAD//w0AAQABAAEAAAAFAAcAAQABAAEAAAAFAAgAAQABAAEAAAAFAAkAAQABAAEAAAAFAAoAAQABAAEAAAA=")
+tile_set = ExtResource("2_70i5f")
 
 [node name="Tutorials" type="Button" parent="MainLayer"]
 layout_mode = 0

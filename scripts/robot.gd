@@ -15,6 +15,7 @@ var auto_move: bool = false
 var turn: bool = false
 var direction: Vector2 = Vector2.RIGHT
 var auto_stop: bool = false
+var mine_gold: bool = false
 
 @export var gold_cell: Vector2i = Vector2i.ZERO
 @export var gold_turn_bias: float = 0.75
@@ -207,13 +208,19 @@ func _physics_process(delta: float) -> void:
 
 func check_done_cond(in_while) -> void:
 	var t := check_tile_ahead()
-	if t == "gold":
-		gold_reached.emit()
-	elif t == "stone" or t.begins_with("wall"):
-		blocked.emit()
-	else:
-		if not in_while:
-			onr.emit()
+	
+	if LevelState.curr_lvl < 4:
+		if t == "gold":
+			gold_reached.emit()
+		elif t == "stone" or t.begins_with("wall"):
+			blocked.emit()
+		else:
+			if not in_while:
+				onr.emit()
+	elif LevelState.curr_lvl == 4:
+		
+		if LevelState.lvl4_gold == 0:
+			gold_reached.emit()
 
 
 func move_step(distance: float) -> void:
@@ -228,6 +235,10 @@ func move_step(distance: float) -> void:
 	_turn_attempts = 0
 
 	await step_finished
+	
+func move_stop() -> void:
+	_step_active = false
+	_step_remaining = 0.0
 
 
 func reset_pos() -> void:

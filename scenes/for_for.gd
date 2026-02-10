@@ -1,14 +1,8 @@
 extends LineEdit
 
 @export var allowed_phrases: Array[String] = [
-	"Move()",
-	"move()",
-	"turn()",
-	"Turn()",
-	"Mine()",
-	"mine()",
-	"stop()",
-	"Stop()"
+	"gold",
+	"Gold"
 ]
 
 @onready var suggest: PopupMenu = $Suggest

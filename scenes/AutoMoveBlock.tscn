@@ -2,13 +2,13 @@
 
 [ext_resource type="PackedScene" uid="uid://bg358417trm0u" path="res://scenes/DragBlock.tscn" id="1_ao0ag"]
 
-[node name="AutoMoveBlock" instance=ExtResource("1_ao0ag")]
+[node name="AutoMoveBlock" groups=["a_move_block"] instance=ExtResource("1_ao0ag")]
 count_var_name = &"a_move_blocks"
 
 [node name="ColorRect" parent="." index="0"]
 color = Color(1.0588765e-05, 0.6798527, 0.9048336, 1)
 
-[node name="Label" type="Label" parent="." index="2" groups=["move_block"]]
+[node name="Label" type="Label" parent="." index="2" groups=["a_move_block"]]
 layout_mode = 0
 offset_left = 147.0
 offset_top = 33.0

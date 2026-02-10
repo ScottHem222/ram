@@ -9,8 +9,6 @@ var while_blocks: int
 var for_blocks: int
 var a_move_blocks: int
 
-var gold_in_lvl: int
-
 signal block_count_changed
 var error_ui_scene := preload("res://scenes/ErrorUI.tscn")
 var fail_ui: Node = null
@@ -69,8 +67,6 @@ func _ready():
 		while_blocks = 0
 		for_blocks = 1
 		a_move_blocks = 1
-		
-		gold_in_lvl = 9
 		
 		t1 = t4_scene.instantiate()
 		add_child(t1)
