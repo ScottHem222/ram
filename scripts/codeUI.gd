@@ -3,6 +3,7 @@ extends Control
 @onready var block_container = $Panel/BlockBoundBox
 @onready var tour_1 = $CanvasLayer/Tour1
 @onready var tour_2 = $CanvasLayer/Tour2
+@onready var tour_3 = $CanvasLayer/Tour3
 
 func disable_buttons():
 	$Panel/SpawnIfBlock.disabled = true
@@ -32,6 +33,15 @@ func update_status(new, col):
 		new_col = Color(0.106, 0.8, 0.0, 1.0)
 		
 	$Panel/Status.set("theme_override_colors/font_color",new_col)
+	
+func update_goal_msg():
+	
+	if LevelState.curr_lvl < 4:
+		$goal.text = "Current Goal:\nReach Gold"
+	elif LevelState.curr_lvl == 4:
+		$goal.text = "Current Goal:\nMine All Gold"
+	
+	
 	
 func setup_block_buttons():
 	if LevelState.curr_lvl == 1:
@@ -75,7 +85,12 @@ func setup_block_buttons():
 func _ready() -> void:
 	tour_1.visible = false
 	tour_2.visible = false
+	tour_3.visible = false
+	update_goal_msg()
 	
 func show_tour() -> void:
 	tour_1.visible = true
+	
+func show_tour_l2() -> void:
+	tour_3.visible = true
 		

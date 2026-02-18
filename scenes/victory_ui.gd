@@ -13,6 +13,8 @@ func _ready() -> void:
 		$msg.text = "You now know how to call robot functions conditionally with an IF block"
 	elif LevelState.curr_lvl == 3:
 		$msg.text = "You now know how to use a WHILE loop to repeat things until its condition is met"
+	elif LevelState.curr_lvl == 4:
+		$msg.text = "You know how how to use a FOR loop to repate things a specific amount of times"
 		
 	
 func reset_pressed():

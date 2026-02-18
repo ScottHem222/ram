@@ -18,6 +18,30 @@ func _ready() -> void:
 
 	_last_valid = ""
 
+func _gui_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and not event.echo:
+		var k := event as InputEventKey
+
+		# Tab picks the first suggestion (if any)
+		if k.keycode == KEY_TAB:
+			if suggest.visible and suggest.item_count > 0:
+				_accept_first_suggestion()
+				accept_event()
+				return
+
+		# Enter picks the first suggestion if popup is open
+		# (otherwise LineEdit's normal submit still happens)
+		if (k.keycode == KEY_ENTER or k.keycode == KEY_KP_ENTER):
+			if suggest.visible and suggest.item_count > 0:
+				_accept_first_suggestion()
+				accept_event()
+				return
+
+func _accept_first_suggestion() -> void:
+	text = suggest.get_item_text(0)
+	caret_column = text.length()
+	suggest.hide()
+	release_focus() # optional: commit immediately like submit
 
 func _on_text_changed(new_text: String) -> void:
 	var q := new_text.strip_edges()
@@ -54,20 +78,17 @@ func _on_text_changed(new_text: String) -> void:
 	else:
 		suggest.hide()
 
-
 func _on_suggest_pressed(id: int) -> void:
 	text = suggest.get_item_text(id)
 	caret_column = text.length()
 	suggest.hide()
-
+	release_focus()
 
 func _on_text_submitted(submitted: String) -> void:
 	var s := submitted.strip_edges()
 
 	# Only accept exact allowed phrases on Enter
 	if allowed_phrases.has(s):
-		# valid command
 		release_focus()
 	else:
-		# reject
 		text = ""

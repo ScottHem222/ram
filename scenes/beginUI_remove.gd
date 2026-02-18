@@ -9,4 +9,6 @@ func _ready():
 func _on_pressed():
 	if LevelState.curr_lvl == 1:
 		level_ui.show_tour()
+	elif LevelState.curr_lvl == 2:
+		level_ui.show_tour_l2()
 	target_node.queue_free()

@@ -23,20 +23,18 @@ var t2 := [
 var t3 := [
 	"> Ok, lets try finding the gold again in a much larger mine.",
 	"> We dont know exactly how far away it is this time, so try looping the movement",
+	"> The robot has a flag called NotAtGoal which stays true until the goal is reached which could work for our loop.",
 	"> Make sure to still check for obstacles",
 	">",
-	"(Key Programming Concept/s: WHILE Loops)",
-	"> TIP: If a loops condition is True, it will loop forever"
+	"(Key Programming Concept/s: WHILE Loops)"
 ]
 
 var t4 := [
-	"> Now all the work we have done to move the robot correctly is contained within the Move() block.",
-	"> Just call that to move the robot like before.",
-	"> This time we want to mine each of the gold ore then stop immeditely",
-	"> But we dont know how many ores there are to mine!",
+	"> All the code for moving we made before is now contained in an Auto Move Block!",
+	"> Now we are in a much larger mine, and we need to mine every piece of gold.",
+	"> Find a way to run the robots mining function for every gold ore it locates.",
 	">",
-	"(Key Programming Concept/s: FOR Loops)",
-	"> TIP: 'Gold' is contained within the 'Mine'"
+	"(Key Programming Concept/s: FOR Loops)"
 ]
 
 @export var line_delay := 2.5 # seconds between lines

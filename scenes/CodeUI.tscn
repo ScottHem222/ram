@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://dn0ldn8kemnnw"]
+[gd_scene load_steps=28 format=3 uid="uid://dn0ldn8kemnnw"]
 
 [ext_resource type="Script" uid="uid://bfbx155fa2i08" path="res://scripts/codeUI.gd" id="1_8gbba"]
 [ext_resource type="Script" uid="uid://dup8paa3nget" path="res://scenes/tour1_next.gd" id="2_1ais2"]
@@ -13,6 +13,7 @@
 [ext_resource type="TileSet" uid="uid://dk1ojtjrx14v7" path="res://scenes/maintiles.tres" id="9_ap2rb"]
 [ext_resource type="PackedScene" uid="uid://ckhqmrr54teya" path="res://scenes/AutoMoveBlock.tscn" id="9_n0p60"]
 [ext_resource type="PackedScene" uid="uid://vb74ufwchgjc" path="res://scenes/ForBlock.tscn" id="10_t27nk"]
+[ext_resource type="Script" uid="uid://8x1iwe3eogq5" path="res://scenes/tour_3_next.gd" id="11_d5hkw"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tipki"]
 bg_color = Color(0.122064196, 0.05740781, 0.067508586, 1)
@@ -42,11 +43,11 @@ bg_color = Color(1, 0.28627452, 0.5647059, 0.20784314)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a7ae3"]
 bg_color = Color(0, 0, 0, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t27nk"]
-bg_color = Color(0.04303915, 0.043039158, 0.043039113, 1)
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n0p60"]
 bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t27nk"]
+bg_color = Color(0.04303915, 0.043039158, 0.043039113, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d5hkw"]
 bg_color = Color(0.541022, 0.574853, 0.8508119, 1)
@@ -151,6 +152,19 @@ text = "
 "
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="menu" type="Button" parent="Panel"]
+layout_mode = 0
+offset_left = 1136.0
+offset_top = 42.0
+offset_right = 1253.0
+offset_bottom = 134.0
+theme = SubResource("Theme_1ais2")
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_6es81")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_1ais2")
+theme_override_styles/hover = SubResource("StyleBoxFlat_ap2rb")
+text = "Menu"
 
 [node name="Run" type="Button" parent="Panel"]
 layout_mode = 0
@@ -352,6 +366,27 @@ offset_right = 2310.0
 offset_bottom = 1297.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_aa5j4")
 
+[node name="Panel6" type="Panel" parent="."]
+layout_mode = 0
+offset_left = 1563.0
+offset_top = 19.0
+offset_right = 1876.0
+offset_bottom = 154.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_p1yb1")
+
+[node name="goal" type="Label" parent="."]
+layout_mode = 0
+offset_left = 1584.0
+offset_top = 16.0
+offset_right = 1858.0
+offset_bottom = 156.0
+theme_override_colors/font_color = Color(0.9490196, 0.8117647, 0.14901961, 1)
+theme_override_font_sizes/font_size = 32
+text = "CURRENT GOAL:
+LOL"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="Panel5" type="Panel" parent="."]
 layout_mode = 0
 offset_left = 1919.0
@@ -375,6 +410,43 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Tour3" type="Panel" parent="CanvasLayer"]
+z_index = 1
+offset_left = 1082.0
+offset_top = -106.0
+offset_right = 2305.0
+offset_bottom = 1437.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_dnnvh")
+
+[node name="Tour3_msg" type="Label" parent="CanvasLayer/Tour3"]
+layout_mode = 0
+offset_left = 232.0
+offset_top = 529.0
+offset_right = 1034.0
+offset_bottom = 889.0
+theme_override_colors/font_color = Color(0.2901961, 0.84313726, 0.28235295, 1)
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_a7ae3")
+text = "The box in the top right shows all the data the robots scanner picks up. The values may be useful for use in your progeramming blocks."
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Tour3_next" type="Button" parent="CanvasLayer/Tour3"]
+layout_mode = 0
+offset_left = 534.0
+offset_top = 935.0
+offset_right = 726.0
+offset_bottom = 1002.0
+text = "Next"
+script = ExtResource("11_d5hkw")
+
+[node name="Panel" type="Panel" parent="CanvasLayer/Tour3"]
+layout_mode = 0
+offset_left = -1158.0
+offset_right = 40.0
+offset_bottom = 1538.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_n0p60")
 
 [node name="Tour2" type="Panel" parent="CanvasLayer"]
 visible = false

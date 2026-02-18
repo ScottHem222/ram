@@ -13,11 +13,6 @@ tile_set = ExtResource("1_iqg7r")
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="Robot" parent="." instance=ExtResource("2_8nxhb")]
-speed = 200.0
-turn_degrees = 90.0
 tilemap_path = NodePath("../TileMapLayer")
-gold_cell = Vector2i(0, 0)
-gold_turn_bias = 0.75
-tooltip_panel_path = NodePath("")
-tooltip_label_path = NodePath("")
-scanner_cell = Vector2i(22, 0)
+tunnel_source_id = 1
+gold_cell = Vector2i(12, 2)
