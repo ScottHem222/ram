@@ -116,7 +116,6 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="SpawnIfBlock" type="Button" parent="Panel" node_paths=PackedStringArray("block_bound_box")]
-visible = false
 layout_mode = 0
 offset_left = 247.0
 offset_top = 1187.0
@@ -152,19 +151,6 @@ text = "
 "
 horizontal_alignment = 1
 vertical_alignment = 1
-
-[node name="menu" type="Button" parent="Panel"]
-layout_mode = 0
-offset_left = 1136.0
-offset_top = 42.0
-offset_right = 1253.0
-offset_bottom = 134.0
-theme = SubResource("Theme_1ais2")
-theme_override_font_sizes/font_size = 32
-theme_override_styles/normal = SubResource("StyleBoxFlat_6es81")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_1ais2")
-theme_override_styles/hover = SubResource("StyleBoxFlat_ap2rb")
-text = "Menu"
 
 [node name="Run" type="Button" parent="Panel"]
 layout_mode = 0
@@ -269,9 +255,9 @@ vertical_alignment = 1
 
 [node name="SpawnAMoveBlock" type="Button" parent="Panel" node_paths=PackedStringArray("block_bound_box")]
 layout_mode = 0
-offset_left = 247.0
+offset_left = 459.0
 offset_top = 1187.0
-offset_right = 364.0
+offset_right = 576.0
 offset_bottom = 1279.0
 theme = SubResource("Theme_1ais2")
 theme_override_styles/normal = SubResource("StyleBoxFlat_6es81")
@@ -374,6 +360,32 @@ offset_right = 1876.0
 offset_bottom = 154.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_p1yb1")
 
+[node name="reset" type="Button" parent="."]
+layout_mode = 0
+offset_left = 1318.0
+offset_top = 37.0
+offset_right = 1492.0
+offset_bottom = 129.0
+theme = SubResource("Theme_1ais2")
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_6es81")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_1ais2")
+theme_override_styles/hover = SubResource("StyleBoxFlat_ap2rb")
+text = "Reset Level"
+
+[node name="menu" type="Button" parent="."]
+layout_mode = 0
+offset_left = 1163.0
+offset_top = 39.0
+offset_right = 1280.0
+offset_bottom = 131.0
+theme = SubResource("Theme_1ais2")
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_6es81")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_1ais2")
+theme_override_styles/hover = SubResource("StyleBoxFlat_ap2rb")
+text = "Menu"
+
 [node name="goal" type="Label" parent="."]
 layout_mode = 0
 offset_left = 1584.0
@@ -412,6 +424,7 @@ vertical_alignment = 1
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="Tour3" type="Panel" parent="CanvasLayer"]
+visible = false
 z_index = 1
 offset_left = 1082.0
 offset_top = -106.0

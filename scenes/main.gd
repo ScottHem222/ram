@@ -63,7 +63,7 @@ func _ready():
 	if level == 4:
 		move_blocks = 0
 		turn_blocks = 0
-		if_blocks = 0
+		if_blocks = 1
 		while_blocks = 0
 		for_blocks = 1
 		a_move_blocks = 1
@@ -72,6 +72,8 @@ func _ready():
 		add_child(t1)
 		robot = t1.get_node("Robot")
 		
+		LevelState.lvl4_gold = 11
+		
 	emit_signal("block_count_changed")
 	
 	$BeginLayer.visible = true
@@ -79,6 +81,8 @@ func _ready():
 	robot.onr.connect(fail_onr)
 	robot.blocked.connect(fail_blocked)
 	robot.gold_reached.connect(level_won)
+	game_UI.rtm_ui.connect(return_to_menu)
+	game_UI.reset_lvl.connect(robot.reset_pos)
 	
 func _show_fail(err: int) -> void:
 	# prevent duplicates
@@ -111,6 +115,7 @@ func reset_on_fail() -> void:
 
 	robot.reset_pos()
 	game_UI.enable_buttons()
+	
 	
 func return_to_menu():
 	get_tree().change_scene_to_file("res://scenes/menu.tscn")

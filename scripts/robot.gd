@@ -20,11 +20,12 @@ extends CharacterBody2D
 @export var gold_cell: Vector2i = Vector2i.ZERO
 @export var gold_turn_bias: float = 0.75
 
-# Tile probing (used by ahead/left/right checks)
-@export var probe_dist: float = 0.45 # slightly less than half a tile
-
 var _stuck_frames: int = 0
-const STUCK_LIMIT := 8   # frames before we consider robot stuck
+const STUCK_LIMIT := 8
+
+# debug dot for "ahead" check (grid-based, same as scanner)
+@export var show_probe_debug: bool = true
+var debug_probe_point: Vector2 = Vector2.ZERO
 
 # -------------------------
 # SIGNALS / STATE
@@ -32,12 +33,11 @@ const STUCK_LIMIT := 8   # frames before we consider robot stuck
 signal onr()
 signal blocked()
 signal gold_reached()
-
 signal step_finished
 
 var auto_move: bool = false
-var turn: bool = false          # "if obstacle then turn" rule from blocks
-var mine_gold: bool = false     # set true by your for-block logic
+var turn: bool = false
+var mine_gold: bool = false
 
 var direction: Vector2 = Vector2.RIGHT
 
@@ -49,8 +49,8 @@ var _step_infinite: bool = false
 
 # turning while blocked
 var _just_turned: bool = false
-var _turned_dir_sign: int = 0   # -1 left, +1 right
-var _turn_attempts: int = 0     # try up to 2 directions when blocked
+var _turned_dir_sign: int = 0
+var _turn_attempts: int = 0
 var _turned_this_frame: bool = false
 
 # mining
@@ -80,7 +80,15 @@ func _ready() -> void:
 	hover_area.mouse_entered.connect(_on_robot_mouse_entered)
 	hover_area.mouse_exited.connect(_on_robot_mouse_exited)
 	tooltip_panel.visible = false
-	
+
+	# runtime tunnel tile template (grabs whatever tile the robot starts on)
+	# (useful if your tunnel source id isn't 0 in a given level)
+	var start_cell := _cell_under_robot()
+	var sid := tilemap.get_cell_source_id(start_cell)
+	if sid != -1:
+		tunnel_source_id = sid
+		tunnel_atlas_coords = tilemap.get_cell_atlas_coords(start_cell)
+		tunnel_alt = tilemap.get_cell_alternative_tile(start_cell)
 
 
 func _process(_delta: float) -> void:
@@ -101,9 +109,40 @@ func _physics_process(delta: float) -> void:
 
 
 # -------------------------
+# DEBUG DRAW
+# -------------------------
+func _draw() -> void:
+	if show_probe_debug and debug_probe_point != Vector2.ZERO:
+		draw_circle(to_local(debug_probe_point), 6.0, Color.RED)
+
+
+func _update_debug_ahead_point(ahead_cell: Vector2i) -> void:
+	if not show_probe_debug or tilemap == null:
+		return
+
+	# TileMapLayer map_to_local gives local pos of the cell (usually top-left).
+	# Add half-tile to show center.
+	var local := tilemap.map_to_local(ahead_cell) + Vector2(tile_size * 0.5, tile_size * 0.5)
+	debug_probe_point = tilemap.to_global(local)
+	queue_redraw()
+
+
+# -------------------------
 # AUTO MOVE
 # -------------------------
 func _auto_move_tick(_delta: float) -> void:
+	# level 4: stop + mine when gold is 1 tile ahead, then resume
+	if LevelState.curr_lvl == 4 and mine_gold and not _mining:
+		var cell := _cell_under_robot()
+		var ahead_cell := _cell_ahead_from(cell)
+		_update_debug_ahead_point(ahead_cell)
+
+		if _tile_type_at(ahead_cell) == "gold":
+			velocity = Vector2.ZERO
+			move_and_slide()
+			await _mine_tick()
+			return
+
 	if turn and ray.is_colliding():
 		_turn_random()
 
@@ -162,24 +201,27 @@ func _step_tick(delta: float) -> void:
 	move_and_slide()
 	update_scanner_tile()
 
-	# early stop behavior
-	# - normal levels: reaching gold ends the run
-	# - level 4 mining: gold ahead should stop so we can mine it
+	# ---- GRID-BASED tile checks (same as scanner) ----
+	var cell := _cell_under_robot()
+	var ahead_cell := _cell_ahead_from(cell)
+	_update_debug_ahead_point(ahead_cell)
+
+	var here_type := _tile_type_at(cell)
+	var ahead_type := _tile_type_at(ahead_cell)
+
+	# early stop behavior:
+	# - level 4 mining: stop when GOLD is ahead (so you mine it)
+	# - other levels: stop when GOLD is here OR ahead (reach gold)
 	if LevelState.curr_lvl == 4 and mine_gold:
-		if _is_gold_ahead_grid():
-			_step_remaining = 0.0
-			await _mine_tick() # mine the gold we stopped in front of
-			_finish_step(true)
+		if ahead_type == "gold":
+			# stop in front of gold, mine it, then keep going
+			velocity = Vector2.ZERO
+			move_and_slide()
+			await _mine_tick() 
+			_reset_turn_block_state()
+			_stuck_frames = 0
 			return
 	else:
-		# original reach-gold behavior
-		var cell: Vector2i = tilemap.local_to_map(tilemap.to_local(global_position))
-		var step := Vector2i(int(sign(_step_dir.x)), int(sign(_step_dir.y)))
-		var ahead_cell := cell + step
-
-		var ahead_type := _tile_type_at(ahead_cell)
-		var here_type := _tile_type_at(cell)
-
 		if here_type == "gold" or ahead_type == "gold":
 			_step_remaining = 0.0
 			_finish_step(true)
@@ -203,15 +245,14 @@ func _step_tick(delta: float) -> void:
 		_stuck_frames += 1
 
 	# If obstacle ahead, handle turn/stop ONCE per frame
-	if _is_obstacle_ahead():
+	if _is_obstacle_type(ahead_type) or _hit_ahead():
 		_handle_turn_if_blocked()
 		if _turned_this_frame:
 			_stuck_frames = 0
 			return
 
-	# ---- STUCK WATCHDOG (only if we did NOT turn this frame) ----
+	# ---- STUCK WATCHDOG ----
 	if _stuck_frames >= STUCK_LIMIT:
-		print("Robot stuck → forcing turn once")
 		turn_left()
 		_turned_this_frame = true
 		_stuck_frames = 0
@@ -223,7 +264,6 @@ func _step_tick(delta: float) -> void:
 		_finish_step(true)
 		return
 
-	# If infinite, only finish when something forces remaining to 0
 	if _step_infinite and _step_remaining <= 0.0:
 		_finish_step(true)
 		return
@@ -236,39 +276,21 @@ func _finish_step(in_while: bool) -> void:
 	check_done_cond(in_while)
 
 
-func _is_obstacle_ahead() -> bool:
-	# collision OR obstacle tile counts as "blocked"
-	if _hit_ahead():
-		return true
-	var t := check_tile_ahead()
-	return t == "" or t == "stone" or t.begins_with("wall")
-	
-
-func _is_gold_ahead_grid() -> bool:
-	var cell: Vector2i = tilemap.local_to_map(tilemap.to_local(global_position))
-	var step := Vector2i(int(sign(_step_dir.x)), int(sign(_step_dir.y)))
-	var ahead_cell := cell + step
-	return _tile_type_at(ahead_cell) == "gold"
-
-
 func _handle_turn_if_blocked() -> void:
 	if not turn:
 		_step_remaining = 0.0
 		return
 
-	# try up to 2 directions when stuck (prevents corners lock)
 	if not _just_turned:
 		_just_turned = true
 		_turn_attempts = 1
 
-		@warning_ignore("shadowed_global_identifier")
-		var sign := _choose_turn_sign()
-		_apply_turn_sign(sign)
-		_turned_dir_sign = sign
+		var tsign := _choose_turn_sign()
+		_apply_turn_sign(tsign)
+		_turned_dir_sign = tsign
 		_turned_this_frame = true
 		return
 
-	# already turned once this block; try the opposite once
 	if _turn_attempts < 2:
 		_turn_attempts += 1
 		var opposite := -_turned_dir_sign
@@ -280,7 +302,6 @@ func _handle_turn_if_blocked() -> void:
 		_turned_this_frame = true
 		return
 
-	# tried both directions, give up this step
 	_step_remaining = 0.0
 
 
@@ -293,17 +314,15 @@ func _choose_turn_sign() -> int:
 	return 1 if randi() % 2 == 0 else -1
 
 
-@warning_ignore("shadowed_global_identifier")
-func _apply_turn_sign(sign: int) -> void:
-	direction = direction.rotated(sign * deg_to_rad(turn_degrees))
+func _apply_turn_sign(tsign: int) -> void:
+	direction = direction.rotated(tsign * deg_to_rad(turn_degrees))
 	_set_step_dir_from_direction()
 	_apply_direction_visuals()
 
 
 func _turn_random() -> void:
-	@warning_ignore("shadowed_global_identifier")
-	var sign := 1 if randi() % 2 == 0 else -1
-	_apply_turn_sign(sign)
+	var tsign := 1 if randi() % 2 == 0 else -1
+	_apply_turn_sign(tsign)
 
 
 func turn_left() -> void:
@@ -321,25 +340,28 @@ func _reset_turn_block_state() -> void:
 
 
 # -------------------------
-# MINING (ahead/left/right)
+# MINING (ahead only, grid)
 # -------------------------
 func _mine_tick() -> void:
 	if not mine_gold or _mining:
 		return
 
-	var target := _adjacent_gold_cell()
-	if target.x > 100000:
+	var cell := _cell_under_robot()
+	var ahead_cell := _cell_ahead_from(cell)
+
+	if _tile_type_at(ahead_cell) != "gold":
 		return
 
 	_mining = true
 	velocity = Vector2.ZERO
 
 	await get_tree().create_timer(mine_delay).timeout
-
-	_set_cell_to_tunnel(target)
+	_set_cell_to_tunnel(ahead_cell)
 
 	if LevelState.curr_lvl == 4 and LevelState.lvl4_gold > 0:
 		LevelState.lvl4_gold -= 1
+		check_done_cond(false)
+
 
 	_mining = false
 
@@ -348,28 +370,19 @@ func _set_cell_to_tunnel(cell: Vector2i) -> void:
 	tilemap.set_cell(cell, tunnel_source_id, tunnel_atlas_coords, tunnel_alt)
 
 
-func _adjacent_gold_cell() -> Vector2i:
-	var cell: Vector2i = tilemap.local_to_map(tilemap.to_local(global_position))
-	var step := Vector2i(int(sign(_step_dir.x)), int(sign(_step_dir.y)))
-	var ahead_cell := cell + step
-
-	if _tile_type_at(ahead_cell) == "gold":
-		return ahead_cell
-
-	return Vector2i(999999, 999999)
-
-
-################
-#Tile checking
-#################
+# -------------------------
+# TILE (grid-based, same as scanner)
+# -------------------------
 func _cell_under_robot() -> Vector2i:
 	return tilemap.local_to_map(tilemap.to_local(global_position))
 
 
-func _cell_in_direction(dir: Vector2) -> Vector2i:
-	# Probe from robot center slightly into the next tile
-	var probe_point := global_position + dir.normalized() * (tile_size * probe_dist)
-	return tilemap.local_to_map(tilemap.to_local(probe_point))
+func _step_vec() -> Vector2i:
+	return _grid_step_from_dir(_step_dir)
+
+
+func _cell_ahead_from(base: Vector2i) -> Vector2i:
+	return base + _step_vec()
 
 
 func _tile_type_at(cell: Vector2i) -> String:
@@ -381,22 +394,31 @@ func _tile_type_at(cell: Vector2i) -> String:
 	return ""
 
 
+func _is_obstacle_type(t: String) -> bool:
+	return t == "stone" or t.begins_with("wall")
+
+
+func check_tile_here() -> String:
+	return _tile_type_at(_cell_under_robot())
+
+
 func check_tile_ahead() -> String:
-	return _tile_type_at(_cell_in_direction(_step_dir))
+	var cell := _cell_under_robot()
+	return _tile_type_at(_cell_ahead_from(cell))
 
 
 func check_tile_left() -> String:
-	return _tile_type_at(_cell_in_direction(_step_dir.rotated(-PI / 2.0)))
+	var cell := _cell_under_robot()
+	var s := _step_vec()
+	var left_step := Vector2i(-s.y, s.x)
+	return _tile_type_at(cell + left_step)
 
 
 func check_tile_right() -> String:
-	return _tile_type_at(_cell_in_direction(_step_dir.rotated(PI / 2.0)))
-
-
-func _is_gold_here_or_ahead() -> bool:
-	var here := _tile_type_at(_cell_under_robot())
-	var ahead := check_tile_ahead()
-	return here == "gold" or ahead == "gold"
+	var cell := _cell_under_robot()
+	var s := _step_vec()
+	var right_step := Vector2i(s.y, -s.x)
+	return _tile_type_at(cell + right_step)
 
 
 func _hit_ahead() -> bool:
@@ -405,15 +427,6 @@ func _hit_ahead() -> bool:
 		if c.get_normal().dot(_step_dir) < -0.7:
 			return true
 	return false
-	
-func check_tile_here() -> String:
-	var cell: Vector2i = tilemap.local_to_map(tilemap.to_local(global_position))
-	var td: TileData = tilemap.get_cell_tile_data(cell)
-	if td == null:
-		return ""
-	if td.has_custom_data("type"):
-		return String(td.get_custom_data("type"))
-	return ""
 
 
 # -------------------------
@@ -432,16 +445,14 @@ func _apply_step_visuals() -> void:
 
 
 # -------------------------
-# SCANNER UI
+# SCANNER UI 
 # -------------------------
 func update_scanner_tile() -> void:
 	if scanner_tilemap == null or tilemap == null:
 		return
 
-	# scanner uses a simple grid step (one tile in facing direction)
-	var cell: Vector2i = tilemap.local_to_map(tilemap.to_local(global_position))
-	var step := Vector2i(int(sign(_step_dir.x)), int(sign(_step_dir.y)))
-	var ahead_cell := cell + step
+	var cell := _cell_under_robot()
+	var ahead_cell := _cell_ahead_from(cell)
 
 	var source_id: int = tilemap.get_cell_source_id(ahead_cell)
 	if source_id == -1:
@@ -468,25 +479,25 @@ func update_scanner_tile() -> void:
 
 
 # -------------------------
-# LEVEL END CONDITIONS
+# LEVEL END CONDITIONS 
 # -------------------------
 func check_done_cond(in_while: bool) -> void:
-	# Level 4 win condition is "all gold mined"
 	if LevelState.curr_lvl == 4:
 		if LevelState.lvl4_gold <= 0:
 			gold_reached.emit()
 		return
-	
-	var cell: Vector2i = tilemap.local_to_map(tilemap.to_local(global_position))
-	var step := Vector2i(int(sign(_step_dir.x)), int(sign(_step_dir.y)))
-	var ahead_cell := cell + step
-	
-	var here = _tile_type_at(ahead_cell)
 
-	if here == "gold":
+	var cell := _cell_under_robot()
+	var ahead_cell := _cell_ahead_from(cell)
+
+	var ahead := _tile_type_at(ahead_cell)
+	var here := _tile_type_at(cell)
+
+	if here == "gold" or ahead == "gold":
 		gold_reached.emit()
 		return
-	elif here == "stone" or here.begins_with("wall"):
+
+	if _is_obstacle_type(ahead):
 		blocked.emit()
 		return
 
@@ -523,7 +534,7 @@ func reset_pos() -> void:
 # GOLD-BIAS TURN
 # -------------------------
 func _choose_turn_toward_gold() -> int:
-	var my_cell: Vector2i = _cell_under_robot()
+	var my_cell := _cell_under_robot()
 	var to_gold: Vector2 = Vector2(gold_cell - my_cell)
 	if to_gold.length() < 0.001:
 		return -1 if randi() % 2 == 0 else 1
@@ -541,6 +552,18 @@ func _choose_turn_toward_gold() -> int:
 		return best
 
 	return -1 if randi() % 2 == 0 else 1
+
+# ----------------------
+# Fix for tile detection
+# ----------------------
+func _grid_step_from_dir(dir: Vector2) -> Vector2i:
+	var ax := absf(dir.x)
+	var ay := absf(dir.y)
+
+	if ax >= ay:
+		return Vector2i(int(sign(dir.x)), 0)
+	else:
+		return Vector2i(0, int(sign(dir.y)))
 
 
 # -------------------------

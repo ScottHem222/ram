@@ -8,12 +8,18 @@ func update_locks():
 	var buts = [$"1", $"2", $"3", $"4"]
 	
 	var r = LevelState.levels_done
+	
+	if r == 4:
+		set_button_border_color(buts[3], grn)
+		
 	if r >= 4:
 		r = 3
 	
 	for ii in range(r):
 		set_button_border_color(buts[ii], grn)
 		buts[ii+1].disabled = false
+		
+	
 		
 func set_button_border_color(btn: Button, color: Color) -> void:
 	var style := btn.get_theme_stylebox("normal").duplicate()

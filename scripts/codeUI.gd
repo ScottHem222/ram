@@ -5,6 +5,9 @@ extends Control
 @onready var tour_2 = $CanvasLayer/Tour2
 @onready var tour_3 = $CanvasLayer/Tour3
 
+signal rtm_ui
+signal reset_lvl
+
 func disable_buttons():
 	$Panel/SpawnIfBlock.disabled = true
 	$Panel/SpawnMoveBlock.disabled = true
@@ -72,7 +75,7 @@ func setup_block_buttons():
 		$Panel/SpawnAMoveBlock.visible = false
 		$Panel/SpawnForBlock.visible = false
 	elif LevelState.curr_lvl == 4:
-		$Panel/SpawnIfBlock.visible = false
+		$Panel/SpawnIfBlock.visible = true
 		$Panel/SpawnTurnBlock.visible = false
 		
 		$Panel/SpawnWhileBlock.visible = false
@@ -87,10 +90,20 @@ func _ready() -> void:
 	tour_2.visible = false
 	tour_3.visible = false
 	update_goal_msg()
+	$menu.pressed.connect(menu_pressed)
+	$reset.pressed.connect(rst_pressed)
 	
 func show_tour() -> void:
 	tour_1.visible = true
 	
 func show_tour_l2() -> void:
 	tour_3.visible = true
+	
+func menu_pressed() -> void:
+	rtm_ui.emit()
+	
+func rst_pressed() -> void:
+	reset_lvl.emit()
+	enable_buttons()
+	update_status("STATUS: Idle", 0)
 		

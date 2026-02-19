@@ -4,7 +4,9 @@ extends LineEdit
 	"Turn()",
 	"Move()",
 	"turn()",
-	"move()"
+	"move()",
+	"Mine()",
+	"mine()"
 ]
 
 @onready var suggest: PopupMenu = $Suggest

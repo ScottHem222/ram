@@ -18,5 +18,18 @@ func _ready() -> void:
 		
 	
 func reset_pressed():
-	LevelState.levels_done += 1
+	var curr = LevelState.levels_done
+	if LevelState.curr_lvl == 1:
+		if curr == 0:
+			LevelState.levels_done += 1
+	elif LevelState.curr_lvl == 2:
+		if curr == 1:
+			LevelState.levels_done += 1
+	elif LevelState.curr_lvl == 3:
+		if curr == 2:
+			LevelState.levels_done += 1	
+	elif LevelState.curr_lvl == 4:
+		if curr == 3:
+			LevelState.levels_done += 1
+	
 	rtm.emit()

@@ -222,10 +222,9 @@ func _apply_if_blocks(robot: Node) -> void:
 				if _has_prop(robot, &"auto_stop"):
 					robot.auto_stop = true
 
-		# gold -> stop
-		if cond == "gold" and then_txt == "stop()":
-			if _has_prop(robot, &"auto_stop"):
-				robot.auto_stop = true
+		# gold -> mine for lvl 4
+		if cond == "gold" and then_txt == "mine()":
+			robot.mine_gold = true
 
 
 # -----------------------------

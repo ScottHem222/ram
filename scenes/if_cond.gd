@@ -5,8 +5,8 @@ extends LineEdit
 	"obstacle",
 	"Tunnel",
 	"tunnel",
-	"Valueable",
-	"valueable"
+	"Gold",
+	"gold"
 ]
 
 @onready var suggest: PopupMenu = $Suggest
