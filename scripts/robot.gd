@@ -64,7 +64,9 @@ var _mining: bool = false
 @onready var hover_area: Area2D = $HoverArea
 var tooltip_panel
 var tooltip_label
-var tt_methods_1: Array[String] = ["Move()", "Turn([Left/Right])", "Stop()", "Mine()"]
+var tt_methods_12: Array[String] = ["Move()", "Turn() (Left/Right)"]
+var tt_methods_3: Array[String] = ["Move()", "Turn() (Left/Right)", "NotAtGoal: True"]
+var tt_methods_4: Array[String] = ["Move()", "Turn() (Left/Right)", "Mine()"]
 
 @onready var ray: RayCast2D = $ray_fw
 
@@ -570,7 +572,14 @@ func _grid_step_from_dir(dir: Vector2) -> Vector2i:
 # TOOLTIP
 # -------------------------
 func _on_robot_mouse_entered() -> void:
-	tooltip_label.text = "Robot Functions:\n- " + "\n- ".join(tt_methods_1)
+	var methods
+	match LevelState.curr_lvl:
+		1: methods = tt_methods_12
+		2: methods = tt_methods_12
+		3: methods = tt_methods_3
+		4: methods = tt_methods_4
+	
+	tooltip_label.text = "Robot Functions:\n- " + "\n- ".join(methods)
 	tooltip_panel.visible = true
 
 

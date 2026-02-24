@@ -388,16 +388,17 @@ text = "Menu"
 
 [node name="goal" type="Label" parent="."]
 layout_mode = 0
-offset_left = 1584.0
-offset_top = 16.0
-offset_right = 1858.0
-offset_bottom = 156.0
+offset_left = 1585.0
+offset_top = 13.0
+offset_right = 1859.0
+offset_bottom = 143.0
 theme_override_colors/font_color = Color(0.9490196, 0.8117647, 0.14901961, 1)
 theme_override_font_sizes/font_size = 32
 text = "CURRENT GOAL:
 LOL"
 horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 2
 
 [node name="Panel5" type="Panel" parent="."]
 layout_mode = 0

@@ -1,7 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://c3vroyc0ggbck"]
+[gd_scene load_steps=5 format=3 uid="uid://5b7xo3lylsap"]
 
-[ext_resource type="Texture2D" uid="uid://ckxuwd4fydxgs" path="res://assets/robot.png" id="1_py6e5"]
-[ext_resource type="Script" uid="uid://dnpwv6f6n3aso" path="res://scripts/robot.gd" id="1_ykvnc"]
+[ext_resource type="Script" uid="uid://dp0ghx317eq40" path="res://scenes/menu_robot.gd" id="1_o1ajl"]
+[ext_resource type="Texture2D" uid="uid://ckxuwd4fydxgs" path="res://assets/robot.png" id="2_7nfp2"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ykvnc"]
 size = Vector2(90, 90)
@@ -9,16 +9,13 @@ size = Vector2(90, 90)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ykvnc"]
 bg_color = Color(1, 0.14509805, 0.105882354, 0.3254902)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_i42o3"]
-size = Vector2(180, 164.5)
-
 [node name="Robot" type="CharacterBody2D"]
-script = ExtResource("1_ykvnc")
+script = ExtResource("1_o1ajl")
 metadata/_edit_horizontal_guides_ = [-1633.0]
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 scale = Vector2(0.35, 0.35)
-texture = ExtResource("1_py6e5")
+texture = ExtResource("2_7nfp2")
 
 [node name="ray_fw" type="RayCast2D" parent="."]
 target_position = Vector2(64, 0)
@@ -26,9 +23,6 @@ target_position = Vector2(64, 0)
 [node name="ray_side" type="RayCast2D" parent="."]
 visible = false
 target_position = Vector2(96, 0)
-
-[node name="Camera2D" type="Camera2D" parent="."]
-offset = Vector2(-600, 0)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_ykvnc")
@@ -39,9 +33,4 @@ offset_top = -58.0
 offset_right = 115.0
 offset_bottom = 62.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_ykvnc")
-
-[node name="HoverArea" type="Area2D" parent="."]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="HoverArea"]
-position = Vector2(29, -0.25)
-shape = SubResource("RectangleShape2D_i42o3")
+metadata/_edit_use_anchors_ = true

@@ -30,9 +30,9 @@ var t3 := [
 ]
 
 var t4 := [
-	"> All the code for moving we made before is now contained in an Auto Move Block!",
+	"> The Blocks used in the last level to move are now contained in the Auto Move Block",
 	"> Now we are in a much larger mine, and we need to mine every piece of gold.",
-	"> Find a way to run the robots mining function for every gold ore it locates.",
+	"> Find a way to run the robots mining function FOR every gold ore it locates IN the mine.",
 	">",
 	"(Key Programming Concept/s: FOR Loops)"
 ]

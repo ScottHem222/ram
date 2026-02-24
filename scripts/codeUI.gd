@@ -42,7 +42,7 @@ func update_goal_msg():
 	if LevelState.curr_lvl < 4:
 		$goal.text = "Current Goal:\nReach Gold"
 	elif LevelState.curr_lvl == 4:
-		$goal.text = "Current Goal:\nMine All Gold"
+		$goal.text = "Current Goal:\nMine all gold IN mine"
 	
 	
 	

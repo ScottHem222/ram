@@ -155,9 +155,8 @@ func run_blocks(robot: Node) -> void:
 
 		elif block.is_in_group("move_block"):
 			var units := _get_move_units(block)
-			var distance := float(units) * tile_size
-			if robot.has_method("move_step"):
-				await robot.move_step(distance)
+			var distance := float(units) * float(robot.tile_size)
+			await robot.move_step(distance)
 
 		elif block.is_in_group("turn_block"):
 			var dir := _get_turn_dir(block)
