@@ -123,6 +123,15 @@ func run_blocks(robot: Node) -> void:
 		return
 
 	print("RUN pressed. Robot =", robot)
+	
+	robot.mine_gold = false
+	robot.mine_ore = false
+	robot.mine_obstacles = false
+	
+	# Ensure tilemap backup exists before any mining happens
+	if LevelState.curr_lvl == 4:
+		var lvl := get_tree().get_first_node_in_group("level_4_root")
+		lvl.ensure_original_captured()
 
 	# Reset per-run robot flags so old runs don't leak
 	_reset_robot_run_flags(robot)
@@ -130,6 +139,8 @@ func run_blocks(robot: Node) -> void:
 	# Apply rule blocks that change robot behavior
 	_apply_if_blocks(robot)
 	if LevelState.curr_lvl == 4:
+		_apply_for_blocks(robot)
+	elif LevelState.curr_lvl == 5:
 		_apply_for_blocks(robot)
 
 	# Execute in order
@@ -223,7 +234,43 @@ func _apply_if_blocks(robot: Node) -> void:
 
 		# gold -> mine for lvl 4
 		if cond == "gold" and then_txt == "mine()":
+			print("mine gold TRUE")
 			robot.mine_gold = true
+			
+		# all mine
+		if cond == "ore" and then_txt == "mine()":
+			robot.mine_ore = true
+			robot.mine_gold = true
+			
+			if LevelState.curr_lvl == 5:
+				robot.mine_cop = true
+				robot.mine_cob = true
+				robot.mine_ur = true
+			
+		# bad mine
+		if cond == "obstacle" and then_txt == "mine()":
+			robot.mine_obstacles = true
+			
+		if LevelState.curr_lvl == 5:
+			if then_txt == "mine()":
+				if cond == "copper":
+					robot.mine_cop = true
+				elif cond == "cobalt":
+					robot.mine_cob = true
+				elif cond == "uranium":
+					robot.mine_ur = true
+					print("mining ur")
+			elif then_txt == "turn()":
+				if cond == "copper":
+					robot.turn_cop = true
+				elif cond == "cobalt":
+					robot.turn_cob = true
+				elif cond == "uranium":
+					robot.turn_ur = true
+				elif cond == "gold":
+					robot.turn_gold = true
+			
+		
 
 
 # -----------------------------
@@ -238,10 +285,23 @@ func _apply_for_blocks(robot: Node) -> void:
 		var fld_in := _get_text_field(b, "in").to_lower()
 		var fld_do := _get_text_field(b, "do").to_lower()
 
-		if fld_for == "gold" and fld_in == "mine" and fld_do == "mine()":
-			if _has_prop(robot, &"mine_gold"):
+		if fld_in == "mine" and fld_do == "mine()":
+			if fld_for == "gold":
 				robot.mine_gold = true
-				print("FOR BLOCK: mining enabled")
+			elif fld_for == "ore":
+				robot.mine_gold = true
+				robot.mine_ore = true
+			elif fld_for == "obstacle":
+				robot.mine_obstacles = true
+			
+			if LevelState.curr_lvl == 5:
+				if fld_for == "cobalt":
+					robot.mine_cob = true
+				elif fld_for == "copper":
+					robot.mine_cop = true
+				elif fld_for == "uranium":
+					robot.mine_ur = true
+			
 
 
 # -----------------------------

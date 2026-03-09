@@ -16,6 +16,7 @@ var win_ui_scene := preload("res://scenes/VictoryUI.tscn")
 var t1_scene := preload("res://scenes/t_1.tscn")
 var t3_scene := preload("res://scenes/t_3.tscn")
 var t4_scene := preload("res://scenes/t_4.tscn")
+var l_scene := preload("res://gen_lvl.tscn")
 var robot: Node = null
 var t1: Node = null
 
@@ -36,6 +37,7 @@ func _ready():
 		a_move_blocks = 0
 		t1 = t1_scene.instantiate()
 		add_child(t1)
+		t1.randomise_ores()
 		robot = t1.get_node("Robot")
 	
 	if level == 2:
@@ -47,6 +49,7 @@ func _ready():
 		a_move_blocks = 0
 		t1 = t1_scene.instantiate()
 		add_child(t1)
+		t1.randomise_ores()
 		robot = t1.get_node("Robot")
 		
 	if level == 3:
@@ -58,6 +61,7 @@ func _ready():
 		a_move_blocks = 0
 		t1 = t3_scene.instantiate()
 		add_child(t1)
+		#t1.ranomise_ores()
 		robot = t1.get_node("Robot")
 		
 	if level == 4:
@@ -71,8 +75,23 @@ func _ready():
 		t1 = t4_scene.instantiate()
 		add_child(t1)
 		robot = t1.get_node("Robot")
-		
+		robot.return_home.connect(set_home)
 		LevelState.lvl4_gold = 11
+		
+	if level == 5:
+		move_blocks = 0
+		turn_blocks = 0
+		if_blocks = 5
+		while_blocks = 0
+		for_blocks = 5
+		a_move_blocks = 1
+		
+		t1 = l_scene.instantiate()
+		add_child(t1)
+		robot = t1.get_node("Robot")
+		robot.update_metrics.connect(update_UI_score_l5)
+		t1.generate_inside_from_boundary()
+		
 		
 	emit_signal("block_count_changed")
 	
@@ -81,8 +100,9 @@ func _ready():
 	robot.onr.connect(fail_onr)
 	robot.blocked.connect(fail_blocked)
 	robot.gold_reached.connect(level_won)
+	robot.gem_mined.connect(fail_t4_non_gold)
 	game_UI.rtm_ui.connect(return_to_menu)
-	game_UI.reset_lvl.connect(robot.reset_pos)
+	game_UI.reset_lvl.connect(robot.reset_pos)	
 	
 func _show_fail(err: int) -> void:
 	# prevent duplicates
@@ -101,11 +121,17 @@ func fail_onr() -> void:
 
 func fail_blocked() -> void:
 	_show_fail(2)
+	
+func fail_t4_non_gold() -> void:
+	_show_fail(3)
 
 func level_won():
 	var win_ui = win_ui_scene.instantiate()
 	$FailLayer.add_child(win_ui)
 	win_ui.rtm.connect(return_to_menu)
+	
+func set_home():
+	robot.gold_cell = Vector2(0,0)
 	
 	
 func reset_on_fail() -> void:
@@ -115,6 +141,13 @@ func reset_on_fail() -> void:
 
 	robot.reset_pos()
 	game_UI.enable_buttons()
+	
+	if LevelState.curr_lvl == 4:
+		LevelState.lvl4_gold = 11
+		
+		
+func update_UI_score_l5():
+	game_UI.update_goal_msg()
 	
 	
 func return_to_menu():

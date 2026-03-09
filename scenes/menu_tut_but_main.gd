@@ -11,4 +11,5 @@ func _ready():
 func _button_pressed():
 	tut_menu.visible = false
 	main_menu.visible = true
+
 	

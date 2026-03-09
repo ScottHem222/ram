@@ -17,7 +17,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_v4dxp")
-line_delay = 0.2
+line_delay = 0.8
 
 [node name="bg" type="Panel" parent="."]
 layout_mode = 0

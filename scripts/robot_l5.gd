@@ -31,21 +31,41 @@ var debug_probe_point: Vector2 = Vector2.ZERO
 var _l4_start = Vector2i.ZERO
 var _l4_left_start = false
 
+#level 5
+@export var end_zone_path: NodePath
+var end_zone: Node2D
+
+var mine_gold: bool = false
+var mine_ur: bool = false
+var mine_cob: bool = false
+var mine_cop: bool = false
+
+var mine_ore: bool = false
+var mine_obstacles: bool = false
+
+var turn_gold: bool = false
+var turn_ur: bool = false
+var turn_cob: bool = false
+var turn_cop: bool = false
+
+signal update_metrics
+
 # -------------------------
 # SIGNALS / STATE
 # -------------------------
+@warning_ignore("unused_signal")
 signal onr()
+@warning_ignore("unused_signal")
 signal blocked()
 signal gold_reached()
 signal step_finished
+@warning_ignore("unused_signal")
 signal gem_mined()
 signal return_home()
 
 var auto_move: bool = false
 var turn: bool = false
-var mine_gold: bool = false
-var mine_ore: bool = false
-var mine_obstacles: bool = false
+
 
 var direction: Vector2 = Vector2.RIGHT
 
@@ -84,6 +104,8 @@ var tt_methods_4: Array[String] = ["Move()", "Turn() (Left/Right)", "Mine()"]
 # -------------------------
 func _ready() -> void:
 	add_to_group("robot")
+	
+	end_zone = get_node(end_zone_path)
 	
 	tilemap = get_node(tilemap_path)
 
@@ -127,7 +149,7 @@ func _physics_process(delta: float) -> void:
 	else:
 		velocity = Vector2.ZERO
 
-
+"""
 # -------------------------
 # DEBUG DRAW
 # -------------------------
@@ -145,25 +167,21 @@ func _update_debug_ahead_point(ahead_cell: Vector2i) -> void:
 	var local := tilemap.map_to_local(ahead_cell) + Vector2(tile_size * 0.5, tile_size * 0.5)
 	debug_probe_point = tilemap.to_global(local)
 	queue_redraw()
-
+"""
 
 # -------------------------
 # AUTO MOVE
 # -------------------------
 func _auto_move_tick(_delta: float) -> void:
-	# level 4: stop + mine when gold is 1 tile ahead, then resume
-	if LevelState.curr_lvl == 4 and mine_gold and not _mining:
-		var cell := _cell_under_robot()
-		var ahead_cell := _cell_ahead_from(cell)
-		_update_debug_ahead_point(ahead_cell)
+	#var cell = _cell_under_robot()
+	#var ahead_cell = _cell_ahead_from(cell)
 
-		if _tile_type_at(ahead_cell) == "gold":
-			velocity = Vector2.ZERO
-			move_and_slide()
-			await _mine_tick()
-			return
+	#_update_debug_ahead_point(ahead_cell)
 
-	if turn and ray.is_colliding():
+	if await _try_seek_target():
+		return
+
+	elif turn and ray.is_colliding():
 		_turn_random()
 
 	_apply_direction_visuals()
@@ -224,33 +242,19 @@ func _step_tick(delta: float) -> void:
 	# ---- GRID-BASED tile checks (same as scanner) ----
 	var cell := _cell_under_robot()
 	var ahead_cell := _cell_ahead_from(cell)
-	_update_debug_ahead_point(ahead_cell)
+	#_update_debug_ahead_point(ahead_cell)
 
-	var here_type := _tile_type_at(cell)
+	#var here_type := _tile_type_at(cell)
 	var ahead_type := _tile_type_at(ahead_cell)
 
-	# early stop behavior:
-	# - level 4 mining: stop when GOLD is ahead (so you mine it)
-	# - other levels: stop when GOLD is here OR ahead (reach gold)
-	if LevelState.curr_lvl == 4 and mine_gold:
-		if ahead_type == "gold":
-			# stop in front of gold, mine it, then keep going
-			velocity = Vector2.ZERO
-			move_and_slide()
-			await _mine_tick() 
-			_reset_turn_block_state()
-			_stuck_frames = 0
-			return
-	else:
-		if here_type == "gold" or ahead_type == "gold":
-			_step_remaining = 0.0
-			_finish_step(true)
-			return
-
-	# Mining check (does not end the step)
-	await _mine_tick()
-	if _mining:
+	# level 5: look ahead, left, and right for target tiles
+	if await _try_seek_target():
 		return
+		
+	# Level 5 energy check
+	if LevelState.lvl5_energy == 10:
+		gold_cell = tilemap.local_to_map(tilemap.to_local(end_zone.global_position))
+		gold_turn_bias = 1.0
 
 	# Consume distance actually moved
 	var moved := get_last_motion().length()
@@ -265,7 +269,7 @@ func _step_tick(delta: float) -> void:
 		_stuck_frames += 1
 
 	# If obstacle ahead, handle turn/stop ONCE per frame
-	if _is_obstacle_type(ahead_type) or _hit_ahead():
+	if (_is_obstacle_type(ahead_type) and turn) or _hit_ahead():
 		_handle_turn_if_blocked()
 		if _turned_this_frame:
 			_stuck_frames = 0
@@ -273,10 +277,12 @@ func _step_tick(delta: float) -> void:
 
 	# ---- STUCK WATCHDOG ----
 	if _stuck_frames >= STUCK_LIMIT:
-		turn_left()
+		var tsign = -1 if randi() % 2 == 0 else 1
+		_apply_turn_sign(tsign)
+		_turned_dir_sign = tsign
+		_just_turned = true
 		_turned_this_frame = true
 		_stuck_frames = 0
-		_reset_turn_block_state()
 		return
 		
 	# return home
@@ -324,9 +330,7 @@ func _handle_turn_if_blocked() -> void:
 		_apply_turn_sign(opposite)
 		_turned_dir_sign = opposite
 		_turned_this_frame = true
-		return
 
-	_step_remaining = 0.0
 
 
 # -------------------------
@@ -367,47 +371,41 @@ func _reset_turn_block_state() -> void:
 # MINING (ahead only, grid)
 # -------------------------
 func _mine_tick() -> void:
-	
-	if (not mine_gold and not mine_ore and not mine_obstacles) or _mining:
+	if _mining:
 		return
 
-	var cell := _cell_under_robot()
-	var ahead_cell := _cell_ahead_from(cell)
-	
+	var cell = _cell_under_robot()
+	var ahead_cell = _cell_ahead_from(cell)
 	var cell_type = _tile_type_at(ahead_cell)
-	
-	var is_gold = cell_type == "gold"
-	var is_gem = cell_type.begins_with("gem")
-	var is_ob = cell_type == "stone" or cell_type.begins_with("wall")
-	# Only mine if the tile is mineable AND the correct flag is enabled
-	if is_gold and not mine_gold:
-		return
-	if is_gem and not mine_ore:
-		return
-	if is_ob and not mine_obstacles:
-		return
-	if not is_gold and not is_gem and not is_ob:
+
+	if not _tile_should_mine(cell_type):
 		return
 
-	if is_ob:
-		move_stop()
-		gem_mined.emit()
-		
 	_mining = true
 	velocity = Vector2.ZERO
 
 	await get_tree().create_timer(mine_delay).timeout
 	_set_cell_to_tunnel(ahead_cell)
 
-	if LevelState.curr_lvl == 4 and LevelState.lvl4_gold > 0 and cell_type == "gold":
-		LevelState.lvl4_gold -= 1
-		check_done_cond(false)
-	
-	if LevelState.curr_lvl == 4 and cell_type.begins_with("gem"):
-		move_stop()
-		gem_mined.emit()	
-		
-		
+	if cell_type == "gold":
+		LevelState.lvl5_energy -= 50
+		LevelState.lvl5_score += 30
+
+	elif cell_type == "gem_pink":
+		LevelState.lvl5_energy -= 10
+		LevelState.lvl5_score += 10
+
+	elif cell_type == "gem_blue":
+		LevelState.lvl5_energy -= 10
+		LevelState.lvl5_score += 20
+
+	elif cell_type == "gem_green":
+		LevelState.lvl5_energy -= 40
+		LevelState.lvl5_score += 50
+
+	update_metrics.emit()
+	check_done_cond(false)
+
 	_mining = false
 
 
@@ -416,8 +414,104 @@ func _set_cell_to_tunnel(cell: Vector2i) -> void:
 
 
 # -------------------------
-# TILE (grid-based, same as scanner)
+# TILE (grid-based, same as )
 # -------------------------
+func _tile_should_turn(tile_type: String) -> bool:
+	if tile_type == "gold":
+		return turn_gold
+
+	if tile_type == "gem_pink":
+		return turn_cop
+
+	if tile_type == "gem_blue":
+		return turn_cob
+
+	if tile_type == "gem_green":
+		return turn_ur
+
+	if tile_type == "stone" or tile_type.begins_with("wall"):
+		return turn
+
+	return false
+
+
+func _tile_should_mine(tile_type: String) -> bool:
+	if tile_type == "gold":
+		return mine_gold
+
+	if tile_type == "gem_pink":
+		return mine_cop or mine_ore
+
+	if tile_type == "gem_blue":
+		return mine_cob or mine_ore
+
+	if tile_type == "gem_green":
+		return mine_ur or mine_ore
+
+	if tile_type == "stone" or tile_type.begins_with("wall"):
+		return mine_obstacles
+
+	return false
+
+
+func _tile_blocks_robot(tile_type: String) -> bool:
+	if tile_type == "":
+		return false
+
+	if _tile_should_turn(tile_type):
+		return true
+
+	if _tile_should_mine(tile_type):
+		return true
+
+	if tile_type == "gold":
+		return true
+
+	if tile_type.begins_with("gem"):
+		return true
+
+	if tile_type == "stone" or tile_type.begins_with("wall"):
+		return true
+
+	return false
+	
+
+func _try_seek_target() -> bool:
+	var ahead = check_tile_ahead()
+	var left = check_tile_left()
+	var right = check_tile_right()
+
+	# Mine if target is directly ahead
+	if _tile_should_mine(ahead):
+		velocity = Vector2.ZERO
+		move_and_slide()
+		await _mine_tick()
+		_reset_turn_block_state()
+		_stuck_frames = 0
+		return true
+
+	# Turn toward target if it is on the left
+	if _tile_should_mine(left) or _tile_should_turn(left):
+		turn_left()
+		_turned_this_frame = true
+		_stuck_frames = 0
+		return true
+
+	# Turn toward target if it is on the right
+	if _tile_should_mine(right) or _tile_should_turn(right):
+		turn_right()
+		_turned_this_frame = true
+		_stuck_frames = 0
+		return true
+
+	# If the tile ahead is one we should turn away from, do that
+	if _tile_should_turn(ahead):
+		_handle_turn_if_blocked()
+		return true
+
+	return false
+
+
 func _cell_under_robot() -> Vector2i:
 	return tilemap.local_to_map(tilemap.to_local(global_position))
 
@@ -440,7 +534,7 @@ func _tile_type_at(cell: Vector2i) -> String:
 
 
 func _is_obstacle_type(t: String) -> bool:
-	return t == "stone" or t.begins_with("wall")
+	return t == "stone" or t.begins_with("wall") 
 
 
 func check_tile_here() -> String:
@@ -516,13 +610,13 @@ func update_scanner_tile() -> void:
 	elif tile_name.begins_with("wall") or tile_name == "stone":
 		scanner_label.text = "SCANNER\nType: Obstacle\n"
 	elif tile_name == "gem_blue":
-		scanner_label.text = "SCANNER\nType: Ore (Cobalt)\n"
+		scanner_label.text = "SCANNER\nType: Ore (Cobalt)\nValue: 20"
 	elif tile_name == "gem_green":
-		scanner_label.text = "SCANNER\nType: Ore (Uranium)\n"
+		scanner_label.text = "SCANNER\nType: Ore (Uranium)\nValue: 50"
 	elif tile_name == "gem_pink":
-		scanner_label.text = "SCANNER\nType: Ore (Copper)\n"
+		scanner_label.text = "SCANNER\nType: Ore (Copper)\nValue: 10"
 	elif tile_name == "gold":
-		scanner_label.text = "SCANNER\nType: Ore (Gold)\n"
+		scanner_label.text = "SCANNER\nType: Ore (Gold)\nValue: 30"
 	else:
 		scanner_label.text = "SCANNER\nType: Unknown\nValue: ?"
 
@@ -530,31 +624,24 @@ func update_scanner_tile() -> void:
 # -------------------------
 # LEVEL END CONDITIONS 
 # -------------------------
-func check_done_cond(in_while: bool) -> void:
-	#var c = _cell_under_robot()
-	
-	if LevelState.curr_lvl == 4:
-		if LevelState.lvl4_gold <= 0: #and c == _l4_start and _l4_left_start:
-			move_stop()
-			gold_reached.emit()
-		return
-
-	var cell := _cell_under_robot()
-	var ahead_cell := _cell_ahead_from(cell)
-
-	var ahead := _tile_type_at(ahead_cell)
-	var here := _tile_type_at(cell)
-
-	if here == "gold" or ahead == "gold" or here.begins_with("gem") or ahead.begins_with("gem"):
+func check_done_cond(_in_while: bool) -> void:
+	if LevelState.lvl5_energy <= 0:
+		move_stop()
 		gold_reached.emit()
 		return
 
-	if _is_obstacle_type(ahead):
-		blocked.emit()
-		return
+	var cell = _cell_under_robot()
+	var ahead_cell = _cell_ahead_from(cell)
 
-	if not in_while:
-		onr.emit()
+	var ahead = _tile_type_at(ahead_cell)
+	var here = _tile_type_at(cell)
+
+	if _tile_blocks_robot(here) or _tile_blocks_robot(ahead):
+		if _tile_should_turn(here) or _tile_should_turn(ahead):
+			return
+		if _tile_should_mine(here) or _tile_should_mine(ahead):
+			return
+		blocked.emit()
 
 
 # -------------------------
@@ -581,8 +668,12 @@ func reset_pos() -> void:
 	_mining = false
 	_reset_turn_block_state()
 	
-	if LevelState.curr_lvl == 4:
-		LevelState.lvl4_gold = 11
+	if LevelState.curr_lvl == 5:
+		LevelState.lvl5_energy = 250
+		LevelState.lvl5_score = 0
+		update_metrics.emit()
+		
+	
 
 
 # -------------------------
@@ -631,6 +722,7 @@ func _on_robot_mouse_entered() -> void:
 		2: methods = tt_methods_12
 		3: methods = tt_methods_3
 		4: methods = tt_methods_4
+		5: methods = tt_methods_4
 	
 	tooltip_label.text = "Robot Functions:\n- " + "\n- ".join(methods)
 	tooltip_panel.visible = true

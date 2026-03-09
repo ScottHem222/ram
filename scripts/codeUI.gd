@@ -39,10 +39,15 @@ func update_status(new, col):
 	
 func update_goal_msg():
 	
+	if LevelState.curr_lvl == 5:
+		$goal.text = str("Energy: ", LevelState.lvl5_energy, "\nScore: ", LevelState.lvl5_score)
+	
 	if LevelState.curr_lvl < 4:
-		$goal.text = "Current Goal:\nReach Gold"
+		$goal.text = "Current Goal:\nReach Ore Deposit"
 	elif LevelState.curr_lvl == 4:
-		$goal.text = "Current Goal:\nMine all gold IN mine"
+		$goal.text = "Current Goal:\nMine the correct Ore"
+	
+	
 	
 	
 	
@@ -83,6 +88,16 @@ func setup_block_buttons():
 		
 		$Panel/SpawnAMoveBlock.visible = true
 		$Panel/SpawnForBlock.visible = true	
+	elif LevelState.curr_lvl == 5:
+		$Panel/SpawnIfBlock.visible = true
+		$Panel/SpawnTurnBlock.visible = false
+		
+		$Panel/SpawnWhileBlock.visible = false
+		$Panel/SpawnMoveBlock.visible = false
+		
+		$Panel/SpawnAMoveBlock.visible = true
+		$Panel/SpawnForBlock.visible = true	
+		
 		
 	
 func _ready() -> void:
@@ -106,4 +121,10 @@ func rst_pressed() -> void:
 	reset_lvl.emit()
 	enable_buttons()
 	update_status("STATUS: Idle", 0)
+	
+	if LevelState.curr_lvl == 4:
+		get_tree().get_first_node_in_group("level_4_root").restore_tilemap_to_original()
+		
+	if LevelState.curr_lvl == 5:
+		LevelState.lvl5_energy = 100
 		

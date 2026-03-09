@@ -15,6 +15,8 @@ func _ready() -> void:
 		$msg.text = "You now know how to use a WHILE loop to repeat things until its condition is met"
 	elif LevelState.curr_lvl == 4:
 		$msg.text = "You know how how to use a FOR loop to repate things a specific amount of times"
+	elif LevelState.curr_lvl == 5:
+		$msg.text = str("Mining complete and robot returned home!. Score: ", LevelState.lvl5_score)
 		
 	
 func reset_pressed():
@@ -31,5 +33,10 @@ func reset_pressed():
 	elif LevelState.curr_lvl == 4:
 		if curr == 3:
 			LevelState.levels_done += 1
+	elif	 LevelState.curr_lvl == 5:
+		if curr == 4:
+			LevelState.levels_done += 1
+		
+		LevelState.lvl5_scoreboard.append(LevelState.lvl5_score)
 	
 	rtm.emit()

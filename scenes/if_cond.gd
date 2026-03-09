@@ -6,7 +6,15 @@ extends LineEdit
 	"Tunnel",
 	"tunnel",
 	"Gold",
-	"gold"
+	"gold",
+	"ore",
+	"Ore",
+	"Uranium",
+	"uranium",
+	"cobalt",
+	"Cobalt",
+	"Copper",
+	"copper"
 ]
 
 @onready var suggest: PopupMenu = $Suggest

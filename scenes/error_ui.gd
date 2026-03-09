@@ -1,13 +1,14 @@
 extends Control
 
 # 1 - ONR, 2 - Stuck
+# 3 - lvl 4 non gold mined
 var err_type = 1
 
 signal error_reset
 
 
 var l1_onr := [
-	"> Move the robot further, the gold is 20 units away."
+	"> Move the robot further, the gold is 30 units away."
 ]
 
 var l1_stuck := [
@@ -31,6 +32,18 @@ var l3_stuck := [
 	"> Drag it into the lower slot in the code section"
 ]
 
+var l4_non_gold := [
+	"> Mining obstacles or other ore types breaks the robot at the moment",
+	"> Find a way to only mine Gold ore"
+]
+
+
+# L5 endless
+
+var l5_stuck := [
+	"> Use if statements to either mine whats blocking you or turn away from it"
+]
+
 @export var line_delay := 0.2 # seconds between lines
 
 func _ready() -> void:
@@ -44,9 +57,15 @@ func update():
 	if err_type == 1:
 		$NotReached.visible = true
 		$Stuck.visible = false
+		$exploded.visible = false
 	elif err_type == 2:
 		$NotReached.visible = false
 		$Stuck.visible = true
+		$exploded.visible = false
+	elif err_type == 3:
+		$NotReached.visible = false
+		$Stuck.visible = false
+		$exploded.visible = true
 
 		
 func reset_pressed():
@@ -78,6 +97,16 @@ func play_hint_msg():
 	elif LevelState.curr_lvl == 3:
 		if err_type == 2:
 			for line in l3_stuck:
+				$msg.text += line + "\n"
+				await get_tree().create_timer(line_delay).timeout
+	elif LevelState.curr_lvl == 4:
+		if err_type == 3:
+			for line in l4_non_gold:
+				$msg.text += line + "\n"
+				await get_tree().create_timer(line_delay).timeout
+	elif LevelState.curr_lvl == 5:
+		if err_type == 2:
+			for line in l5_stuck:
 				$msg.text += line + "\n"
 				await get_tree().create_timer(line_delay).timeout
 				

@@ -1,9 +1,12 @@
-[gd_scene load_steps=3 format=4 uid="uid://bhd45fgbbk7sw"]
+[gd_scene load_steps=4 format=4 uid="uid://bhd45fgbbk7sw"]
 
 [ext_resource type="TileSet" uid="uid://dk1ojtjrx14v7" path="res://scenes/maintiles.tres" id="1_1u65g"]
+[ext_resource type="Script" uid="uid://d4vynul73q6m" path="res://scenes/ore_random.gd" id="1_pr3te"]
 [ext_resource type="PackedScene" uid="uid://c3vroyc0ggbck" path="res://scenes/robot.tscn" id="2_pr3te"]
 
 [node name="t_3" type="Node2D"]
+script = ExtResource("1_pr3te")
+tilemap_path = NodePath("TileMapLayer")
 
 [node name="TileMapLayer" type="TileMapLayer" parent="."]
 scale = Vector2(2, 2)
@@ -13,6 +16,7 @@ tile_set = ExtResource("1_1u65g")
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="Robot" parent="." instance=ExtResource("2_pr3te")]
+speed = 300.0
 tilemap_path = NodePath("../TileMapLayer")
 tunnel_source_id = 3
 gold_cell = Vector2i(21, -6)
