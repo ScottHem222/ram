@@ -1,8 +1,9 @@
-[gd_scene load_steps=28 format=3 uid="uid://dn0ldn8kemnnw"]
+[gd_scene format=3 uid="uid://dn0ldn8kemnnw"]
 
 [ext_resource type="Script" uid="uid://bfbx155fa2i08" path="res://scripts/codeUI.gd" id="1_8gbba"]
 [ext_resource type="Script" uid="uid://dup8paa3nget" path="res://scenes/tour1_next.gd" id="2_1ais2"]
 [ext_resource type="Script" uid="uid://bsd3lmltiu2q0" path="res://scenes/tour2_next.gd" id="2_6es81"]
+[ext_resource type="StyleBox" uid="uid://dwuovnyhevlhi" path="res://ui_main.tres" id="2_p1yb1"]
 [ext_resource type="Script" uid="uid://cnc3h0lpcsesq" path="res://scripts/SpawnBlock.gd" id="2_tbgi4"]
 [ext_resource type="Script" uid="uid://chtlsw6eigcvp" path="res://scripts/CodeBox.gd" id="3_jyhfs"]
 [ext_resource type="PackedScene" uid="uid://dm4q5tem3ym47" path="res://scenes/IfBlock.tscn" id="3_tefeu"]
@@ -14,9 +15,6 @@
 [ext_resource type="PackedScene" uid="uid://ckhqmrr54teya" path="res://scenes/AutoMoveBlock.tscn" id="9_n0p60"]
 [ext_resource type="PackedScene" uid="uid://vb74ufwchgjc" path="res://scenes/ForBlock.tscn" id="10_t27nk"]
 [ext_resource type="Script" uid="uid://8x1iwe3eogq5" path="res://scenes/tour_3_next.gd" id="11_d5hkw"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tipki"]
-bg_color = Color(0.122064196, 0.05740781, 0.067508586, 1)
 
 [sub_resource type="Theme" id="Theme_1ais2"]
 
@@ -31,11 +29,8 @@ bg_color = Color(0, 0, 0, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oojb5"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_aa5j4"]
-bg_color = Color(0.12156863, 0.05882353, 0.06666667, 1)
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p1yb1"]
-bg_color = Color(0.43240803, 0.613237, 0.82619154, 1)
+bg_color = Color(0.24937084, 0.41923738, 0.618892, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dnnvh"]
 bg_color = Color(1, 0.28627452, 0.5647059, 0.20784314)
@@ -52,12 +47,12 @@ bg_color = Color(0.04303915, 0.043039158, 0.043039113, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d5hkw"]
 bg_color = Color(0.541022, 0.574853, 0.8508119, 1)
 
-[node name="level_UI" type="Control"]
+[node name="level_UI" type="Control" unique_id=895150489]
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_8gbba")
 
-[node name="Panel" type="Panel" parent="."]
+[node name="Panel" type="Panel" parent="." unique_id=1248822798]
 top_level = true
 layout_mode = 1
 anchors_preset = 15
@@ -67,9 +62,9 @@ offset_right = -1181.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_tipki")
+theme_override_styles/panel = ExtResource("2_p1yb1")
 
-[node name="BlockBoundBox" type="ColorRect" parent="Panel"]
+[node name="BlockBoundBox" type="ColorRect" parent="Panel" unique_id=691751199]
 layout_mode = 0
 offset_left = 46.0
 offset_top = 21.0
@@ -78,7 +73,7 @@ offset_bottom = 1173.0
 color = Color(0.045312412, 0.04531242, 0.04531242, 1)
 script = ExtResource("3_jyhfs")
 
-[node name="SpawnMoveBlock" type="Button" parent="Panel" node_paths=PackedStringArray("block_bound_box")]
+[node name="SpawnMoveBlock" type="Button" parent="Panel" unique_id=2110369376 node_paths=PackedStringArray("block_bound_box")]
 visible = false
 layout_mode = 0
 offset_left = 48.0
@@ -95,14 +90,14 @@ script = ExtResource("2_tbgi4")
 block_scene = ExtResource("6_oojb5")
 block_bound_box = NodePath("../BlockBoundBox")
 
-[node name="CountBox" type="Panel" parent="Panel/SpawnMoveBlock"]
+[node name="CountBox" type="Panel" parent="Panel/SpawnMoveBlock" unique_id=1972483603]
 layout_mode = 0
 offset_left = 109.0
 offset_right = 170.0
 offset_bottom = 91.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_oojb5")
 
-[node name="Count" type="Label" parent="Panel/SpawnMoveBlock/CountBox"]
+[node name="Count" type="Label" parent="Panel/SpawnMoveBlock/CountBox" unique_id=1219521584]
 layout_mode = 0
 offset_left = 14.0
 offset_top = 18.0
@@ -115,7 +110,7 @@ text = "
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="SpawnIfBlock" type="Button" parent="Panel" node_paths=PackedStringArray("block_bound_box")]
+[node name="SpawnIfBlock" type="Button" parent="Panel" unique_id=1410692856 node_paths=PackedStringArray("block_bound_box")]
 layout_mode = 0
 offset_left = 247.0
 offset_top = 1187.0
@@ -132,14 +127,14 @@ block_scene = ExtResource("3_tefeu")
 block_bound_box = NodePath("../BlockBoundBox")
 count_var_name = "if_blocks"
 
-[node name="CountBox" type="Panel" parent="Panel/SpawnIfBlock"]
+[node name="CountBox" type="Panel" parent="Panel/SpawnIfBlock" unique_id=623169345]
 layout_mode = 0
 offset_left = 109.0
 offset_right = 170.0
 offset_bottom = 91.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_oojb5")
 
-[node name="Count" type="Label" parent="Panel/SpawnIfBlock/CountBox"]
+[node name="Count" type="Label" parent="Panel/SpawnIfBlock/CountBox" unique_id=369105908]
 layout_mode = 0
 offset_left = 14.0
 offset_top = 18.0
@@ -152,7 +147,7 @@ text = "
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Run" type="Button" parent="Panel"]
+[node name="Run" type="Button" parent="Panel" unique_id=1527973159]
 layout_mode = 0
 offset_left = 918.0
 offset_top = 1195.0
@@ -166,7 +161,7 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_ap2rb")
 text = "Run Code"
 script = ExtResource("6_1ais2")
 
-[node name="Status" type="Label" parent="Panel"]
+[node name="Status" type="Label" parent="Panel" unique_id=1863132518]
 layout_mode = 0
 offset_left = 1158.0
 offset_top = 89.0
@@ -178,7 +173,7 @@ text = "STATUS: Idle"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="SpawnTurnBlock" type="Button" parent="Panel" node_paths=PackedStringArray("block_bound_box")]
+[node name="SpawnTurnBlock" type="Button" parent="Panel" unique_id=1271328976 node_paths=PackedStringArray("block_bound_box")]
 visible = false
 layout_mode = 0
 offset_left = 250.0
@@ -196,14 +191,14 @@ block_scene = ExtResource("7_dnnvh")
 block_bound_box = NodePath("../BlockBoundBox")
 count_var_name = "turn_blocks"
 
-[node name="CountBox" type="Panel" parent="Panel/SpawnTurnBlock"]
+[node name="CountBox" type="Panel" parent="Panel/SpawnTurnBlock" unique_id=900775629]
 layout_mode = 0
 offset_left = 109.0
 offset_right = 170.0
 offset_bottom = 91.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_oojb5")
 
-[node name="Count" type="Label" parent="Panel/SpawnTurnBlock/CountBox"]
+[node name="Count" type="Label" parent="Panel/SpawnTurnBlock/CountBox" unique_id=73059415]
 layout_mode = 0
 offset_left = 14.0
 offset_top = 18.0
@@ -216,7 +211,7 @@ text = "
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="SpawnWhileBlock" type="Button" parent="Panel" node_paths=PackedStringArray("block_bound_box")]
+[node name="SpawnWhileBlock" type="Button" parent="Panel" unique_id=1187687799 node_paths=PackedStringArray("block_bound_box")]
 visible = false
 layout_mode = 0
 offset_left = 48.0
@@ -234,14 +229,14 @@ block_scene = ExtResource("8_a7ae3")
 block_bound_box = NodePath("../BlockBoundBox")
 count_var_name = "while_blocks"
 
-[node name="CountBox" type="Panel" parent="Panel/SpawnWhileBlock"]
+[node name="CountBox" type="Panel" parent="Panel/SpawnWhileBlock" unique_id=1310787334]
 layout_mode = 0
 offset_left = 109.0
 offset_right = 170.0
 offset_bottom = 91.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_oojb5")
 
-[node name="Count" type="Label" parent="Panel/SpawnWhileBlock/CountBox"]
+[node name="Count" type="Label" parent="Panel/SpawnWhileBlock/CountBox" unique_id=301425593]
 layout_mode = 0
 offset_left = 14.0
 offset_top = 18.0
@@ -254,13 +249,14 @@ text = "
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="SpawnAMoveBlock" type="Button" parent="Panel" node_paths=PackedStringArray("block_bound_box")]
+[node name="SpawnAMoveBlock" type="Button" parent="Panel" unique_id=782191372 node_paths=PackedStringArray("block_bound_box")]
 layout_mode = 0
 offset_left = 459.0
 offset_top = 1187.0
 offset_right = 576.0
 offset_bottom = 1279.0
 theme = SubResource("Theme_1ais2")
+theme_override_font_sizes/font_size = 16
 theme_override_styles/normal = SubResource("StyleBoxFlat_6es81")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_1ais2")
 theme_override_styles/hover = SubResource("StyleBoxFlat_ap2rb")
@@ -272,14 +268,14 @@ block_scene = ExtResource("9_n0p60")
 block_bound_box = NodePath("../BlockBoundBox")
 count_var_name = "a_move_blocks"
 
-[node name="CountBox" type="Panel" parent="Panel/SpawnAMoveBlock"]
+[node name="CountBox" type="Panel" parent="Panel/SpawnAMoveBlock" unique_id=983044062]
 layout_mode = 0
 offset_left = 109.0
 offset_right = 170.0
 offset_bottom = 91.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_oojb5")
 
-[node name="Count" type="Label" parent="Panel/SpawnAMoveBlock/CountBox"]
+[node name="Count" type="Label" parent="Panel/SpawnAMoveBlock/CountBox" unique_id=768912251]
 layout_mode = 0
 offset_left = 14.0
 offset_top = 18.0
@@ -292,7 +288,7 @@ text = "
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="SpawnForBlock" type="Button" parent="Panel" node_paths=PackedStringArray("block_bound_box")]
+[node name="SpawnForBlock" type="Button" parent="Panel" unique_id=1304144602 node_paths=PackedStringArray("block_bound_box")]
 layout_mode = 0
 offset_left = 48.0
 offset_top = 1187.0
@@ -309,14 +305,14 @@ block_scene = ExtResource("10_t27nk")
 block_bound_box = NodePath("../BlockBoundBox")
 count_var_name = "for_blocks"
 
-[node name="CountBox" type="Panel" parent="Panel/SpawnForBlock"]
+[node name="CountBox" type="Panel" parent="Panel/SpawnForBlock" unique_id=126730521]
 layout_mode = 0
 offset_left = 109.0
 offset_right = 170.0
 offset_bottom = 91.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_oojb5")
 
-[node name="Count" type="Label" parent="Panel/SpawnForBlock/CountBox"]
+[node name="Count" type="Label" parent="Panel/SpawnForBlock/CountBox" unique_id=1516700705]
 layout_mode = 0
 offset_left = 14.0
 offset_top = 18.0
@@ -329,31 +325,31 @@ text = "
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Panel2" type="Panel" parent="."]
+[node name="Panel2" type="Panel" parent="." unique_id=1971237653]
 layout_mode = 0
 offset_left = 1099.0
 offset_top = -6.0
 offset_right = 2302.0
 offset_bottom = 181.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_aa5j4")
+theme_override_styles/panel = ExtResource("2_p1yb1")
 
-[node name="Panel3" type="Panel" parent="."]
+[node name="Panel3" type="Panel" parent="." unique_id=1269817569]
 layout_mode = 0
 offset_left = 2232.0
 offset_top = 1.0
 offset_right = 2308.0
 offset_bottom = 1272.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_aa5j4")
+theme_override_styles/panel = ExtResource("2_p1yb1")
 
-[node name="Panel4" type="Panel" parent="."]
+[node name="Panel4" type="Panel" parent="." unique_id=1695584223]
 layout_mode = 0
 offset_left = 1107.0
 offset_top = 1233.0
 offset_right = 2310.0
 offset_bottom = 1297.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_aa5j4")
+theme_override_styles/panel = ExtResource("2_p1yb1")
 
-[node name="Panel6" type="Panel" parent="."]
+[node name="Panel6" type="Panel" parent="." unique_id=39010900]
 layout_mode = 0
 offset_left = 1493.0
 offset_top = 20.0
@@ -361,7 +357,7 @@ offset_right = 1806.0
 offset_bottom = 155.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_p1yb1")
 
-[node name="reset" type="Button" parent="."]
+[node name="reset" type="Button" parent="." unique_id=1011777635]
 layout_mode = 0
 offset_left = 1279.0
 offset_top = 22.0
@@ -374,7 +370,7 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_1ais2")
 theme_override_styles/hover = SubResource("StyleBoxFlat_ap2rb")
 text = "Reset Level"
 
-[node name="menu" type="Button" parent="."]
+[node name="menu" type="Button" parent="." unique_id=457726804]
 layout_mode = 0
 offset_left = 1124.0
 offset_top = 24.0
@@ -387,7 +383,20 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_1ais2")
 theme_override_styles/hover = SubResource("StyleBoxFlat_ap2rb")
 text = "Menu"
 
-[node name="goal" type="Label" parent="."]
+[node name="live" type="Label" parent="." unique_id=1769563402]
+layout_mode = 0
+offset_left = 2008.0
+offset_top = 153.0
+offset_right = 2282.0
+offset_bottom = 283.0
+theme_override_colors/font_color = Color(0.9490196, 0, 0.14901961, 1)
+theme_override_font_sizes/font_size = 32
+text = "*LIVE*"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="goal" type="Label" parent="." unique_id=477392334]
 layout_mode = 0
 offset_left = 1515.0
 offset_top = 14.0
@@ -401,7 +410,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="Panel5" type="Panel" parent="."]
+[node name="Panel5" type="Panel" parent="." unique_id=1287169941]
 layout_mode = 0
 offset_left = 1854.0
 offset_top = 20.0
@@ -409,23 +418,24 @@ offset_right = 2232.0
 offset_bottom = 155.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_p1yb1")
 
-[node name="scanner" type="Label" parent="."]
+[node name="scanner" type="Label" parent="." unique_id=25525334]
 layout_mode = 0
 offset_left = 1842.0
 offset_top = 18.0
 offset_right = 2139.0
 offset_bottom = 158.0
 theme_override_colors/font_color = Color(0.9490196, 0.8117647, 0.14901961, 1)
-theme_override_font_sizes/font_size = 24
+theme_override_font_sizes/font_size = 28
 text = "SCANNER
 Type: Tunnel
 Value: 0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=369920602]
 
-[node name="Tour3" type="Panel" parent="CanvasLayer"]
+[node name="Tour3" type="Panel" parent="CanvasLayer" unique_id=825582986]
+visible = false
 z_index = 1
 offset_left = 1082.0
 offset_top = -106.0
@@ -433,7 +443,7 @@ offset_right = 2305.0
 offset_bottom = 1437.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_dnnvh")
 
-[node name="Tour3_msg" type="Label" parent="CanvasLayer/Tour3"]
+[node name="Tour3_msg" type="Label" parent="CanvasLayer/Tour3" unique_id=867089636]
 layout_mode = 0
 offset_left = 232.0
 offset_top = 529.0
@@ -446,7 +456,7 @@ text = "The box in the top right shows all the data the robots scanner picks up.
 horizontal_alignment = 1
 autowrap_mode = 2
 
-[node name="Tour3_next" type="Button" parent="CanvasLayer/Tour3"]
+[node name="Tour3_next" type="Button" parent="CanvasLayer/Tour3" unique_id=1947403851]
 layout_mode = 0
 offset_left = 534.0
 offset_top = 935.0
@@ -455,14 +465,14 @@ offset_bottom = 1002.0
 text = "Next"
 script = ExtResource("11_d5hkw")
 
-[node name="Panel" type="Panel" parent="CanvasLayer/Tour3"]
+[node name="Panel" type="Panel" parent="CanvasLayer/Tour3" unique_id=1176494118]
 layout_mode = 0
 offset_left = -1158.0
 offset_right = 40.0
 offset_bottom = 1538.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_n0p60")
 
-[node name="Tour2" type="Panel" parent="CanvasLayer"]
+[node name="Tour2" type="Panel" parent="CanvasLayer" unique_id=1777445041]
 visible = false
 z_index = 1
 offset_left = -54.0
@@ -472,7 +482,7 @@ offset_bottom = 1419.0
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_dnnvh")
 
-[node name="Tour2_msg" type="Label" parent="CanvasLayer/Tour2"]
+[node name="Tour2_msg" type="Label" parent="CanvasLayer/Tour2" unique_id=33085164]
 layout_mode = 0
 offset_left = 222.0
 offset_top = 448.0
@@ -484,7 +494,7 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_a7ae3")
 text = "This side of your screen shows the robots code blocks. Click one of the buttons below to add a block of that type, with each having a count of how many there are available. Press the run button to try your code."
 autowrap_mode = 2
 
-[node name="Tour2_next" type="Button" parent="CanvasLayer/Tour2"]
+[node name="Tour2_next" type="Button" parent="CanvasLayer/Tour2" unique_id=1346779973]
 layout_mode = 0
 offset_left = 519.0
 offset_top = 854.0
@@ -493,14 +503,14 @@ offset_bottom = 921.0
 text = "Next"
 script = ExtResource("2_6es81")
 
-[node name="Panel" type="Panel" parent="CanvasLayer/Tour2"]
+[node name="Panel" type="Panel" parent="CanvasLayer/Tour2" unique_id=671453669]
 layout_mode = 0
 offset_left = 1160.0
 offset_right = 2370.0
 offset_bottom = 1592.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_t27nk")
 
-[node name="Tour1" type="Panel" parent="CanvasLayer"]
+[node name="Tour1" type="Panel" parent="CanvasLayer" unique_id=719146719]
 visible = false
 z_index = 1
 offset_left = 1091.0
@@ -509,7 +519,7 @@ offset_right = 2314.0
 offset_bottom = 1413.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_dnnvh")
 
-[node name="Tour1_msg" type="Label" parent="CanvasLayer/Tour1"]
+[node name="Tour1_msg" type="Label" parent="CanvasLayer/Tour1" unique_id=2009330077]
 layout_mode = 0
 offset_left = 232.0
 offset_top = 529.0
@@ -521,7 +531,7 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_a7ae3")
 text = "This side of your screen shows the robot in the mines. Hover over the robot to see what you can see what you can do with it. "
 autowrap_mode = 2
 
-[node name="Tour1_next" type="Button" parent="CanvasLayer/Tour1"]
+[node name="Tour1_next" type="Button" parent="CanvasLayer/Tour1" unique_id=1983285660]
 layout_mode = 0
 offset_left = 534.0
 offset_top = 935.0
@@ -530,30 +540,30 @@ offset_bottom = 1002.0
 text = "Next"
 script = ExtResource("2_1ais2")
 
-[node name="Panel" type="Panel" parent="CanvasLayer/Tour1"]
+[node name="Panel" type="Panel" parent="CanvasLayer/Tour1" unique_id=881084183]
 layout_mode = 0
 offset_left = -1158.0
 offset_right = 40.0
 offset_bottom = 1538.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_n0p60")
 
-[node name="ScannerTile" type="TileMapLayer" parent="."]
+[node name="ScannerTile" type="TileMapLayer" parent="." unique_id=1336078566]
 position = Vector2(10, 45)
 scale = Vector2(1.5, 1.5)
 tile_map_data = PackedByteArray(0, 0, 22, 0, 0, 0, 1, 0, 4, 0, 0, 0, 0, 0)
 tile_set = ExtResource("9_ap2rb")
 
-[node name="RobotTooltip" type="Panel" parent="."]
+[node name="RobotTooltip" type="Panel" parent="." unique_id=1226547236]
 layout_mode = 0
 offset_left = 104.0
 offset_top = -504.0
-offset_right = 337.0
+offset_right = 471.0
 offset_bottom = -267.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_d5hkw")
 
-[node name="Text" type="Label" parent="RobotTooltip"]
+[node name="Text" type="Label" parent="RobotTooltip" unique_id=1457983203]
 layout_mode = 0
-offset_right = 241.0
+offset_right = 358.0
 offset_bottom = 227.0
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/font_size = 30
 horizontal_alignment = 1

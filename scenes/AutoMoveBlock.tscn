@@ -1,21 +1,21 @@
-[gd_scene load_steps=2 format=3 uid="uid://ckhqmrr54teya"]
+[gd_scene format=3 uid="uid://ckhqmrr54teya"]
 
 [ext_resource type="PackedScene" uid="uid://bg358417trm0u" path="res://scenes/DragBlock.tscn" id="1_ao0ag"]
 
-[node name="AutoMoveBlock" groups=["a_move_block"] instance=ExtResource("1_ao0ag")]
+[node name="AutoMoveBlock" unique_id=1691664058 groups=["a_move_block"] instance=ExtResource("1_ao0ag")]
 count_var_name = &"a_move_blocks"
 
 [node name="ColorRect" parent="." index="0"]
 color = Color(1.0588765e-05, 0.6798527, 0.9048336, 1)
 
-[node name="Label" type="Label" parent="." index="2" groups=["a_move_block"]]
+[node name="Label" type="Label" parent="." index="2" unique_id=1913486637 groups=["a_move_block"]]
 layout_mode = 0
-offset_left = 147.0
-offset_top = 33.0
-offset_right = 713.0
-offset_bottom = 141.0
+offset_left = 158.0
+offset_top = -4.0
+offset_right = 724.0
+offset_bottom = 175.0
 theme_override_colors/font_color = Color(0.9560098, 0.90937364, 0.4153526, 1)
 theme_override_font_sizes/font_size = 64
-text = "MOVE()"
+text = "MOVE() AND TURN()"
 horizontal_alignment = 1
 vertical_alignment = 1

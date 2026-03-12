@@ -90,6 +90,7 @@ func _ready():
 		add_child(t1)
 		robot = t1.get_node("Robot")
 		robot.update_metrics.connect(update_UI_score_l5)
+		
 		t1.generate_inside_from_boundary()
 		
 		
@@ -143,7 +144,7 @@ func reset_on_fail() -> void:
 	game_UI.enable_buttons()
 	
 	if LevelState.curr_lvl == 4:
-		LevelState.lvl4_gold = 11
+		LevelState.lvl4_gold = 12
 		
 		
 func update_UI_score_l5():

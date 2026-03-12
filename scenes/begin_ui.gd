@@ -43,7 +43,7 @@ var l5 := [
 	"> Time to let you loose in the real mine.",
 	"> The robot has a limited amount of energy until it needs recharged",
 	"> Try and mine things that give us the most value!",
-	"> " 
+	"> Tip: Just move around to work out the value of different things, then reset" 
 ]
 
 @export var line_delay := 2.5 # seconds between lines

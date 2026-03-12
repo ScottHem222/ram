@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://bj8gqqnace1y3"]
+[gd_scene format=3 uid="uid://bj8gqqnace1y3"]
 
 [ext_resource type="Script" uid="uid://dr4n4pnmb24rh" path="res://scenes/error_ui.gd" id="1_n3v3g"]
 [ext_resource type="Texture2D" uid="uid://c4rbyrfd383h4" path="res://assets/error_onr.png" id="1_s6eha"]
@@ -13,7 +13,7 @@ bg_color = Color(0.30588236, 0.05882353, 0.12156863, 0.69411767)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n3v3g"]
 bg_color = Color(0, 0, 0, 1)
 
-[node name="ErrorUI" type="Control"]
+[node name="ErrorUI" type="Control" unique_id=699037834]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -22,13 +22,13 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_n3v3g")
 
-[node name="BG" type="Panel" parent="."]
+[node name="BG" type="Panel" parent="." unique_id=147337880]
 layout_mode = 0
 offset_right = 2311.0
 offset_bottom = 1320.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_idij3")
 
-[node name="msg" type="Label" parent="."]
+[node name="msg" type="Label" parent="." unique_id=1204468081]
 layout_mode = 0
 offset_left = 611.0
 offset_top = 891.0
@@ -39,22 +39,22 @@ theme_override_font_sizes/font_size = 32
 theme_override_styles/normal = SubResource("StyleBoxFlat_n3v3g")
 autowrap_mode = 2
 
-[node name="NotReached" type="Sprite2D" parent="."]
+[node name="NotReached" type="Sprite2D" parent="." unique_id=141151792]
 position = Vector2(1124, 502.00006)
 scale = Vector2(1.631, 1.631)
 texture = ExtResource("1_s6eha")
 
-[node name="exploded" type="Sprite2D" parent="."]
+[node name="exploded" type="Sprite2D" parent="." unique_id=1914466784]
 position = Vector2(1122, 501)
 scale = Vector2(1.631, 1.631)
 texture = ExtResource("3_jl1nm")
 
-[node name="Stuck" type="Sprite2D" parent="."]
+[node name="Stuck" type="Sprite2D" parent="." unique_id=388548273]
 position = Vector2(1122, 501)
 scale = Vector2(1.631488, 1.6314878)
 texture = ExtResource("1_vqm7h")
 
-[node name="Hint" type="Button" parent="."]
+[node name="Hint" type="Button" parent="." unique_id=1707638774]
 layout_mode = 0
 offset_left = 774.0
 offset_top = 725.0
@@ -64,7 +64,7 @@ theme_override_font_sizes/font_size = 32
 text = "Hint"
 script = ExtResource("4_mo7io")
 
-[node name="Again" type="Button" parent="."]
+[node name="Again" type="Button" parent="." unique_id=1943210756]
 layout_mode = 0
 offset_left = 1161.0
 offset_top = 728.0

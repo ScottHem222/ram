@@ -1,17 +1,15 @@
-[gd_scene load_steps=5 format=3 uid="uid://vb74ufwchgjc"]
+[gd_scene format=3 uid="uid://vb74ufwchgjc"]
 
 [ext_resource type="PackedScene" uid="uid://bg358417trm0u" path="res://scenes/DragBlock.tscn" id="1_pjwlo"]
-[ext_resource type="Script" uid="uid://b0a8cl4e7qcbr" path="res://scenes/for_in.gd" id="2_1x5t4"]
-[ext_resource type="Script" uid="uid://pk04xw0t64qp" path="res://scenes/for_do.gd" id="3_auf7u"]
-[ext_resource type="Script" uid="uid://cyl0e7c7o27" path="res://scenes/for_for.gd" id="4_apiql"]
+[ext_resource type="Script" uid="uid://cpi3y1r8g0fxw" path="res://block_popup.gd" id="2_apiql"]
 
-[node name="ForBlock" groups=["for_block"] instance=ExtResource("1_pjwlo")]
+[node name="ForBlock" unique_id=483257261 groups=["for_block"] instance=ExtResource("1_pjwlo")]
 count_var_name = &"for_blocks"
 
 [node name="ColorRect" parent="." index="0"]
 color = Color(0.67215633, 0.63191235, 0.35111272, 1)
 
-[node name="Label2" type="Label" parent="." index="2"]
+[node name="Label2" type="Label" parent="." index="2" unique_id=445934107]
 layout_mode = 0
 offset_left = 407.0
 offset_top = -20.0
@@ -23,7 +21,7 @@ text = "IN"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Label" type="Label" parent="." index="3"]
+[node name="Label" type="Label" parent="." index="3" unique_id=658089865]
 layout_mode = 0
 offset_left = 16.0
 offset_top = -6.0
@@ -36,35 +34,38 @@ DO"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="in" type="LineEdit" parent="." index="4"]
+[node name="in" type="LineEdit" parent="." index="4" unique_id=1207775681]
 layout_mode = 0
 offset_left = 594.0
 offset_top = 8.0
 offset_right = 805.0
 offset_bottom = 85.0
-script = ExtResource("2_1x5t4")
+script = ExtResource("2_apiql")
+allowed_phrases = Array[String](["mine", "Mine"])
 
-[node name="Suggest" type="PopupMenu" parent="in" index="0" groups=["for_block"]]
+[node name="Suggest" type="PopupMenu" parent="in" index="0" unique_id=554806698 groups=["for_block"]]
 oversampling_override = 1.0
 
-[node name="do" type="LineEdit" parent="." index="5"]
+[node name="do" type="LineEdit" parent="." index="5" unique_id=1742020895]
 layout_mode = 0
 offset_left = 217.0
 offset_top = 88.0
 offset_right = 428.0
 offset_bottom = 165.0
-script = ExtResource("3_auf7u")
+script = ExtResource("2_apiql")
+allowed_phrases = Array[String](["move()", "Move()", "turn()", "Turn()", "mine()", "Mine()"])
 
-[node name="Suggest" type="PopupMenu" parent="do" index="0" groups=["for_block"]]
+[node name="Suggest" type="PopupMenu" parent="do" index="0" unique_id=521988288 groups=["for_block"]]
 oversampling_override = 1.0
 
-[node name="for" type="LineEdit" parent="." index="6"]
+[node name="for" type="LineEdit" parent="." index="6" unique_id=1415116407]
 layout_mode = 0
 offset_left = 216.0
 offset_top = 6.0
 offset_right = 427.0
 offset_bottom = 83.0
-script = ExtResource("4_apiql")
+script = ExtResource("2_apiql")
+allowed_phrases = Array[String](["ore", "Ore", "gold", "Gold", "uranium", "Uranium", "cobalt", "Cobalt", "copper", "Copper"])
 
-[node name="Suggest" type="PopupMenu" parent="for" index="0" groups=["for_block"]]
+[node name="Suggest" type="PopupMenu" parent="for" index="0" unique_id=2131341608 groups=["for_block"]]
 oversampling_override = 1.0

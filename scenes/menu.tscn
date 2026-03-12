@@ -1,17 +1,14 @@
-[gd_scene load_steps=16 format=4 uid="uid://dx04rhfotepfv"]
+[gd_scene format=4 uid="uid://dx04rhfotepfv"]
 
 [ext_resource type="Script" uid="uid://djfcbjwryd5s" path="res://scenes/menu.gd" id="1_mhnvy"]
 [ext_resource type="Script" uid="uid://ctx6525cie55n" path="res://scenes/menu_main_but_tut.gd" id="1_yqeox"]
 [ext_resource type="TileSet" uid="uid://dk1ojtjrx14v7" path="res://scenes/maintiles.tres" id="2_70i5f"]
 [ext_resource type="PackedScene" uid="uid://5b7xo3lylsap" path="res://scenes/menu_robot.tscn" id="2_mj5lg"]
 [ext_resource type="Script" uid="uid://dwxlnvpsdh7q" path="res://scenes/menu_tut_but_main.gd" id="2_vjb58"]
-[ext_resource type="Script" uid="uid://cpdo6ujkbx3s4" path="res://scenes/menu_tut_but_t1.gd" id="3_con2f"]
 [ext_resource type="Script" uid="uid://l6pk4ptgrm4k" path="res://scenes/tut_layer.gd" id="3_v86rl"]
 [ext_resource type="Theme" uid="uid://c4py26idpc8q6" path="res://scenes/menu_tut_button.tres" id="4_4ytvr"]
-[ext_resource type="Script" uid="uid://lt7e2bpngppq" path="res://scenes/menu_tut_but_t2.gd" id="5_g3eks"]
-[ext_resource type="Script" uid="uid://cauy7el312xyd" path="res://scenes/menu_tut_but_t3.gd" id="6_13sgg"]
-[ext_resource type="Script" uid="uid://dea2cpotjcvnw" path="res://scenes/menu_tut_but_t4.gd" id="6_i6lef"]
 [ext_resource type="Script" uid="uid://bf1ugmboimn6h" path="res://scenes/menu_but_final.gd" id="6_ufwb2"]
+[ext_resource type="Script" uid="uid://ck8iikfl0cen3" path="res://menu_levelbutton.gd" id="9_i6lef"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yqeox"]
 bg_color = Color(0.12156863, 0.05882353, 0.06666667, 1)
@@ -22,50 +19,50 @@ bg_color = Color(0, 0, 0, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vjb58"]
 bg_color = Color(0.12156863, 0.05882353, 0.06666667, 1)
 
-[node name="menu_sys" type="Node2D"]
+[node name="menu_sys" type="Node2D" unique_id=995534688]
 script = ExtResource("1_mhnvy")
 
-[node name="MainLayer" type="Panel" parent="."]
+[node name="MainLayer" type="Panel" parent="." unique_id=576649132]
 offset_right = 2311.0
 offset_bottom = 1320.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_yqeox")
 
-[node name="Robot4" parent="MainLayer" instance=ExtResource("2_mj5lg")]
+[node name="Robot4" parent="MainLayer" unique_id=1541994574 instance=ExtResource("2_mj5lg")]
 position = Vector2(1488.3696, 655.0631)
 rotation = 1.5707964
 scale = Vector2(0.99999994, 0.99999994)
 speed = 800.0
 tilemap_path = NodePath("../TileMapLayer")
 
-[node name="Robot5" parent="MainLayer" instance=ExtResource("2_mj5lg")]
+[node name="Robot5" parent="MainLayer" unique_id=2060792928 instance=ExtResource("2_mj5lg")]
 position = Vector2(1173, 211)
 rotation = 0.7853982
 scale = Vector2(0.99999994, 0.99999994)
 speed = 800.0
 tilemap_path = NodePath("../TileMapLayer")
 
-[node name="Robot3" parent="MainLayer" instance=ExtResource("2_mj5lg")]
+[node name="Robot3" parent="MainLayer" unique_id=505251677 instance=ExtResource("2_mj5lg")]
 position = Vector2(1931, 232)
 rotation = 1.5707964
 speed = 800.0
 tilemap_path = NodePath("../TileMapLayer")
 
-[node name="Robot2" parent="MainLayer" instance=ExtResource("2_mj5lg")]
+[node name="Robot2" parent="MainLayer" unique_id=1633219979 instance=ExtResource("2_mj5lg")]
 position = Vector2(747, 857)
 rotation = 0.7853982
 speed = 800.0
 tilemap_path = NodePath("../TileMapLayer")
 
-[node name="Robot" parent="MainLayer" instance=ExtResource("2_mj5lg")]
+[node name="Robot" parent="MainLayer" unique_id=232368628 instance=ExtResource("2_mj5lg")]
 position = Vector2(210, 766)
 speed = 800.0
 tilemap_path = NodePath("../TileMapLayer")
 
-[node name="TileMapLayer" type="TileMapLayer" parent="MainLayer"]
+[node name="TileMapLayer" type="TileMapLayer" parent="MainLayer" unique_id=174908197]
 tile_map_data = PackedByteArray("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")
 tile_set = ExtResource("2_70i5f")
 
-[node name="Tutorials" type="Button" parent="MainLayer"]
+[node name="Tutorials" type="Button" parent="MainLayer" unique_id=1606953911]
 layout_mode = 0
 offset_left = 944.0
 offset_top = 670.0
@@ -76,7 +73,7 @@ theme_override_font_sizes/font_size = 64
 text = "Tutorials"
 script = ExtResource("1_yqeox")
 
-[node name="Final" type="Button" parent="MainLayer"]
+[node name="Final" type="Button" parent="MainLayer" unique_id=121573377]
 layout_mode = 0
 offset_left = 948.0
 offset_top = 824.0
@@ -89,7 +86,7 @@ text = "Endless
 "
 script = ExtResource("6_ufwb2")
 
-[node name="Label2" type="Label" parent="MainLayer"]
+[node name="Label2" type="Label" parent="MainLayer" unique_id=518548650]
 layout_mode = 0
 offset_left = 537.0
 offset_top = 279.0
@@ -100,7 +97,7 @@ text = "Programming Fundamentals"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Label" type="Label" parent="MainLayer"]
+[node name="Label" type="Label" parent="MainLayer" unique_id=1698852123]
 layout_mode = 0
 offset_left = 538.0
 offset_top = 149.0
@@ -112,7 +109,7 @@ text = "Repeat After Me."
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="scoreboard" type="Label" parent="MainLayer"]
+[node name="scoreboard" type="Label" parent="MainLayer" unique_id=1670972248]
 layout_mode = 0
 offset_left = 1732.0
 offset_top = 570.0
@@ -125,14 +122,14 @@ text = "Endless Scoreboard:
 "
 autowrap_mode = 2
 
-[node name="TutLayer" type="Panel" parent="."]
+[node name="TutLayer" type="Panel" parent="." unique_id=837901145]
 visible = false
 offset_right = 2311.0
 offset_bottom = 1357.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_vjb58")
 script = ExtResource("3_v86rl")
 
-[node name="menu" type="Button" parent="TutLayer"]
+[node name="menu" type="Button" parent="TutLayer" unique_id=1897693766]
 layout_mode = 0
 offset_left = 924.0
 offset_top = 169.0
@@ -143,7 +140,7 @@ text = "main menu
 "
 script = ExtResource("2_vjb58")
 
-[node name="4" type="Button" parent="TutLayer"]
+[node name="4" type="Button" parent="TutLayer" unique_id=102860618]
 layout_mode = 0
 offset_left = 938.0
 offset_top = 890.0
@@ -154,9 +151,10 @@ theme_override_font_sizes/font_size = 64
 disabled = true
 text = "4. Final Test
 "
-script = ExtResource("6_i6lef")
+script = ExtResource("9_i6lef")
+lvl = 4
 
-[node name="3" type="Button" parent="TutLayer"]
+[node name="3" type="Button" parent="TutLayer" unique_id=391839959]
 layout_mode = 0
 offset_left = 1569.0
 offset_top = 548.0
@@ -167,9 +165,10 @@ theme_override_font_sizes/font_size = 64
 disabled = true
 text = "3. Looping
 "
-script = ExtResource("6_13sgg")
+script = ExtResource("9_i6lef")
+lvl = 3
 
-[node name="2" type="Button" parent="TutLayer"]
+[node name="2" type="Button" parent="TutLayer" unique_id=1972032713]
 layout_mode = 0
 offset_left = 939.0
 offset_top = 551.0
@@ -179,9 +178,10 @@ theme = ExtResource("4_4ytvr")
 theme_override_font_sizes/font_size = 64
 disabled = true
 text = "2. Conditions"
-script = ExtResource("5_g3eks")
+script = ExtResource("9_i6lef")
+lvl = 2
 
-[node name="1" type="Button" parent="TutLayer"]
+[node name="1" type="Button" parent="TutLayer" unique_id=2060292369]
 layout_mode = 0
 offset_left = 201.0
 offset_top = 548.0
@@ -192,4 +192,5 @@ theme_override_font_sizes/font_size = 64
 disabled = true
 text = "1. Basic Functions
 "
-script = ExtResource("3_con2f")
+script = ExtResource("9_i6lef")
+lvl = 1

@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://1suq8bys24u4"]
+[gd_scene format=3 uid="uid://1suq8bys24u4"]
 
 [ext_resource type="Script" uid="uid://bny4wadgtol62" path="res://scenes/victory_ui.gd" id="1_1am8u"]
 [ext_resource type="Texture2D" uid="uid://db67w0j0txh7d" path="res://assets/done.png" id="1_t2it0"]
@@ -9,7 +9,7 @@ bg_color = Color(0.2791213, 0.680668, 0.5907944, 0.4117647)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xftm4"]
 bg_color = Color(0, 0, 0, 1)
 
-[node name="WinUI" type="Control"]
+[node name="WinUI" type="Control" unique_id=1256090733]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -18,13 +18,13 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_1am8u")
 
-[node name="BG" type="Panel" parent="."]
+[node name="BG" type="Panel" parent="." unique_id=1601882160]
 layout_mode = 0
 offset_right = 2311.0
 offset_bottom = 1320.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_1am8u")
 
-[node name="msg" type="Label" parent="."]
+[node name="msg" type="Label" parent="." unique_id=107654041]
 layout_mode = 0
 offset_left = 611.0
 offset_top = 891.0
@@ -35,12 +35,12 @@ theme_override_font_sizes/font_size = 32
 theme_override_styles/normal = SubResource("StyleBoxFlat_xftm4")
 autowrap_mode = 2
 
-[node name="win" type="Sprite2D" parent="."]
+[node name="win" type="Sprite2D" parent="." unique_id=1826242975]
 position = Vector2(1122, 501)
 scale = Vector2(1.631488, 1.6314878)
 texture = ExtResource("1_t2it0")
 
-[node name="Menu" type="Button" parent="."]
+[node name="Menu" type="Button" parent="." unique_id=254336320]
 layout_mode = 0
 offset_left = 976.0
 offset_top = 725.0

@@ -1,15 +1,15 @@
-[gd_scene load_steps=3 format=3 uid="uid://dcjyc7ga2dbhf"]
+[gd_scene format=3 uid="uid://dcjyc7ga2dbhf"]
 
 [ext_resource type="PackedScene" uid="uid://bg358417trm0u" path="res://scenes/DragBlock.tscn" id="1_qowjr"]
-[ext_resource type="Script" uid="uid://bwls7lrbe6quj" path="res://scenes/turn_dir.gd" id="2_kp6ew"]
+[ext_resource type="Script" uid="uid://cpi3y1r8g0fxw" path="res://block_popup.gd" id="2_kp6ew"]
 
-[node name="TurnBlock" groups=["turn_block"] instance=ExtResource("1_qowjr")]
+[node name="TurnBlock" unique_id=266767469 groups=["turn_block"] instance=ExtResource("1_qowjr")]
 count_var_name = &"turn_blocks"
 
 [node name="ColorRect" parent="." index="0"]
 color = Color(0.39364734, 0.6991832, 0.5322247, 1)
 
-[node name="Label" type="Label" parent="." index="2"]
+[node name="Label" type="Label" parent="." index="2" unique_id=1212300831]
 layout_mode = 0
 offset_left = 10.0
 offset_top = 28.0
@@ -21,13 +21,14 @@ text = "TURN DIRECTION"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="dir" type="LineEdit" parent="." index="3"]
+[node name="dir" type="LineEdit" parent="." index="3" unique_id=1951356358]
 layout_mode = 0
 offset_left = 562.0
 offset_top = 47.0
 offset_right = 803.0
 offset_bottom = 124.0
 script = ExtResource("2_kp6ew")
+allowed_phrases = Array[String](["left", "Left", "right", "Right"])
 
-[node name="Suggest" type="PopupMenu" parent="dir" index="0" groups=["turn_block"]]
+[node name="Suggest" type="PopupMenu" parent="dir" index="0" unique_id=912011745 groups=["turn_block"]]
 oversampling_override = 1.0

@@ -1,19 +1,19 @@
-[gd_scene load_steps=4 format=3 uid="uid://dbql64al8j4bf"]
+[gd_scene format=3 uid="uid://dbql64al8j4bf"]
 
 [ext_resource type="Script" uid="uid://bp17yvhrgw3k8" path="res://scenes/main.gd" id="1_sugp2"]
 [ext_resource type="PackedScene" uid="uid://dn0ldn8kemnnw" path="res://scenes/CodeUI.tscn" id="2_0wfyh"]
 [ext_resource type="PackedScene" uid="uid://bu0pqmssnipyd" path="res://scenes/BeginUI.tscn" id="4_jyhfs"]
 
-[node name="Node2D" type="Node2D"]
+[node name="Node2D" type="Node2D" unique_id=868347095]
 script = ExtResource("1_sugp2")
 
-[node name="GameUILayer" type="CanvasLayer" parent="."]
+[node name="GameUILayer" type="CanvasLayer" parent="." unique_id=377102785]
 
-[node name="level_UI" parent="GameUILayer" instance=ExtResource("2_0wfyh")]
+[node name="level_UI" parent="GameUILayer" unique_id=422411928 instance=ExtResource("2_0wfyh")]
 
-[node name="BeginLayer" type="CanvasLayer" parent="."]
+[node name="BeginLayer" type="CanvasLayer" parent="." unique_id=754502886]
 visible = false
 
-[node name="beginUI" parent="BeginLayer" instance=ExtResource("4_jyhfs")]
+[node name="beginUI" parent="BeginLayer" unique_id=1234319990 instance=ExtResource("4_jyhfs")]
 
-[node name="FailLayer" type="CanvasLayer" parent="."]
+[node name="FailLayer" type="CanvasLayer" parent="." unique_id=1062207424]

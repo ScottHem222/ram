@@ -8,7 +8,7 @@ signal error_reset
 
 
 var l1_onr := [
-	"> Move the robot further, the gold is 30 units away."
+	"> Move the robot further, the gold is 30 units away, but you may need go further after turning!"
 ]
 
 var l1_stuck := [
@@ -16,13 +16,13 @@ var l1_stuck := [
 ]
 
 var l2_onr := [
-	"> Move the robot further, the gold is 20 units away.",
+	"> Move the robot further, the gold is 30 units away.",
 	"> The robot turns also seem to be random so you might need to go further than that"
 ]
 
 #stuck
 var l2_stuck := [
-	"> Use an IF block",
+	"> We need to turn the robot IF there is *something* infront of it",
 	"> Hovering over the robot lists what it can do",
 	"> The scanner also shows the type of tile currently infront of the robot"
 ]

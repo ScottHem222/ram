@@ -40,7 +40,13 @@ func update_status(new, col):
 func update_goal_msg():
 	
 	if LevelState.curr_lvl == 5:
-		$goal.text = str("Energy: ", LevelState.lvl5_energy, "\nScore: ", LevelState.lvl5_score)
+		var nrg
+		if LevelState.lvl5_energy <= 0:
+			nrg = 0
+		else:
+			nrg = LevelState.lvl5_energy
+		
+		$goal.text = str("Energy: ", nrg, "\nScore: ", LevelState.lvl5_score)
 	
 	if LevelState.curr_lvl < 4:
 		$goal.text = "Current Goal:\nReach Ore Deposit"
@@ -126,5 +132,6 @@ func rst_pressed() -> void:
 		get_tree().get_first_node_in_group("level_4_root").restore_tilemap_to_original()
 		
 	if LevelState.curr_lvl == 5:
-		LevelState.lvl5_energy = 100
+		LevelState.lvl5_energy = 250
+		LevelState.lvl5_score = 0
 		

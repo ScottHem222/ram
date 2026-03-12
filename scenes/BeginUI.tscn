@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://bu0pqmssnipyd"]
+[gd_scene format=3 uid="uid://bu0pqmssnipyd"]
 
 [ext_resource type="Script" uid="uid://dtagwqmobex25" path="res://scenes/begin_ui.gd" id="1_v4dxp"]
 [ext_resource type="Script" uid="uid://dksv31e2x62g" path="res://scenes/beginUI_remove.gd" id="2_u1xyg"]
@@ -9,7 +9,7 @@ bg_color = Color(0.77254903, 0.5372549, 0.4627451, 0.5647059)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v4dxp"]
 bg_color = Color(0, 0, 0, 1)
 
-[node name="beginUI" type="Control"]
+[node name="beginUI" type="Control" unique_id=718772429]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -19,13 +19,13 @@ grow_vertical = 2
 script = ExtResource("1_v4dxp")
 line_delay = 0.8
 
-[node name="bg" type="Panel" parent="."]
+[node name="bg" type="Panel" parent="." unique_id=422043388]
 layout_mode = 0
 offset_right = 2381.0
 offset_bottom = 1521.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_01omy")
 
-[node name="LevelMsg" type="Label" parent="."]
+[node name="LevelMsg" type="Label" parent="." unique_id=1954433268]
 layout_mode = 0
 offset_left = 575.0
 offset_top = 224.0
@@ -36,7 +36,7 @@ theme_override_font_sizes/font_size = 32
 theme_override_styles/normal = SubResource("StyleBoxFlat_v4dxp")
 autowrap_mode = 2
 
-[node name="Button" type="Button" parent="."]
+[node name="Button" type="Button" parent="." unique_id=539276296]
 layout_mode = 0
 offset_left = 1009.0
 offset_top = 922.0

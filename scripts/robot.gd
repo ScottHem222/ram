@@ -86,6 +86,7 @@ func _ready() -> void:
 	add_to_group("robot")
 	
 	tilemap = get_node(tilemap_path)
+	_snap_to_grid()
 
 	tooltip_panel = get_node("/root/Node2D/GameUILayer/level_UI/RobotTooltip")
 	tooltip_label = get_node("/root/Node2D/GameUILayer/level_UI/RobotTooltip/Text")
@@ -93,14 +94,6 @@ func _ready() -> void:
 	hover_area.mouse_exited.connect(_on_robot_mouse_exited)
 	tooltip_panel.visible = false
 
-	# runtime tunnel tile template (grabs whatever tile the robot starts on)
-	# (useful if your tunnel source id isn't 0 in a given level)
-	var start_cell := _cell_under_robot()
-	var sid := tilemap.get_cell_source_id(start_cell)
-	if sid != -1:
-		tunnel_source_id = sid
-		tunnel_atlas_coords = tilemap.get_cell_atlas_coords(start_cell)
-		tunnel_alt = tilemap.get_cell_alternative_tile(start_cell)
 		
 	_l4_start = _cell_under_robot()
 
@@ -127,7 +120,7 @@ func _physics_process(delta: float) -> void:
 	else:
 		velocity = Vector2.ZERO
 
-
+"""
 # -------------------------
 # DEBUG DRAW
 # -------------------------
@@ -145,7 +138,7 @@ func _update_debug_ahead_point(ahead_cell: Vector2i) -> void:
 	var local := tilemap.map_to_local(ahead_cell) + Vector2(tile_size * 0.5, tile_size * 0.5)
 	debug_probe_point = tilemap.to_global(local)
 	queue_redraw()
-
+"""
 
 # -------------------------
 # AUTO MOVE
@@ -155,7 +148,7 @@ func _auto_move_tick(_delta: float) -> void:
 	if LevelState.curr_lvl == 4 and mine_gold and not _mining:
 		var cell := _cell_under_robot()
 		var ahead_cell := _cell_ahead_from(cell)
-		_update_debug_ahead_point(ahead_cell)
+		#_update_debug_ahead_point(ahead_cell)
 
 		if _tile_type_at(ahead_cell) == "gold":
 			velocity = Vector2.ZERO
@@ -224,7 +217,7 @@ func _step_tick(delta: float) -> void:
 	# ---- GRID-BASED tile checks (same as scanner) ----
 	var cell := _cell_under_robot()
 	var ahead_cell := _cell_ahead_from(cell)
-	_update_debug_ahead_point(ahead_cell)
+	#_update_debug_ahead_point(ahead_cell)
 
 	var here_type := _tile_type_at(cell)
 	var ahead_type := _tile_type_at(ahead_cell)
@@ -242,7 +235,7 @@ func _step_tick(delta: float) -> void:
 			_stuck_frames = 0
 			return
 	else:
-		if here_type == "gold" or ahead_type == "gold":
+		if here_type == "gold" or ahead_type == "gold" or here_type.begins_with("gem") or ahead_type.begins_with("gem"):
 			_step_remaining = 0.0
 			_finish_step(true)
 			return
@@ -583,6 +576,10 @@ func reset_pos() -> void:
 	
 	if LevelState.curr_lvl == 4:
 		LevelState.lvl4_gold = 11
+
+func _snap_to_grid() -> void:
+	var cell = tilemap.local_to_map(tilemap.to_local(global_position))
+	global_position = tilemap.to_global(tilemap.map_to_local(cell))
 
 
 # -------------------------

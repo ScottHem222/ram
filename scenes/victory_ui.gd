@@ -14,7 +14,7 @@ func _ready() -> void:
 	elif LevelState.curr_lvl == 3:
 		$msg.text = "You now know how to use a WHILE loop to repeat things until its condition is met"
 	elif LevelState.curr_lvl == 4:
-		$msg.text = "You know how how to use a FOR loop to repate things a specific amount of times"
+		$msg.text = "You know how how to use a FOR loop to repeat things a specific amount of times"
 	elif LevelState.curr_lvl == 5:
 		$msg.text = str("Mining complete and robot returned home!. Score: ", LevelState.lvl5_score)
 		
