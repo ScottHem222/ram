@@ -5,7 +5,7 @@ extends Control
 @export var tile_size := 64.0
 
 var slot_positions: Array[float] = []
-var slot_occupants: Array[Node] = [] # can still contain null
+var slot_occupants: Array[Node] = [] 
 
 
 func _ready():
@@ -26,7 +26,7 @@ func _initialize_slots():
 
 
 # ---------------------------------------------------------
-# Get the highest free slot (slot 0 first, then 1,2,...)
+# Slot helpers
 # ---------------------------------------------------------
 func get_highest_free_slot() -> int:
 	for i in range(snap_slots):
@@ -48,11 +48,7 @@ func _get_slot_size(block: Node) -> int:
 		return maxi(1, int(block.slot_size))
 	return 1
 
-
-# ---------------------------------------------------------
-# Called both when dragging begins AND when deleting:
-# Removes block from array and auto-shuffles other blocks up
-# ---------------------------------------------------------
+# Removes block from array and shuffles other blocks up
 func clear_slot(block: Node) -> void:
 	var first := -1
 
@@ -63,25 +59,9 @@ func clear_slot(block: Node) -> void:
 				first = i
 			slot_occupants[i] = null
 
-	# If we cleared something, compact everything down
+	# if cleared then compact others down
 	if first != -1:
 		_compact_slots()
-
-
-# ---------------------------------------------------------
-# Shuffle every block below upwards by 1 slot
-# Used when a block gets deleted above
-# ---------------------------------------------------------
-func _has_prop(obj: Object, prop_name: StringName) -> bool:
-	for p in obj.get_property_list():
-		if StringName(p.name) == prop_name:
-			return true
-	return false
-
-func _get_int_prop(obj: Object, prop_name: StringName, default_val: int) -> int:
-	if _has_prop(obj, prop_name):
-		return int(obj.get(prop_name))
-	return default_val
 
 func _compact_slots() -> void:
 	var seen := {}
@@ -116,7 +96,11 @@ func _compact_slots() -> void:
 			b.set(&"current_slot", write_idx)
 
 		write_idx += sz
-	
+
+# ---------------------------------------------------------
+# code block parsing
+# ---------------------------------------------------------
+
 func run_blocks(robot: Node) -> void:
 	if robot == null:
 		push_error("run_blocks: robot is null")
@@ -128,35 +112,34 @@ func run_blocks(robot: Node) -> void:
 	robot.mine_ore = false
 	robot.mine_obstacles = false
 	
-	# Ensure tilemap backup exists before any mining happens
+	# save tilemap for resetting level
 	if LevelState.curr_lvl == 4:
 		var lvl := get_tree().get_first_node_in_group("level_4_root")
 		lvl.ensure_original_captured()
 
-	# Reset per-run robot flags so old runs don't leak
+	# reset robots bools
 	_reset_robot_run_flags(robot)
 
-	# Apply rule blocks that change robot behavior
+	# for/if blocks
 	_apply_if_blocks(robot)
 	if LevelState.curr_lvl == 4:
 		_apply_for_blocks(robot)
 	elif LevelState.curr_lvl == 5:
 		_apply_for_blocks(robot)
 
-	# Execute in order
+	# then any other blocks
 	var blocks := _get_unique_blocks_in_order()
 
-	# If a WHILE block exists and is valid, run it and stop (it "owns" execution)
+	# while blocks
 	var in_while := await _try_run_while(robot, blocks)
 	if in_while:
 		if robot.has_method("check_done_cond"):
 			robot.check_done_cond(true)
 		return
 
-	# Otherwise run sequentially
+	# sequential blocks
 	for block in blocks:
 		if block.is_in_group("a_move_block"):
-			# "auto move until something stops it"
 			if _has_prop(robot, &"turn"):
 				robot.turn = true
 			if robot.has_method("move_step_infinite"):
@@ -182,7 +165,7 @@ func run_blocks(robot: Node) -> void:
 
 
 # -----------------------------
-# Build a unique ordered list of blocks (top->bottom)
+# get block list
 # -----------------------------
 func _get_unique_blocks_in_order() -> Array[Node]:
 	var seen := {}
@@ -201,20 +184,14 @@ func _get_unique_blocks_in_order() -> Array[Node]:
 
 
 # -----------------------------
-# Reset robot flags each RUN
+# parsing helpers
 # -----------------------------
 func _reset_robot_run_flags(robot: Node) -> void:
-	if _has_prop(robot, &"turn"):
-		robot.turn = false
-	if _has_prop(robot, &"auto_stop"):
-		robot.auto_stop = false
-	if _has_prop(robot, &"mine_gold"):
-		robot.mine_gold = false
+	robot.turn = false
+	robot.auto_stop = false
+	robot.mine_gold = false
 
 
-# -----------------------------
-# IF blocks (rules)
-# -----------------------------
 func _apply_if_blocks(robot: Node) -> void:
 	for b in _get_unique_blocks_in_order():
 		if not b.is_in_group("if_block"):
@@ -270,12 +247,6 @@ func _apply_if_blocks(robot: Node) -> void:
 				elif cond == "gold":
 					robot.turn_gold = true
 			
-		
-
-
-# -----------------------------
-# FOR blocks (level 4 mining)
-# -----------------------------
 func _apply_for_blocks(robot: Node) -> void:
 	for b in _get_unique_blocks_in_order():
 		if not b.is_in_group("for_block"):
@@ -303,11 +274,6 @@ func _apply_for_blocks(robot: Node) -> void:
 					robot.mine_ur = true
 			
 
-
-# -----------------------------
-# WHILE blocks
-# Returns true if a while loop was executed
-# -----------------------------
 func _is_at_goal(robot: Node) -> bool:
 	# Goal is true if gold is under robot OR ahead
 	if robot.has_method("check_tile_here") and robot.check_tile_here() == "gold":
@@ -373,9 +339,6 @@ func _try_run_while(robot: Node, blocks: Array[Node]) -> bool:
 	return false
 
 
-# -----------------------------
-# Existing helpers 
-# -----------------------------
 func _get_move_units(block: Node) -> int:
 	var units_node := block.find_child("units", true, false)
 	if units_node is LineEdit:
@@ -398,3 +361,16 @@ func _get_text_field(block: Node, field_name: String) -> String:
 	return n.text.strip_edges() if n is LineEdit else ""
 
 	
+# ---------------------------------------------------------
+# property helpers
+# ---------------------------------------------------------
+func _has_prop(obj: Object, prop_name: StringName) -> bool:
+	for p in obj.get_property_list():
+		if StringName(p.name) == prop_name:
+			return true
+	return false
+
+func _get_int_prop(obj: Object, prop_name: StringName, default_val: int) -> int:
+	if _has_prop(obj, prop_name):
+		return int(obj.get(prop_name))
+	return default_val

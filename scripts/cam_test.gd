@@ -1,6 +1,6 @@
 extends Camera2D
 
-@export var speed := 300.0   # pixels per second
+@export var speed := 300.0  
 
 
 func _ready():

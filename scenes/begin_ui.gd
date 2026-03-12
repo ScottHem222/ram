@@ -46,15 +46,12 @@ var l5 := [
 	"> Tip: Just move around to work out the value of different things, then reset" 
 ]
 
-@export var line_delay := 2.5 # seconds between lines
+@export var line_delay := 2.5 
 
 func _ready():
 	$Button.disabled = true
 	play_init_msg()
 	
-
-
-
 
 func play_init_msg():
 	

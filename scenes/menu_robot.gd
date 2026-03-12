@@ -4,8 +4,7 @@ extends CharacterBody2D
 @export var turn_degrees: float = 90.0
 @export var tilemap_path: NodePath
 
-# How often random turns happen (lower = more frequent)
-@export var random_turn_chance: float = 0.01   # 1% per physics frame
+@export var random_turn_chance: float = 0.01   
 
 @onready var tilemap: TileMapLayer = get_node(tilemap_path)
 

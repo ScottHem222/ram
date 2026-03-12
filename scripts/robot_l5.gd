@@ -10,28 +10,28 @@ extends CharacterBody2D
 @export var tilemap_path: NodePath
 var tilemap: TileMapLayer 
 
-# Mining replacement tile (set in inspector)
+# mining tile
 @export var mine_delay: float = 2.0
 @export var tunnel_source_id: int = 0
 @export var tunnel_atlas_coords: Vector2i = Vector2i(4, 0)
 @export var tunnel_alt: int = 0
 
-# Optional: bias turning toward a known gold cell (for specific levels)
+# biased turning
 @export var gold_cell: Vector2i = Vector2i.ZERO
 @export var gold_turn_bias: float = 0.75
 
 var _stuck_frames: int = 0
 const STUCK_LIMIT := 8
 
-# debug dot for "ahead" check (grid-based, same as scanner)
-@export var show_probe_debug: bool = true
-var debug_probe_point: Vector2 = Vector2.ZERO
+# debug 
+#@export var show_probe_debug: bool = true
+#var debug_probe_point: Vector2 = Vector2.ZERO
 
-#level 4
+# level 4
 var _l4_start = Vector2i.ZERO
 var _l4_left_start = false
 
-#level 5
+# level 5
 @export var end_zone_path: NodePath
 var end_zone: Node2D
 
@@ -53,15 +53,10 @@ signal update_metrics
 # -------------------------
 # SIGNALS / STATE
 # -------------------------
-@warning_ignore("unused_signal")
-signal onr()
-@warning_ignore("unused_signal")
+
 signal blocked()
 signal gold_reached()
 signal step_finished
-@warning_ignore("unused_signal")
-signal gem_mined()
-
 
 
 var auto_move: bool = false
@@ -348,10 +343,30 @@ func _reset_turn_block_state() -> void:
 	_just_turned = false
 	_turned_dir_sign = 0
 	_turn_attempts = 0
+	
+func _choose_turn_toward_gold() -> int:
+	var my_cell := _cell_under_robot()
+	var to_gold: Vector2 = Vector2(gold_cell - my_cell)
+	if to_gold.length() < 0.001:
+		return -1 if randi() % 2 == 0 else 1
+
+	to_gold = to_gold.normalized()
+
+	var left_dir: Vector2 = _step_dir.rotated(-deg_to_rad(turn_degrees)).normalized()
+	var right_dir: Vector2 = _step_dir.rotated(deg_to_rad(turn_degrees)).normalized()
+
+	var left_score: float = left_dir.dot(to_gold)
+	var right_score: float = right_dir.dot(to_gold)
+
+	var best := 1 if right_score > left_score else -1
+	if randf() < gold_turn_bias:
+		return best
+
+	return -1 if randi() % 2 == 0 else 1
 
 
 # -------------------------
-# MINING (ahead/l/r, grid)
+# MINING 
 # -------------------------
 func _mine_tick() -> void:
 	if _mining:
@@ -413,7 +428,7 @@ func _set_cell_to_tunnel(cell: Vector2i) -> void:
 
 
 # -------------------------
-# TILE (grid-based, same as )
+# TILE helpers
 # -------------------------
 func _tile_should_turn(tile_type: String) -> bool:
 	if tile_type == "gold":
@@ -550,6 +565,14 @@ func _hit_ahead() -> bool:
 			return true
 	return false
 
+func _grid_step_from_dir(dir: Vector2) -> Vector2i:
+	var ax := absf(dir.x)
+	var ay := absf(dir.y)
+
+	if ax >= ay:
+		return Vector2i(int(sign(dir.x)), 0)
+	else:
+		return Vector2i(0, int(sign(dir.y)))
 
 # -------------------------
 # VISUALS
@@ -661,40 +684,7 @@ func _snap_to_grid() -> void:
 	var cell = tilemap.local_to_map(tilemap.to_local(global_position))
 	global_position = tilemap.to_global(tilemap.map_to_local(cell))
 
-# -------------------------
-# GOLD-BIAS TURN
-# -------------------------
-func _choose_turn_toward_gold() -> int:
-	var my_cell := _cell_under_robot()
-	var to_gold: Vector2 = Vector2(gold_cell - my_cell)
-	if to_gold.length() < 0.001:
-		return -1 if randi() % 2 == 0 else 1
 
-	to_gold = to_gold.normalized()
-
-	var left_dir: Vector2 = _step_dir.rotated(-deg_to_rad(turn_degrees)).normalized()
-	var right_dir: Vector2 = _step_dir.rotated(deg_to_rad(turn_degrees)).normalized()
-
-	var left_score: float = left_dir.dot(to_gold)
-	var right_score: float = right_dir.dot(to_gold)
-
-	var best := 1 if right_score > left_score else -1
-	if randf() < gold_turn_bias:
-		return best
-
-	return -1 if randi() % 2 == 0 else 1
-
-# ----------------------
-# Fix for tile detection
-# ----------------------
-func _grid_step_from_dir(dir: Vector2) -> Vector2i:
-	var ax := absf(dir.x)
-	var ay := absf(dir.y)
-
-	if ax >= ay:
-		return Vector2i(int(sign(dir.x)), 0)
-	else:
-		return Vector2i(0, int(sign(dir.y)))
 
 
 # -------------------------

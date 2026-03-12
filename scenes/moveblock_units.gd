@@ -1,7 +1,7 @@
 extends LineEdit
 
 const MIN_VAL := 1
-const MAX_VAL := 100
+const MAX_VAL := 200
 
 func _ready():
 	text_changed.connect(_on_text_changed)

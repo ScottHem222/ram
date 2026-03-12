@@ -3,13 +3,7 @@ extends Node
 @export var tilemap_path: NodePath
 @onready var tilemap: TileMapLayer = get_node(tilemap_path)
 
-# --- How we detect the boundary ---
-# This assumes your wall tiles have TileData custom_data: type = "wall", "wall_top", etc.
 @export var wall_type_prefix: String = "wall"
-
-# --- What we fill the inside with ---
-# Provide one or more tile options from your TileSet atlas.
-# Each option is (source_id, atlas_coords, alt, weight)
 @export var fill_tiles: Array = [
 	[1, Vector2i(4,0), 0, 50],
 	[1, Vector2i(0,1), 0, 3],
@@ -19,21 +13,12 @@ extends Node
 	[1, Vector2i(1,1), 0, 1],
 ]
 
-# Optional: if true, keep existing tiles inside if already painted
 @export var only_fill_empty_cells: bool = true
-
-# Safety: limit processing bounds to the painted area
 @export var extra_margin: int = 2
 
 func generate_inside_from_boundary() -> void:
-	if tilemap == null:
-		push_error("TileMapLayer missing")
-		return
-	if fill_tiles.is_empty():
-		push_error("fill_tiles is empty. Add at least one tile option.")
-		return
 
-	# 1) Compute bounds of used cells
+	# compute bounds of used cells
 	var used := tilemap.get_used_cells()
 	if used.is_empty():
 		push_error("Tilemap has no used cells.")
@@ -54,7 +39,7 @@ func generate_inside_from_boundary() -> void:
 	maxx += extra_margin
 	maxy += extra_margin
 
-	# 2) Mark wall cells in bounds
+	# mark wall cells in bounds
 	var walls := {}
 	for y in range(miny, maxy + 1):
 		for x in range(minx, maxx + 1):
@@ -62,8 +47,7 @@ func generate_inside_from_boundary() -> void:
 			if _is_wall_cell(cell):
 				walls[cell] = true
 
-	# 3) Flood-fill from outside to find "outside" region
-	# Any cell reachable from the bounding box border without crossing walls is outside.
+	# fill walls
 	var outside := {}
 	var q: Array[Vector2i] = []
 
@@ -82,7 +66,7 @@ func generate_inside_from_boundary() -> void:
 			continue
 		_flood_outside(start, minx, miny, maxx, maxy, walls, outside)
 
-	# 4) Any non-wall cell in bounds that is NOT outside is "inside"
+	# get inside wall tiles
 	var rng := RandomNumberGenerator.new()
 	rng.randomize()
 

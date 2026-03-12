@@ -1,6 +1,6 @@
 extends Button
 
-@onready var target_node = $"../../beginUI"  # adjust path
+@onready var target_node = $"../../beginUI" 
 @onready var level_ui := get_node("../../../GameUILayer/level_UI")
 
 func _ready():

@@ -44,7 +44,7 @@ var l5_stuck := [
 	"> Use if statements to either mine whats blocking you or turn away from it"
 ]
 
-@export var line_delay := 0.2 # seconds between lines
+@export var line_delay := 0.2 
 
 func _ready() -> void:
 	$"../".visible = false
@@ -78,40 +78,31 @@ func play_hint_msg():
 	
 	if LevelState.curr_lvl == 1:
 		if err_type == 1:
-			for line in l1_onr:
-				$msg.text += line + "\n"
-				await get_tree().create_timer(line_delay).timeout
+			print_error(l1_onr)
 		elif err_type == 2:
-			for line in l1_stuck:
-				$msg.text += line + "\n"
-				await get_tree().create_timer(line_delay).timeout
+			print_error(l1_stuck)
 	elif LevelState.curr_lvl == 2:
 		if err_type == 1:
-			for line in l2_onr:
-				$msg.text += line + "\n"
-				await get_tree().create_timer(line_delay).timeout
+			print_error(l2_onr)
 		elif err_type == 2:
-			for line in l2_stuck:
-				$msg.text += line + "\n"
-				await get_tree().create_timer(line_delay).timeout
+			print_error(l2_stuck)
 	elif LevelState.curr_lvl == 3:
 		if err_type == 2:
-			for line in l3_stuck:
-				$msg.text += line + "\n"
-				await get_tree().create_timer(line_delay).timeout
+			print_error(l3_stuck)
 	elif LevelState.curr_lvl == 4:
 		if err_type == 3:
-			for line in l4_non_gold:
-				$msg.text += line + "\n"
-				await get_tree().create_timer(line_delay).timeout
+			print_error(l4_non_gold)
 	elif LevelState.curr_lvl == 5:
 		if err_type == 2:
-			for line in l5_stuck:
-				$msg.text += line + "\n"
-				await get_tree().create_timer(line_delay).timeout
-				
-				
+			print_error(l5_stuck)
 			
+				
+				
+func print_error(arr):
+	for line in arr:
+		$msg.text += line + "\n"
+		await get_tree().create_timer(line_delay).timeout
+	
 			
 
 			
