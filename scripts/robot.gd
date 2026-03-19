@@ -72,9 +72,10 @@ var _mining: bool = false
 @onready var hover_area: Area2D = $HoverArea
 var tooltip_panel
 var tooltip_label
-var tt_methods_12: Array[String] = ["Move()", "Turn() (Left/Right)"]
-var tt_methods_3: Array[String] = ["Move()", "Turn() (Left/Right)", "NotAtGoal: True"]
-var tt_methods_4: Array[String] = ["Move()", "Turn() (Left/Right)", "Mine()"]
+var tt_methods_1: Array[String] = ["Move()", "Turn() (Left/Right)"]
+var tt_methods_2: Array[String] = ["Move()", "Turn()"]
+var tt_methods_3: Array[String] = ["Move()", "Turn()", "NotAtGoal: True"]
+var tt_methods_4: Array[String] = ["Move()", "Turn()", "Mine()"]
 
 @onready var ray: RayCast2D = $ray_fw
 
@@ -609,8 +610,8 @@ func _snap_to_grid() -> void:
 func _on_robot_mouse_entered() -> void:
 	var methods
 	match LevelState.curr_lvl:
-		1: methods = tt_methods_12
-		2: methods = tt_methods_12
+		1: methods = tt_methods_1
+		2: methods = tt_methods_2
 		3: methods = tt_methods_3
 		4: methods = tt_methods_4
 	

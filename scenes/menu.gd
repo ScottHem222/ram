@@ -3,8 +3,15 @@ extends Node2D
 var grn = Color(0.106, 0.8, 0.0, 1.0)
 
 func _ready() -> void:
-	$MainLayer.visible = true
-	$TutLayer.visible = false
+	
+	if LevelState.curr_lvl == 5 or LevelState.curr_lvl == 0:
+		$MainLayer.visible = true
+		$TutLayer.visible = false
+
+	else:
+		$MainLayer.visible = false
+		$TutLayer.visible = true
+	
 	$"TutLayer/1".disabled = false
 	$TutLayer.update_locks()
 	$MainLayer/scoreboard.visible = false

@@ -14,4 +14,5 @@ var lvl5_scoreboard: Array = []
 
 
 func _ready() -> void:
-	levels_done = 0
+	curr_lvl = 0
+	levels_done = 3

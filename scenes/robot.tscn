@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://c3vroyc0ggbck"]
+[gd_scene format=3 uid="uid://c3vroyc0ggbck"]
 
 [ext_resource type="Texture2D" uid="uid://ckxuwd4fydxgs" path="res://assets/robot.png" id="1_py6e5"]
 [ext_resource type="Script" uid="uid://dnpwv6f6n3aso" path="res://scripts/robot.gd" id="1_ykvnc"]
@@ -12,36 +12,36 @@ bg_color = Color(1, 0.14509805, 0.105882354, 0.3254902)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_i42o3"]
 size = Vector2(180, 164.5)
 
-[node name="Robot" type="CharacterBody2D"]
+[node name="Robot" type="CharacterBody2D" unique_id=355689992]
 script = ExtResource("1_ykvnc")
 metadata/_edit_horizontal_guides_ = [-1633.0]
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=62425477]
 scale = Vector2(0.35, 0.35)
 texture = ExtResource("1_py6e5")
 
-[node name="ray_fw" type="RayCast2D" parent="."]
+[node name="ray_fw" type="RayCast2D" parent="." unique_id=863215427]
 target_position = Vector2(64, 0)
 
-[node name="ray_side" type="RayCast2D" parent="."]
+[node name="ray_side" type="RayCast2D" parent="." unique_id=1535547489]
 visible = false
 target_position = Vector2(96, 0)
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1404897983]
 offset = Vector2(-600, 0)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1162104263]
 shape = SubResource("RectangleShape2D_ykvnc")
 
-[node name="Panel" type="Panel" parent="."]
+[node name="Panel" type="Panel" parent="." unique_id=529578383]
 offset_left = 32.0
 offset_top = -58.0
 offset_right = 115.0
 offset_bottom = 62.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_ykvnc")
 
-[node name="HoverArea" type="Area2D" parent="."]
+[node name="HoverArea" type="Area2D" parent="." unique_id=246330318]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="HoverArea"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HoverArea" unique_id=1996911636]
 position = Vector2(29, -0.25)
 shape = SubResource("RectangleShape2D_i42o3")

@@ -139,6 +139,9 @@ func run_blocks(robot: Node) -> void:
 
 	# sequential blocks
 	for block in blocks:
+		if not is_instance_valid(block):
+			continue
+				
 		if block.is_in_group("a_move_block"):
 			if _has_prop(robot, &"turn"):
 				robot.turn = true
@@ -188,7 +191,7 @@ func _get_unique_blocks_in_order() -> Array[Node]:
 # -----------------------------
 func _reset_robot_run_flags(robot: Node) -> void:
 	robot.turn = false
-	robot.auto_stop = false
+	#robot.auto_stop = false
 	robot.mine_gold = false
 
 

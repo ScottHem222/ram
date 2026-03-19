@@ -75,7 +75,6 @@ func _ready():
 		t1 = t4_scene.instantiate()
 		add_child(t1)
 		robot = t1.get_node("Robot")
-		robot.return_home.connect(set_home)
 		LevelState.lvl4_gold = 11
 		
 	if level == 5:
@@ -98,10 +97,13 @@ func _ready():
 	
 	$BeginLayer.visible = true
 	
-	robot.onr.connect(fail_onr)
+	if LevelState.curr_lvl != 5:
+		robot.onr.connect(fail_onr)
+		robot.gem_mined.connect(fail_t4_non_gold)
+		
 	robot.blocked.connect(fail_blocked)
 	robot.gold_reached.connect(level_won)
-	robot.gem_mined.connect(fail_t4_non_gold)
+	
 	game_UI.rtm_ui.connect(return_to_menu)
 	game_UI.reset_lvl.connect(robot.reset_pos)	
 	
